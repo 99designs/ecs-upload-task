@@ -13,7 +13,8 @@ go get -u 99designs/ecs-upload-task
 
 or 
 
-curl -L https://github.com/99designs/ecs-upload-task/releases/download/1.0.0/ecs-upload-task-linux-1.0.0 -o /usr/bin/ecs-upload-task
+curl -L --fail -o /usr/bin/ecs-upload-task \
+  <release from https://github.com/99designs/ecs-upload-task/releases> \
 ```
 
 taskdefinition.yml
