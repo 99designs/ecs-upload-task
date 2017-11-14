@@ -14,7 +14,7 @@ go get -u 99designs/ecs-upload-task
 or 
 
 curl -L --fail -o /usr/bin/ecs-upload-task \
-  <release from https://github.com/99designs/ecs-upload-task/releases> \
+  <release from https://github.com/99designs/ecs-upload-task/releases>
 ```
 
 taskdefinition.yml
