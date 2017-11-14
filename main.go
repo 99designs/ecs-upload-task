@@ -15,12 +15,14 @@ import (
 )
 
 const ECS_POLL_INTERVAL = 1 * time.Second
+const version = "dev"
 
 func main() {
 	app := cli.NewApp()
 	app.Name = "ecs-upload-task"
 	app.Usage = "upload ecs task definitions and update ECS services"
 	app.Action = run
+	app.Version = version
 	app.Flags = []cli.Flag{
 		cli.StringFlag{Name: "file", Value: "taskdefinition.json", Usage: "the task definition to upload"},
 		cli.StringFlag{Name: "cluster", Value: "default", Usage: "The cluster to update the services on"},
