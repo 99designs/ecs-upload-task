@@ -38,7 +38,9 @@ Create a new ECS service referencing the task definition. Service templates can 
 
 later, in your automated CI pipeline you can deploy by simply:
 ```bash
-export IMAGE_NAME=99designs/hello-world:$FRESH_BUILD_NUMBER ecs-upload-task --file taskdefinition.yml --service hello-world-2017-05-15-10-45
+export IMAGE_NAME=99designs/hello-world:$FRESH_BUILD_NUMBER 
+ecs-upload-task --file taskdefinition.yml --service hello-world-2017-05-15-10-45
+
 2017/11/14 18:02:32 Registering a task for hello-world
 2017/11/14 18:02:34 Created arn:xxx:task-definition/hello-world:2
 2017/11/14 18:02:34 Updating service hello-world-2017-05-15-10-45
