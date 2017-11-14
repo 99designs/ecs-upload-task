@@ -3,6 +3,8 @@
 A very simple cli took that will upload an ecs task and optionally update a service to reference it.
 
 
+Designed as a partner tool to https://github.com/buildkite/ecs-run-task and shares the same task definition parser with environment substitution. 
+
 ##### example
 
 install it
