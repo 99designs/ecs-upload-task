@@ -74,7 +74,7 @@ func updateService(svc *ecs.ECS, service, cluster, taskDefinition string) {
 		TaskDefinition: &taskDefinition,
 	})
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to update service: %s\n", err)
+		fmt.Fprintf(os.Stderr, "Unable to update service %s on cluster %s: %s\n", service, cluster, err)
 		os.Exit(1)
 	}
 
