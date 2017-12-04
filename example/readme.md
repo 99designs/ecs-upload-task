@@ -32,7 +32,7 @@ aws cloudformation create-stack \
 aws cloudformation create-stack \
     --stack-name myApp \
     --template-body file://fargate-task-definition.yml \
-    --parameters '[{"ParameterKey":"TaskDefinition","ParameterValue":"arn:aws:ecs:us-east-1:447214301260:task-definition/myapp:{OUTPUT FROM ecs-upload-task}"}]'
+    --parameters '[{"ParameterKey":"TaskDefinition","ParameterValue":"{OUTPUT FROM ecs-upload-task}"}]'
 ```
 
 At this point everything should be running. 
