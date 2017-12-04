@@ -1,0 +1,117 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  ClusterName:
+    Type: String
+    Description: The identifier of the ECS Cluster to use
+    Default: myapp
+
+  ContainerName:
+    Type: String
+    Description: The container within the service to route traffic to
+    Default: myapp
+
+  TaskDefinition:
+    Type: String
+    Description: The task definition to run. Must have the current release number eg myapp:123
+
+  DesiredCount:
+    Type: Number
+    Description: Number of tasks to run
+    Default: 1
+
+  ALBTargetGroup:
+    Type: String
+    Description: The ALB target group to join containers into
+    Default: arn:aws:elasticloadbalancing:us-east-1:xxxx:targetgroup/yyyy/zzzz
+
+Resources:
+  Prod:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !Ref 'ClusterName'
+      LaunchType: "FARGATE"
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+             - sg-xxxxxxxx
+          Subnets:
+             - subnet-yyyyyyyy
+             - subnet-zzzzzzzz
+      DesiredCount: !Ref 'DesiredCount'
+      LoadBalancers:
+        - ContainerName: !Ref 'ContainerName'
+          ContainerPort: 80
+          TargetGroupArn: !Ref 'ALBTargetGroup'
+      TaskDefinition: !Ref 'TaskDefinition'
+
+  ServiceScalingTarget:
+    Type: AWS::ApplicationAutoScaling::ScalableTarget
+    DependsOn: Prod
+    Properties:
+      MaxCapacity: 20
+      MinCapacity: 2
+      ResourceId: !Join ['', [service/, !Ref 'ClusterName', /, !GetAtt [Prod, Name]]]
+      RoleARN: arn:aws:iam::yyyyy:role/ecsAutoscaleRole
+      ScalableDimension: ecs:service:DesiredCount
+      ServiceNamespace: ecs
+
+  ScaleDownPolicy:
+    Type: AWS::ApplicationAutoScaling::ScalingPolicy
+    Properties:
+      PolicyName: ScaleDown
+      PolicyType: StepScaling
+      ScalingTargetId: !Ref 'ServiceScalingTarget'
+      StepScalingPolicyConfiguration:
+        AdjustmentType: ChangeInCapacity
+        Cooldown: 60
+        StepAdjustments:
+        - MetricIntervalLowerBound: 0
+          ScalingAdjustment: -1
+
+  ScaleUpPolicy:
+    Type: AWS::ApplicationAutoScaling::ScalingPolicy
+    Properties:
+      PolicyName: ScaleUp
+      PolicyType: StepScaling
+      ScalingTargetId: !Ref 'ServiceScalingTarget'
+      StepScalingPolicyConfiguration:
+        AdjustmentType: ChangeInCapacity
+        Cooldown: 60
+        StepAdjustments:
+        - MetricIntervalLowerBound: 0
+          ScalingAdjustment: 1
+
+  CPUAlarmHigh:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Scale up if CPU > 50% for 5 minutes
+      MetricName: CPUUtilization
+      Namespace: AWS/ECS
+      Statistic: Average
+      Period: '60'
+      EvaluationPeriods: '5'
+      ComparisonOperator: GreaterThanThreshold
+      Threshold: '50'
+      AlarmActions:
+        - !Ref 'ScaleUpPolicy'
+      Dimensions:
+        - Name: ServiceName
+          Value: !Ref 'Prod'
+
+  CPUAlarmLow:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Scale down if CPU < 30% for 5 minutes
+      MetricName: CPUUtilization
+      Namespace: AWS/ECS
+      Statistic: Average
+      Period: '60'
+      EvaluationPeriods: '5'
+      ComparisonOperator: LessThanThreshold
+      Threshold: '30'
+      AlarmActions:
+        - !Ref 'ScaleDownPolicy'
+      Dimensions:
+        - Name: ServiceName
+          Value: !Ref 'Prod'

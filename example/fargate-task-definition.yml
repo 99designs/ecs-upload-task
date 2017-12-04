@@ -1,0 +1,25 @@
+family: myapp
+taskRoleArn: arn:aws:iam::xxx:role/task-arn
+executionRoleArn: arn:aws:iam::xxxx:role/task-arn
+memory: "2GB"
+cpu: "1024"
+networkMode: awsvpc
+requiresCompatibilities:
+  - FARGATE
+containerDefinitions:
+- essential: true
+  image: ${IMAGE_NAME:-your/docker-image}
+  command: ["/bin/startup.sh"]
+  name: myapp
+  memory: 2048
+  cpu: 1024
+  logConfiguration:
+    logDriver: awslogs
+    options:
+      awslogs-group: /ecs/myapp
+      awslogs-region: us-east-1
+      awslogs-stream-prefix: ecs
+  portMappings:
+    - {containerPort: 80}
+  environment:
+    - {name: PORT, value: "80"}

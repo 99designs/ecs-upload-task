@@ -1,0 +1,67 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  Healthcheck:
+    Type: String
+    Description: A URL to probe
+    Default: /healthcheck
+
+  CertificateArn:
+    Type: String
+    Description: ARN of a SSL certificate to use for the ALB
+    Default: arn:aws:acm:us-east-1:xxx/yyyy
+
+Resources:
+  ALB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Subnets: [subnet-aaaaaaaa,subnet-bbbbbbbb]
+      SecurityGroups:
+        - sg-qqqqqqq
+
+  ALBHTTPListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref 'ALBTargetGroup'
+      LoadBalancerArn: !Ref 'ALB'
+      Port: 80
+      Protocol: HTTP
+    DependsOn:
+      - ALB
+
+  ALBHTTPSListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      Certificates:
+        - CertificateArn: !Ref 'CertificateArn'
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref 'ALBTargetGroup'
+      LoadBalancerArn: !Ref 'ALB'
+      Port: 443
+      Protocol: HTTPS
+    DependsOn:
+      - ALB
+
+  ALBTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Port: 80
+      Protocol: HTTP
+      VpcId: vpc-qqqqqqqq
+      TargetType: ip
+      HealthCheckPath: !Ref 'Healthcheck'
+      HealthCheckProtocol: HTTP
+      HealthCheckIntervalSeconds: 7
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 4
+      # deregistration_delay is important for fast ECS deploys. Without it the ALB will wait 300 seconds
+      # for the instance to be removed.
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: '10'
+    DependsOn:
+      - ALB
+
