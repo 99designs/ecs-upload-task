@@ -9,7 +9,7 @@ Designed as a partner tool to https://github.com/buildkite/ecs-run-task and shar
 
 install it
 ```bash
-go get -u 99designs/ecs-upload-task
+go get -u github.com/99designs/ecs-upload-task
 
 or 
 
