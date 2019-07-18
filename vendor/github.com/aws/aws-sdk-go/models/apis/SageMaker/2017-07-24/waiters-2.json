@@ -1,11 +1,10 @@
 {
   "version": 2,
   "waiters": {
-    "NotebookInstance_Running": {
-      "delay": 120,
-      "interval": 120,
+    "NotebookInstanceInService": {
+      "delay": 30,
+      "maxAttempts": 60,
       "operation": "DescribeNotebookInstance",
-      "maxAttempts": 120,
       "acceptors": [
         {
           "expected": "InService",
@@ -14,52 +13,23 @@
           "argument": "NotebookInstanceStatus"
         },
         {
-          "expected": "ThrottlingException",
-          "matcher": "error",
-          "state": "retry"
-        },
-        {
           "expected": "Failed",
-          "matcher": "path",
-          "state": "failure",
-          "argument": "NotebookInstanceStatus"
-        },
-        {
-          "expected": "Stopped",
-          "matcher": "path",
-          "state": "failure",
-          "argument": "NotebookInstanceStatus"
-        },
-        {
-          "expected": "Stopping",
           "matcher": "path",
           "state": "failure",
           "argument": "NotebookInstanceStatus"
         }
       ]
     },
-    "NotebookInstance_Stopped": {
-      "delay": 120,
-      "interval": 120,
+    "NotebookInstanceStopped": {
+      "delay": 30,     
       "operation": "DescribeNotebookInstance",
-      "maxAttempts": 120,
+      "maxAttempts": 60,
       "acceptors": [
         {
           "expected": "Stopped",
           "matcher": "path",
           "state": "success",
           "argument": "NotebookInstanceStatus"
-        },
-        {
-          "expected": "Stopping",
-          "matcher": "path",
-          "state": "retry",
-          "argument": "NotebookInstanceStatus"
-        },
-        {
-          "expected": "ThrottlingException",
-          "matcher": "error",
-          "state": "retry"
         },
         {
           "expected": "Failed",
@@ -69,28 +39,16 @@
         }
       ]
     }, 
-    "NotebookInstance_Deleted": {
-      "delay": 120,
-      "interval": 120,
+    "NotebookInstanceDeleted": {
+      "delay": 30,
+      "maxAttempts": 60,
       "operation": "DescribeNotebookInstance",
-      "maxAttempts": 120,
       "acceptors": [
         {
           "expected": "ValidationException",
           "matcher": "error",
           "state": "success"
-        },
-        {
-          "expected": "Deleting",
-          "matcher": "path",
-          "state": "retry",
-          "argument": "NotebookInstanceStatus"
-        },        
-        {
-          "expected": "ThrottlingException",
-          "matcher": "error",
-          "state": "retry"
-        },
+        },    
         {
           "expected": "Failed",
           "matcher": "path",
@@ -99,11 +57,10 @@
         }
       ]
     },
-    "TrainingJob_Stopped": {
+    "TrainingJobCompletedOrStopped": {
       "delay": 120,
-      "interval": 120,
+      "maxAttempts": 180,
       "operation": "DescribeTrainingJob",
-      "maxAttempts": 120,
       "acceptors": [
         {
           "expected": "Completed",
@@ -112,27 +69,10 @@
           "argument": "TrainingJobStatus"
         },
         {
-          "expected": "Stopping",
-          "matcher": "path",
-          "state": "retry",
-          "argument": "TrainingJobStatus"
-        },
-        {
           "expected": "Stopped",
           "matcher": "path",
           "state": "success",
           "argument": "TrainingJobStatus"
-        },
-
-        {
-          "expected": "ThrottlingException",
-          "matcher": "error",
-          "state": "retry"
-        },
-        {
-          "expected": "ValidationException",
-          "matcher": "error",
-          "state": "failure"
         },
         {
           "expected": "Failed",
@@ -141,102 +81,16 @@
           "argument": "TrainingJobStatus"
         },
         {
-          "expected": "Deleting",
-          "matcher": "path",
-          "state": "failure",
-          "argument": "TrainingJobStatus"
-        }
-      ]
-    },
-    "TrainingJob_Deleted": {
-      "delay": 120,
-      "interval": 120,
-      "operation": "DescribeTrainingJob",
-      "maxAttempts": 120,
-      "acceptors": [
-        {
-          "expected": "ValidationException",
-          "matcher": "error",
-          "state": "success"
-        },
-        {
-          "expected": "Deleting",
-          "matcher": "path",
-          "state": "retry",
-          "argument": "TrainingJobStatus"
-        },        
-        {
-          "expected": "ThrottlingException",
-          "matcher": "error",
-          "state": "retry"
-        }
-      ]
-    },
-    "TrainingJob_Created": {
-      "delay": 120,
-      "interval": 120,
-      "operation": "DescribeTrainingJob",
-      "maxAttempts": 120,
-      "acceptors": [
-        {
-          "expected": "Created",
-          "matcher": "path",
-          "state": "success",
-          "argument": "TrainingJobStatus"
-        },
-        {
-          "expected": "Completed",
-          "matcher": "path",
-          "state": "success",
-          "argument": "TrainingJobStatus"
-        },
-        {
-          "expected": "InProgress",
-          "matcher": "path",
-          "state": "retry",
-          "argument": "TrainingJobStatus"
-        }, 
-        {
-          "expected": "Failed",
-          "matcher": "path",
-          "state": "failure",
-          "argument": "TrainingJobStatus"
-        },
-        {
-          "expected": "Stopping",
-          "matcher": "path",
-          "state": "failure",
-          "argument": "TrainingJobStatus"
-        },
-        {
-          "expected": "Stopped",
-          "matcher": "path",
-          "state": "failure",
-          "argument": "TrainingJobStatus"
-        },
-        {
-          "expected": "Deleting",
-          "matcher": "path",
-          "state": "failure",
-          "argument": "TrainingJobStatus"
-        },
-        {
           "expected": "ValidationException",
           "matcher": "error",
           "state": "failure"
-        },   
-        {
-          "expected": "ThrottlingException",
-          "matcher": "error",
-          "state": "retry"
         }
       ]
     },
-    "Endpoint_Created": {
-      "delay": 120,
-      "interval": 120,
+    "EndpointInService": {
+      "delay": 30,
+      "maxAttempts": 120,
       "operation": "DescribeEndpoint",
-      "maxAttempts": 120,
       "acceptors": [
         {
           "expected": "InService",
@@ -245,21 +99,10 @@
           "argument": "EndpointStatus"
         },
         {
-          "expected": "Creating",
-          "matcher": "path",
-          "state": "retry",
-          "argument": "EndpointStatus"
-        },
-        {
           "expected": "Failed",
           "matcher": "path",
           "state": "failure",
           "argument": "EndpointStatus"
-        },
-        {
-          "expected": "ThrottlingException",
-          "matcher": "error",
-          "state": "retry"
         },
         {
           "expected": "ValidationException",
@@ -268,11 +111,10 @@
         }
       ]
     },
-    "Endpoint_Deleted": {
-      "delay": 120,
-      "interval": 120,
+    "EndpointDeleted": {
+      "delay": 30,
+      "maxAttempts": 60,
       "operation": "DescribeEndpoint",
-      "maxAttempts": 120,
       "acceptors": [
         {
           "expected": "ValidationException",
@@ -280,63 +122,40 @@
           "state": "success"
         },
         {
-          "expected": "Deleting",
-          "matcher": "path",
-          "state": "retry",
-          "argument": "EndpointStatus"
-        },
-        {
           "expected": "Failed",
           "matcher": "path",
           "state": "failure",
           "argument": "EndpointStatus"
-        },
-        {
-          "expected": "ThrottlingException",
-          "matcher": "error",
-          "state": "retry"
         }
       ]
     },
-   "Endpoint_Updated": {
-      "delay": 120,
-      "interval": 120,
-      "operation": "DescribeEndpoint",
-      "maxAttempts": 120,
+    "TransformJobCompletedOrStopped": {
+      "delay": 60,
+      "maxAttempts": 60,
+      "operation": "DescribeTransformJob",
       "acceptors": [
         {
-          "expected": "200",
+          "expected": "Completed",
           "matcher": "path",
           "state": "success",
-          "argument": "EndpointName"
+          "argument": "TransformJobStatus"
         },
         {
-          "expected": "Updating",
+          "expected": "Stopped",
           "matcher": "path",
-          "state": "retry",
-          "argument": "EndpointStatus"
-        },
-        {
-          "expected": "RollingBack",
-          "matcher": "path",
-          "state": "retry",
-          "argument": "EndpointStatus"
+          "state": "success",
+          "argument": "TransformJobStatus"
         },
         {
           "expected": "Failed",
           "matcher": "path",
           "state": "failure",
-          "argument": "EndpointStatus"
-        },
-        {
-          "expected": "ThrottlingException",
-          "matcher": "error",
-          "state": "retry"
+          "argument": "TransformJobStatus"
         },
         {
           "expected": "ValidationException",
           "matcher": "error",
-          "state": "retry"
+          "state": "failure"
         }
       ]
     }

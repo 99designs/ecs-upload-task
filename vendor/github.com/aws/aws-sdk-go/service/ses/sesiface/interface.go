@@ -76,6 +76,10 @@ type SESAPI interface {
 	CreateConfigurationSetTrackingOptionsWithContext(aws.Context, *ses.CreateConfigurationSetTrackingOptionsInput, ...request.Option) (*ses.CreateConfigurationSetTrackingOptionsOutput, error)
 	CreateConfigurationSetTrackingOptionsRequest(*ses.CreateConfigurationSetTrackingOptionsInput) (*request.Request, *ses.CreateConfigurationSetTrackingOptionsOutput)
 
+	CreateCustomVerificationEmailTemplate(*ses.CreateCustomVerificationEmailTemplateInput) (*ses.CreateCustomVerificationEmailTemplateOutput, error)
+	CreateCustomVerificationEmailTemplateWithContext(aws.Context, *ses.CreateCustomVerificationEmailTemplateInput, ...request.Option) (*ses.CreateCustomVerificationEmailTemplateOutput, error)
+	CreateCustomVerificationEmailTemplateRequest(*ses.CreateCustomVerificationEmailTemplateInput) (*request.Request, *ses.CreateCustomVerificationEmailTemplateOutput)
+
 	CreateReceiptFilter(*ses.CreateReceiptFilterInput) (*ses.CreateReceiptFilterOutput, error)
 	CreateReceiptFilterWithContext(aws.Context, *ses.CreateReceiptFilterInput, ...request.Option) (*ses.CreateReceiptFilterOutput, error)
 	CreateReceiptFilterRequest(*ses.CreateReceiptFilterInput) (*request.Request, *ses.CreateReceiptFilterOutput)
@@ -103,6 +107,10 @@ type SESAPI interface {
 	DeleteConfigurationSetTrackingOptions(*ses.DeleteConfigurationSetTrackingOptionsInput) (*ses.DeleteConfigurationSetTrackingOptionsOutput, error)
 	DeleteConfigurationSetTrackingOptionsWithContext(aws.Context, *ses.DeleteConfigurationSetTrackingOptionsInput, ...request.Option) (*ses.DeleteConfigurationSetTrackingOptionsOutput, error)
 	DeleteConfigurationSetTrackingOptionsRequest(*ses.DeleteConfigurationSetTrackingOptionsInput) (*request.Request, *ses.DeleteConfigurationSetTrackingOptionsOutput)
+
+	DeleteCustomVerificationEmailTemplate(*ses.DeleteCustomVerificationEmailTemplateInput) (*ses.DeleteCustomVerificationEmailTemplateOutput, error)
+	DeleteCustomVerificationEmailTemplateWithContext(aws.Context, *ses.DeleteCustomVerificationEmailTemplateInput, ...request.Option) (*ses.DeleteCustomVerificationEmailTemplateOutput, error)
+	DeleteCustomVerificationEmailTemplateRequest(*ses.DeleteCustomVerificationEmailTemplateInput) (*request.Request, *ses.DeleteCustomVerificationEmailTemplateOutput)
 
 	DeleteIdentity(*ses.DeleteIdentityInput) (*ses.DeleteIdentityOutput, error)
 	DeleteIdentityWithContext(aws.Context, *ses.DeleteIdentityInput, ...request.Option) (*ses.DeleteIdentityOutput, error)
@@ -152,6 +160,10 @@ type SESAPI interface {
 	GetAccountSendingEnabledWithContext(aws.Context, *ses.GetAccountSendingEnabledInput, ...request.Option) (*ses.GetAccountSendingEnabledOutput, error)
 	GetAccountSendingEnabledRequest(*ses.GetAccountSendingEnabledInput) (*request.Request, *ses.GetAccountSendingEnabledOutput)
 
+	GetCustomVerificationEmailTemplate(*ses.GetCustomVerificationEmailTemplateInput) (*ses.GetCustomVerificationEmailTemplateOutput, error)
+	GetCustomVerificationEmailTemplateWithContext(aws.Context, *ses.GetCustomVerificationEmailTemplateInput, ...request.Option) (*ses.GetCustomVerificationEmailTemplateOutput, error)
+	GetCustomVerificationEmailTemplateRequest(*ses.GetCustomVerificationEmailTemplateInput) (*request.Request, *ses.GetCustomVerificationEmailTemplateOutput)
+
 	GetIdentityDkimAttributes(*ses.GetIdentityDkimAttributesInput) (*ses.GetIdentityDkimAttributesOutput, error)
 	GetIdentityDkimAttributesWithContext(aws.Context, *ses.GetIdentityDkimAttributesInput, ...request.Option) (*ses.GetIdentityDkimAttributesOutput, error)
 	GetIdentityDkimAttributesRequest(*ses.GetIdentityDkimAttributesInput) (*request.Request, *ses.GetIdentityDkimAttributesOutput)
@@ -188,6 +200,13 @@ type SESAPI interface {
 	ListConfigurationSetsWithContext(aws.Context, *ses.ListConfigurationSetsInput, ...request.Option) (*ses.ListConfigurationSetsOutput, error)
 	ListConfigurationSetsRequest(*ses.ListConfigurationSetsInput) (*request.Request, *ses.ListConfigurationSetsOutput)
 
+	ListCustomVerificationEmailTemplates(*ses.ListCustomVerificationEmailTemplatesInput) (*ses.ListCustomVerificationEmailTemplatesOutput, error)
+	ListCustomVerificationEmailTemplatesWithContext(aws.Context, *ses.ListCustomVerificationEmailTemplatesInput, ...request.Option) (*ses.ListCustomVerificationEmailTemplatesOutput, error)
+	ListCustomVerificationEmailTemplatesRequest(*ses.ListCustomVerificationEmailTemplatesInput) (*request.Request, *ses.ListCustomVerificationEmailTemplatesOutput)
+
+	ListCustomVerificationEmailTemplatesPages(*ses.ListCustomVerificationEmailTemplatesInput, func(*ses.ListCustomVerificationEmailTemplatesOutput, bool) bool) error
+	ListCustomVerificationEmailTemplatesPagesWithContext(aws.Context, *ses.ListCustomVerificationEmailTemplatesInput, func(*ses.ListCustomVerificationEmailTemplatesOutput, bool) bool, ...request.Option) error
+
 	ListIdentities(*ses.ListIdentitiesInput) (*ses.ListIdentitiesOutput, error)
 	ListIdentitiesWithContext(aws.Context, *ses.ListIdentitiesInput, ...request.Option) (*ses.ListIdentitiesOutput, error)
 	ListIdentitiesRequest(*ses.ListIdentitiesInput) (*request.Request, *ses.ListIdentitiesOutput)
@@ -215,6 +234,10 @@ type SESAPI interface {
 	ListVerifiedEmailAddressesWithContext(aws.Context, *ses.ListVerifiedEmailAddressesInput, ...request.Option) (*ses.ListVerifiedEmailAddressesOutput, error)
 	ListVerifiedEmailAddressesRequest(*ses.ListVerifiedEmailAddressesInput) (*request.Request, *ses.ListVerifiedEmailAddressesOutput)
 
+	PutConfigurationSetDeliveryOptions(*ses.PutConfigurationSetDeliveryOptionsInput) (*ses.PutConfigurationSetDeliveryOptionsOutput, error)
+	PutConfigurationSetDeliveryOptionsWithContext(aws.Context, *ses.PutConfigurationSetDeliveryOptionsInput, ...request.Option) (*ses.PutConfigurationSetDeliveryOptionsOutput, error)
+	PutConfigurationSetDeliveryOptionsRequest(*ses.PutConfigurationSetDeliveryOptionsInput) (*request.Request, *ses.PutConfigurationSetDeliveryOptionsOutput)
+
 	PutIdentityPolicy(*ses.PutIdentityPolicyInput) (*ses.PutIdentityPolicyOutput, error)
 	PutIdentityPolicyWithContext(aws.Context, *ses.PutIdentityPolicyInput, ...request.Option) (*ses.PutIdentityPolicyOutput, error)
 	PutIdentityPolicyRequest(*ses.PutIdentityPolicyInput) (*request.Request, *ses.PutIdentityPolicyOutput)
@@ -230,6 +253,10 @@ type SESAPI interface {
 	SendBulkTemplatedEmail(*ses.SendBulkTemplatedEmailInput) (*ses.SendBulkTemplatedEmailOutput, error)
 	SendBulkTemplatedEmailWithContext(aws.Context, *ses.SendBulkTemplatedEmailInput, ...request.Option) (*ses.SendBulkTemplatedEmailOutput, error)
 	SendBulkTemplatedEmailRequest(*ses.SendBulkTemplatedEmailInput) (*request.Request, *ses.SendBulkTemplatedEmailOutput)
+
+	SendCustomVerificationEmail(*ses.SendCustomVerificationEmailInput) (*ses.SendCustomVerificationEmailOutput, error)
+	SendCustomVerificationEmailWithContext(aws.Context, *ses.SendCustomVerificationEmailInput, ...request.Option) (*ses.SendCustomVerificationEmailOutput, error)
+	SendCustomVerificationEmailRequest(*ses.SendCustomVerificationEmailInput) (*request.Request, *ses.SendCustomVerificationEmailOutput)
 
 	SendEmail(*ses.SendEmailInput) (*ses.SendEmailOutput, error)
 	SendEmailWithContext(aws.Context, *ses.SendEmailInput, ...request.Option) (*ses.SendEmailOutput, error)
@@ -294,6 +321,10 @@ type SESAPI interface {
 	UpdateConfigurationSetTrackingOptions(*ses.UpdateConfigurationSetTrackingOptionsInput) (*ses.UpdateConfigurationSetTrackingOptionsOutput, error)
 	UpdateConfigurationSetTrackingOptionsWithContext(aws.Context, *ses.UpdateConfigurationSetTrackingOptionsInput, ...request.Option) (*ses.UpdateConfigurationSetTrackingOptionsOutput, error)
 	UpdateConfigurationSetTrackingOptionsRequest(*ses.UpdateConfigurationSetTrackingOptionsInput) (*request.Request, *ses.UpdateConfigurationSetTrackingOptionsOutput)
+
+	UpdateCustomVerificationEmailTemplate(*ses.UpdateCustomVerificationEmailTemplateInput) (*ses.UpdateCustomVerificationEmailTemplateOutput, error)
+	UpdateCustomVerificationEmailTemplateWithContext(aws.Context, *ses.UpdateCustomVerificationEmailTemplateInput, ...request.Option) (*ses.UpdateCustomVerificationEmailTemplateOutput, error)
+	UpdateCustomVerificationEmailTemplateRequest(*ses.UpdateCustomVerificationEmailTemplateInput) (*request.Request, *ses.UpdateCustomVerificationEmailTemplateOutput)
 
 	UpdateReceiptRule(*ses.UpdateReceiptRuleInput) (*ses.UpdateReceiptRuleOutput, error)
 	UpdateReceiptRuleWithContext(aws.Context, *ses.UpdateReceiptRuleInput, ...request.Option) (*ses.UpdateReceiptRuleOutput, error)

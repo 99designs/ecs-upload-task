@@ -17,8 +17,8 @@ const opAttachInstances = "AttachInstances"
 
 // AttachInstancesRequest generates a "aws/request.Request" representing the
 // client's request for the AttachInstances operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -38,7 +38,7 @@ const opAttachInstances = "AttachInstances"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/AttachInstances
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/AttachInstances
 func (c *AutoScaling) AttachInstancesRequest(input *AttachInstancesInput) (req *request.Request, output *AttachInstancesOutput) {
 	op := &request.Operation{
 		Name:       opAttachInstances,
@@ -52,8 +52,7 @@ func (c *AutoScaling) AttachInstancesRequest(input *AttachInstancesInput) (req *
 
 	output = &AttachInstancesOutput{}
 	req = c.newRequest(op, input, output)
-	req.Handlers.Unmarshal.Remove(query.UnmarshalHandler)
-	req.Handlers.Unmarshal.PushBackNamed(protocol.UnmarshalDiscardBodyHandler)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -61,10 +60,10 @@ func (c *AutoScaling) AttachInstancesRequest(input *AttachInstancesInput) (req *
 //
 // Attaches one or more EC2 instances to the specified Auto Scaling group.
 //
-// When you attach instances, Auto Scaling increases the desired capacity of
-// the group by the number of instances being attached. If the number of instances
-// being attached plus the desired capacity of the group exceeds the maximum
-// size of the group, the operation fails.
+// When you attach instances, Amazon EC2 Auto Scaling increases the desired
+// capacity of the group by the number of instances being attached. If the number
+// of instances being attached plus the desired capacity of the group exceeds
+// the maximum size of the group, the operation fails.
 //
 // If there is a Classic Load Balancer attached to your Auto Scaling group,
 // the instances are also registered with the load balancer. If there are target
@@ -72,8 +71,8 @@ func (c *AutoScaling) AttachInstancesRequest(input *AttachInstancesInput) (req *
 // with the target groups.
 //
 // For more information, see Attach EC2 Instances to Your Auto Scaling Group
-// (http://docs.aws.amazon.com/autoscaling/latest/userguide/attach-instance-asg.html)
-// in the Auto Scaling User Guide.
+// (https://docs.aws.amazon.com/autoscaling/ec2/userguide/attach-instance-asg.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -84,10 +83,13 @@ func (c *AutoScaling) AttachInstancesRequest(input *AttachInstancesInput) (req *
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/AttachInstances
+//   * ErrCodeServiceLinkedRoleFailure "ServiceLinkedRoleFailure"
+//   The service-linked role is not yet ready for use.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/AttachInstances
 func (c *AutoScaling) AttachInstances(input *AttachInstancesInput) (*AttachInstancesOutput, error) {
 	req, out := c.AttachInstancesRequest(input)
 	return out, req.Send()
@@ -113,8 +115,8 @@ const opAttachLoadBalancerTargetGroups = "AttachLoadBalancerTargetGroups"
 
 // AttachLoadBalancerTargetGroupsRequest generates a "aws/request.Request" representing the
 // client's request for the AttachLoadBalancerTargetGroups operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -134,7 +136,7 @@ const opAttachLoadBalancerTargetGroups = "AttachLoadBalancerTargetGroups"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/AttachLoadBalancerTargetGroups
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/AttachLoadBalancerTargetGroups
 func (c *AutoScaling) AttachLoadBalancerTargetGroupsRequest(input *AttachLoadBalancerTargetGroupsInput) (req *request.Request, output *AttachLoadBalancerTargetGroupsOutput) {
 	op := &request.Operation{
 		Name:       opAttachLoadBalancerTargetGroups,
@@ -148,6 +150,7 @@ func (c *AutoScaling) AttachLoadBalancerTargetGroupsRequest(input *AttachLoadBal
 
 	output = &AttachLoadBalancerTargetGroupsOutput{}
 	req = c.newRequest(op, input, output)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -158,9 +161,11 @@ func (c *AutoScaling) AttachLoadBalancerTargetGroupsRequest(input *AttachLoadBal
 // To describe the target groups for an Auto Scaling group, use DescribeLoadBalancerTargetGroups.
 // To detach the target group from the Auto Scaling group, use DetachLoadBalancerTargetGroups.
 //
-// For more information, see Attach a Load Balancer to Your Auto Scaling Group
-// (http://docs.aws.amazon.com/autoscaling/latest/userguide/attach-load-balancer-asg.html)
-// in the Auto Scaling User Guide.
+// With Application Load Balancers and Network Load Balancers, instances are
+// registered as targets with a target group. With Classic Load Balancers, instances
+// are registered with the load balancer. For more information, see Attaching
+// a Load Balancer to Your Auto Scaling Group (https://docs.aws.amazon.com/autoscaling/ec2/userguide/attach-load-balancer-asg.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -171,10 +176,13 @@ func (c *AutoScaling) AttachLoadBalancerTargetGroupsRequest(input *AttachLoadBal
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/AttachLoadBalancerTargetGroups
+//   * ErrCodeServiceLinkedRoleFailure "ServiceLinkedRoleFailure"
+//   The service-linked role is not yet ready for use.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/AttachLoadBalancerTargetGroups
 func (c *AutoScaling) AttachLoadBalancerTargetGroups(input *AttachLoadBalancerTargetGroupsInput) (*AttachLoadBalancerTargetGroupsOutput, error) {
 	req, out := c.AttachLoadBalancerTargetGroupsRequest(input)
 	return out, req.Send()
@@ -200,8 +208,8 @@ const opAttachLoadBalancers = "AttachLoadBalancers"
 
 // AttachLoadBalancersRequest generates a "aws/request.Request" representing the
 // client's request for the AttachLoadBalancers operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -221,7 +229,7 @@ const opAttachLoadBalancers = "AttachLoadBalancers"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/AttachLoadBalancers
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/AttachLoadBalancers
 func (c *AutoScaling) AttachLoadBalancersRequest(input *AttachLoadBalancersInput) (req *request.Request, output *AttachLoadBalancersOutput) {
 	op := &request.Operation{
 		Name:       opAttachLoadBalancers,
@@ -235,6 +243,7 @@ func (c *AutoScaling) AttachLoadBalancersRequest(input *AttachLoadBalancersInput
 
 	output = &AttachLoadBalancersOutput{}
 	req = c.newRequest(op, input, output)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -243,14 +252,15 @@ func (c *AutoScaling) AttachLoadBalancersRequest(input *AttachLoadBalancersInput
 // Attaches one or more Classic Load Balancers to the specified Auto Scaling
 // group.
 //
-// To attach an Application Load Balancer instead, see AttachLoadBalancerTargetGroups.
+// To attach an Application Load Balancer or a Network Load Balancer instead,
+// see AttachLoadBalancerTargetGroups.
 //
 // To describe the load balancers for an Auto Scaling group, use DescribeLoadBalancers.
 // To detach the load balancer from the Auto Scaling group, use DetachLoadBalancers.
 //
-// For more information, see Attach a Load Balancer to Your Auto Scaling Group
-// (http://docs.aws.amazon.com/autoscaling/latest/userguide/attach-load-balancer-asg.html)
-// in the Auto Scaling User Guide.
+// For more information, see Attaching a Load Balancer to Your Auto Scaling
+// Group (https://docs.aws.amazon.com/autoscaling/ec2/userguide/attach-load-balancer-asg.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -261,10 +271,13 @@ func (c *AutoScaling) AttachLoadBalancersRequest(input *AttachLoadBalancersInput
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/AttachLoadBalancers
+//   * ErrCodeServiceLinkedRoleFailure "ServiceLinkedRoleFailure"
+//   The service-linked role is not yet ready for use.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/AttachLoadBalancers
 func (c *AutoScaling) AttachLoadBalancers(input *AttachLoadBalancersInput) (*AttachLoadBalancersOutput, error) {
 	req, out := c.AttachLoadBalancersRequest(input)
 	return out, req.Send()
@@ -286,12 +299,183 @@ func (c *AutoScaling) AttachLoadBalancersWithContext(ctx aws.Context, input *Att
 	return out, req.Send()
 }
 
+const opBatchDeleteScheduledAction = "BatchDeleteScheduledAction"
+
+// BatchDeleteScheduledActionRequest generates a "aws/request.Request" representing the
+// client's request for the BatchDeleteScheduledAction operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See BatchDeleteScheduledAction for more information on using the BatchDeleteScheduledAction
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the BatchDeleteScheduledActionRequest method.
+//    req, resp := client.BatchDeleteScheduledActionRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/BatchDeleteScheduledAction
+func (c *AutoScaling) BatchDeleteScheduledActionRequest(input *BatchDeleteScheduledActionInput) (req *request.Request, output *BatchDeleteScheduledActionOutput) {
+	op := &request.Operation{
+		Name:       opBatchDeleteScheduledAction,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &BatchDeleteScheduledActionInput{}
+	}
+
+	output = &BatchDeleteScheduledActionOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// BatchDeleteScheduledAction API operation for Auto Scaling.
+//
+// Deletes one or more scheduled actions for the specified Auto Scaling group.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Auto Scaling's
+// API operation BatchDeleteScheduledAction for usage and error information.
+//
+// Returned Error Codes:
+//   * ErrCodeResourceContentionFault "ResourceContention"
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/BatchDeleteScheduledAction
+func (c *AutoScaling) BatchDeleteScheduledAction(input *BatchDeleteScheduledActionInput) (*BatchDeleteScheduledActionOutput, error) {
+	req, out := c.BatchDeleteScheduledActionRequest(input)
+	return out, req.Send()
+}
+
+// BatchDeleteScheduledActionWithContext is the same as BatchDeleteScheduledAction with the addition of
+// the ability to pass a context and additional request options.
+//
+// See BatchDeleteScheduledAction for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *AutoScaling) BatchDeleteScheduledActionWithContext(ctx aws.Context, input *BatchDeleteScheduledActionInput, opts ...request.Option) (*BatchDeleteScheduledActionOutput, error) {
+	req, out := c.BatchDeleteScheduledActionRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opBatchPutScheduledUpdateGroupAction = "BatchPutScheduledUpdateGroupAction"
+
+// BatchPutScheduledUpdateGroupActionRequest generates a "aws/request.Request" representing the
+// client's request for the BatchPutScheduledUpdateGroupAction operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See BatchPutScheduledUpdateGroupAction for more information on using the BatchPutScheduledUpdateGroupAction
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the BatchPutScheduledUpdateGroupActionRequest method.
+//    req, resp := client.BatchPutScheduledUpdateGroupActionRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/BatchPutScheduledUpdateGroupAction
+func (c *AutoScaling) BatchPutScheduledUpdateGroupActionRequest(input *BatchPutScheduledUpdateGroupActionInput) (req *request.Request, output *BatchPutScheduledUpdateGroupActionOutput) {
+	op := &request.Operation{
+		Name:       opBatchPutScheduledUpdateGroupAction,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &BatchPutScheduledUpdateGroupActionInput{}
+	}
+
+	output = &BatchPutScheduledUpdateGroupActionOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// BatchPutScheduledUpdateGroupAction API operation for Auto Scaling.
+//
+// Creates or updates one or more scheduled scaling actions for an Auto Scaling
+// group. If you leave a parameter unspecified when updating a scheduled scaling
+// action, the corresponding value remains unchanged.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Auto Scaling's
+// API operation BatchPutScheduledUpdateGroupAction for usage and error information.
+//
+// Returned Error Codes:
+//   * ErrCodeAlreadyExistsFault "AlreadyExists"
+//   You already have an Auto Scaling group or launch configuration with this
+//   name.
+//
+//   * ErrCodeLimitExceededFault "LimitExceeded"
+//   You have already reached a limit for your Amazon EC2 Auto Scaling resources
+//   (for example, Auto Scaling groups, launch configurations, or lifecycle hooks).
+//   For more information, see DescribeAccountLimits.
+//
+//   * ErrCodeResourceContentionFault "ResourceContention"
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/BatchPutScheduledUpdateGroupAction
+func (c *AutoScaling) BatchPutScheduledUpdateGroupAction(input *BatchPutScheduledUpdateGroupActionInput) (*BatchPutScheduledUpdateGroupActionOutput, error) {
+	req, out := c.BatchPutScheduledUpdateGroupActionRequest(input)
+	return out, req.Send()
+}
+
+// BatchPutScheduledUpdateGroupActionWithContext is the same as BatchPutScheduledUpdateGroupAction with the addition of
+// the ability to pass a context and additional request options.
+//
+// See BatchPutScheduledUpdateGroupAction for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *AutoScaling) BatchPutScheduledUpdateGroupActionWithContext(ctx aws.Context, input *BatchPutScheduledUpdateGroupActionInput, opts ...request.Option) (*BatchPutScheduledUpdateGroupActionOutput, error) {
+	req, out := c.BatchPutScheduledUpdateGroupActionRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
 const opCompleteLifecycleAction = "CompleteLifecycleAction"
 
 // CompleteLifecycleActionRequest generates a "aws/request.Request" representing the
 // client's request for the CompleteLifecycleAction operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -311,7 +495,7 @@ const opCompleteLifecycleAction = "CompleteLifecycleAction"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CompleteLifecycleAction
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CompleteLifecycleAction
 func (c *AutoScaling) CompleteLifecycleActionRequest(input *CompleteLifecycleActionInput) (req *request.Request, output *CompleteLifecycleActionOutput) {
 	op := &request.Operation{
 		Name:       opCompleteLifecycleAction,
@@ -325,6 +509,7 @@ func (c *AutoScaling) CompleteLifecycleActionRequest(input *CompleteLifecycleAct
 
 	output = &CompleteLifecycleActionOutput{}
 	req = c.newRequest(op, input, output)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -337,11 +522,12 @@ func (c *AutoScaling) CompleteLifecycleActionRequest(input *CompleteLifecycleAct
 // Scaling group:
 //
 // (Optional) Create a Lambda function and a rule that allows CloudWatch Events
-// to invoke your Lambda function when Auto Scaling launches or terminates instances.
+// to invoke your Lambda function when Amazon EC2 Auto Scaling launches or terminates
+// instances.
 //
 // (Optional) Create a notification target and an IAM role. The target can be
-// either an Amazon SQS queue or an Amazon SNS topic. The role allows Auto Scaling
-// to publish lifecycle notifications to the target.
+// either an Amazon SQS queue or an Amazon SNS topic. The role allows Amazon
+// EC2 Auto Scaling to publish lifecycle notifications to the target.
 //
 // Create the lifecycle hook. Specify whether the hook is used when the instances
 // launch or terminate.
@@ -351,8 +537,8 @@ func (c *AutoScaling) CompleteLifecycleActionRequest(input *CompleteLifecycleAct
 //
 // If you finish before the timeout period ends, complete the lifecycle action.
 //
-// For more information, see Auto Scaling Lifecycle (http://docs.aws.amazon.com/autoscaling/latest/userguide/AutoScalingGroupLifecycle.html)
-// in the Auto Scaling User Guide.
+// For more information, see Amazon EC2 Auto Scaling Lifecycle Hooks (https://docs.aws.amazon.com/autoscaling/ec2/userguide/lifecycle-hooks.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -363,10 +549,10 @@ func (c *AutoScaling) CompleteLifecycleActionRequest(input *CompleteLifecycleAct
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CompleteLifecycleAction
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CompleteLifecycleAction
 func (c *AutoScaling) CompleteLifecycleAction(input *CompleteLifecycleActionInput) (*CompleteLifecycleActionOutput, error) {
 	req, out := c.CompleteLifecycleActionRequest(input)
 	return out, req.Send()
@@ -392,8 +578,8 @@ const opCreateAutoScalingGroup = "CreateAutoScalingGroup"
 
 // CreateAutoScalingGroupRequest generates a "aws/request.Request" representing the
 // client's request for the CreateAutoScalingGroup operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -413,7 +599,7 @@ const opCreateAutoScalingGroup = "CreateAutoScalingGroup"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CreateAutoScalingGroup
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CreateAutoScalingGroup
 func (c *AutoScaling) CreateAutoScalingGroupRequest(input *CreateAutoScalingGroupInput) (req *request.Request, output *CreateAutoScalingGroupOutput) {
 	op := &request.Operation{
 		Name:       opCreateAutoScalingGroup,
@@ -427,8 +613,7 @@ func (c *AutoScaling) CreateAutoScalingGroupRequest(input *CreateAutoScalingGrou
 
 	output = &CreateAutoScalingGroupOutput{}
 	req = c.newRequest(op, input, output)
-	req.Handlers.Unmarshal.Remove(query.UnmarshalHandler)
-	req.Handlers.Unmarshal.PushBackNamed(protocol.UnmarshalDiscardBodyHandler)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -436,12 +621,11 @@ func (c *AutoScaling) CreateAutoScalingGroupRequest(input *CreateAutoScalingGrou
 //
 // Creates an Auto Scaling group with the specified name and attributes.
 //
-// If you exceed your maximum limit of Auto Scaling groups, which by default
-// is 20 per region, the call fails. For information about viewing and updating
-// this limit, see DescribeAccountLimits.
-//
-// For more information, see Auto Scaling Groups (http://docs.aws.amazon.com/autoscaling/latest/userguide/AutoScalingGroup.html)
-// in the Auto Scaling User Guide.
+// If you exceed your maximum limit of Auto Scaling groups, the call fails.
+// For information about viewing this limit, see DescribeAccountLimits. For
+// information about updating this limit, see Amazon EC2 Auto Scaling Limits
+// (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-account-limits.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -456,15 +640,18 @@ func (c *AutoScaling) CreateAutoScalingGroupRequest(input *CreateAutoScalingGrou
 //   name.
 //
 //   * ErrCodeLimitExceededFault "LimitExceeded"
-//   You have already reached a limit for your Auto Scaling resources (for example,
-//   groups, launch configurations, or lifecycle hooks). For more information,
-//   see DescribeAccountLimits.
+//   You have already reached a limit for your Amazon EC2 Auto Scaling resources
+//   (for example, Auto Scaling groups, launch configurations, or lifecycle hooks).
+//   For more information, see DescribeAccountLimits.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CreateAutoScalingGroup
+//   * ErrCodeServiceLinkedRoleFailure "ServiceLinkedRoleFailure"
+//   The service-linked role is not yet ready for use.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CreateAutoScalingGroup
 func (c *AutoScaling) CreateAutoScalingGroup(input *CreateAutoScalingGroupInput) (*CreateAutoScalingGroupOutput, error) {
 	req, out := c.CreateAutoScalingGroupRequest(input)
 	return out, req.Send()
@@ -490,8 +677,8 @@ const opCreateLaunchConfiguration = "CreateLaunchConfiguration"
 
 // CreateLaunchConfigurationRequest generates a "aws/request.Request" representing the
 // client's request for the CreateLaunchConfiguration operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -511,7 +698,7 @@ const opCreateLaunchConfiguration = "CreateLaunchConfiguration"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CreateLaunchConfiguration
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CreateLaunchConfiguration
 func (c *AutoScaling) CreateLaunchConfigurationRequest(input *CreateLaunchConfigurationInput) (req *request.Request, output *CreateLaunchConfigurationOutput) {
 	op := &request.Operation{
 		Name:       opCreateLaunchConfiguration,
@@ -525,8 +712,7 @@ func (c *AutoScaling) CreateLaunchConfigurationRequest(input *CreateLaunchConfig
 
 	output = &CreateLaunchConfigurationOutput{}
 	req = c.newRequest(op, input, output)
-	req.Handlers.Unmarshal.Remove(query.UnmarshalHandler)
-	req.Handlers.Unmarshal.PushBackNamed(protocol.UnmarshalDiscardBodyHandler)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -534,12 +720,14 @@ func (c *AutoScaling) CreateLaunchConfigurationRequest(input *CreateLaunchConfig
 //
 // Creates a launch configuration.
 //
-// If you exceed your maximum limit of launch configurations, which by default
-// is 100 per region, the call fails. For information about viewing and updating
-// this limit, see DescribeAccountLimits.
+// If you exceed your maximum limit of launch configurations, the call fails.
+// For information about viewing this limit, see DescribeAccountLimits. For
+// information about updating this limit, see Amazon EC2 Auto Scaling Limits
+// (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-account-limits.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
-// For more information, see Launch Configurations (http://docs.aws.amazon.com/autoscaling/latest/userguide/LaunchConfiguration.html)
-// in the Auto Scaling User Guide.
+// For more information, see Launch Configurations (https://docs.aws.amazon.com/autoscaling/ec2/userguide/LaunchConfiguration.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -554,15 +742,15 @@ func (c *AutoScaling) CreateLaunchConfigurationRequest(input *CreateLaunchConfig
 //   name.
 //
 //   * ErrCodeLimitExceededFault "LimitExceeded"
-//   You have already reached a limit for your Auto Scaling resources (for example,
-//   groups, launch configurations, or lifecycle hooks). For more information,
-//   see DescribeAccountLimits.
+//   You have already reached a limit for your Amazon EC2 Auto Scaling resources
+//   (for example, Auto Scaling groups, launch configurations, or lifecycle hooks).
+//   For more information, see DescribeAccountLimits.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CreateLaunchConfiguration
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CreateLaunchConfiguration
 func (c *AutoScaling) CreateLaunchConfiguration(input *CreateLaunchConfigurationInput) (*CreateLaunchConfigurationOutput, error) {
 	req, out := c.CreateLaunchConfigurationRequest(input)
 	return out, req.Send()
@@ -588,8 +776,8 @@ const opCreateOrUpdateTags = "CreateOrUpdateTags"
 
 // CreateOrUpdateTagsRequest generates a "aws/request.Request" representing the
 // client's request for the CreateOrUpdateTags operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -609,7 +797,7 @@ const opCreateOrUpdateTags = "CreateOrUpdateTags"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CreateOrUpdateTags
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CreateOrUpdateTags
 func (c *AutoScaling) CreateOrUpdateTagsRequest(input *CreateOrUpdateTagsInput) (req *request.Request, output *CreateOrUpdateTagsOutput) {
 	op := &request.Operation{
 		Name:       opCreateOrUpdateTags,
@@ -623,8 +811,7 @@ func (c *AutoScaling) CreateOrUpdateTagsRequest(input *CreateOrUpdateTagsInput) 
 
 	output = &CreateOrUpdateTagsOutput{}
 	req = c.newRequest(op, input, output)
-	req.Handlers.Unmarshal.Remove(query.UnmarshalHandler)
-	req.Handlers.Unmarshal.PushBackNamed(protocol.UnmarshalDiscardBodyHandler)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -635,8 +822,8 @@ func (c *AutoScaling) CreateOrUpdateTagsRequest(input *CreateOrUpdateTagsInput) 
 // When you specify a tag with a key that already exists, the operation overwrites
 // the previous tag definition, and you do not get an error message.
 //
-// For more information, see Tagging Auto Scaling Groups and Instances (http://docs.aws.amazon.com/autoscaling/latest/userguide/autoscaling-tagging.html)
-// in the Auto Scaling User Guide.
+// For more information, see Tagging Auto Scaling Groups and Instances (https://docs.aws.amazon.com/autoscaling/ec2/userguide/autoscaling-tagging.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -647,22 +834,22 @@ func (c *AutoScaling) CreateOrUpdateTagsRequest(input *CreateOrUpdateTagsInput) 
 //
 // Returned Error Codes:
 //   * ErrCodeLimitExceededFault "LimitExceeded"
-//   You have already reached a limit for your Auto Scaling resources (for example,
-//   groups, launch configurations, or lifecycle hooks). For more information,
-//   see DescribeAccountLimits.
+//   You have already reached a limit for your Amazon EC2 Auto Scaling resources
+//   (for example, Auto Scaling groups, launch configurations, or lifecycle hooks).
+//   For more information, see DescribeAccountLimits.
 //
 //   * ErrCodeAlreadyExistsFault "AlreadyExists"
 //   You already have an Auto Scaling group or launch configuration with this
 //   name.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
 //   * ErrCodeResourceInUseFault "ResourceInUse"
 //   The operation can't be performed because the resource is in use.
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CreateOrUpdateTags
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CreateOrUpdateTags
 func (c *AutoScaling) CreateOrUpdateTags(input *CreateOrUpdateTagsInput) (*CreateOrUpdateTagsOutput, error) {
 	req, out := c.CreateOrUpdateTagsRequest(input)
 	return out, req.Send()
@@ -688,8 +875,8 @@ const opDeleteAutoScalingGroup = "DeleteAutoScalingGroup"
 
 // DeleteAutoScalingGroupRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteAutoScalingGroup operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -709,7 +896,7 @@ const opDeleteAutoScalingGroup = "DeleteAutoScalingGroup"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteAutoScalingGroup
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteAutoScalingGroup
 func (c *AutoScaling) DeleteAutoScalingGroupRequest(input *DeleteAutoScalingGroupInput) (req *request.Request, output *DeleteAutoScalingGroupOutput) {
 	op := &request.Operation{
 		Name:       opDeleteAutoScalingGroup,
@@ -723,8 +910,7 @@ func (c *AutoScaling) DeleteAutoScalingGroupRequest(input *DeleteAutoScalingGrou
 
 	output = &DeleteAutoScalingGroupOutput{}
 	req = c.newRequest(op, input, output)
-	req.Handlers.Unmarshal.Remove(query.UnmarshalHandler)
-	req.Handlers.Unmarshal.PushBackNamed(protocol.UnmarshalDiscardBodyHandler)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -740,7 +926,8 @@ func (c *AutoScaling) DeleteAutoScalingGroupRequest(input *DeleteAutoScalingGrou
 //
 // To remove instances from the Auto Scaling group before deleting it, call
 // DetachInstances with the list of instances and the option to decrement the
-// desired capacity so that Auto Scaling does not launch replacement instances.
+// desired capacity. This ensures that Amazon EC2 Auto Scaling does not launch
+// replacement instances.
 //
 // To terminate all instances before deleting the Auto Scaling group, call UpdateAutoScalingGroup
 // and set the minimum size and desired capacity of the Auto Scaling group to
@@ -762,10 +949,10 @@ func (c *AutoScaling) DeleteAutoScalingGroupRequest(input *DeleteAutoScalingGrou
 //   The operation can't be performed because the resource is in use.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteAutoScalingGroup
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteAutoScalingGroup
 func (c *AutoScaling) DeleteAutoScalingGroup(input *DeleteAutoScalingGroupInput) (*DeleteAutoScalingGroupOutput, error) {
 	req, out := c.DeleteAutoScalingGroupRequest(input)
 	return out, req.Send()
@@ -791,8 +978,8 @@ const opDeleteLaunchConfiguration = "DeleteLaunchConfiguration"
 
 // DeleteLaunchConfigurationRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteLaunchConfiguration operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -812,7 +999,7 @@ const opDeleteLaunchConfiguration = "DeleteLaunchConfiguration"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteLaunchConfiguration
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteLaunchConfiguration
 func (c *AutoScaling) DeleteLaunchConfigurationRequest(input *DeleteLaunchConfigurationInput) (req *request.Request, output *DeleteLaunchConfigurationOutput) {
 	op := &request.Operation{
 		Name:       opDeleteLaunchConfiguration,
@@ -826,8 +1013,7 @@ func (c *AutoScaling) DeleteLaunchConfigurationRequest(input *DeleteLaunchConfig
 
 	output = &DeleteLaunchConfigurationOutput{}
 	req = c.newRequest(op, input, output)
-	req.Handlers.Unmarshal.Remove(query.UnmarshalHandler)
-	req.Handlers.Unmarshal.PushBackNamed(protocol.UnmarshalDiscardBodyHandler)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -851,10 +1037,10 @@ func (c *AutoScaling) DeleteLaunchConfigurationRequest(input *DeleteLaunchConfig
 //   The operation can't be performed because the resource is in use.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteLaunchConfiguration
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteLaunchConfiguration
 func (c *AutoScaling) DeleteLaunchConfiguration(input *DeleteLaunchConfigurationInput) (*DeleteLaunchConfigurationOutput, error) {
 	req, out := c.DeleteLaunchConfigurationRequest(input)
 	return out, req.Send()
@@ -880,8 +1066,8 @@ const opDeleteLifecycleHook = "DeleteLifecycleHook"
 
 // DeleteLifecycleHookRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteLifecycleHook operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -901,7 +1087,7 @@ const opDeleteLifecycleHook = "DeleteLifecycleHook"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteLifecycleHook
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteLifecycleHook
 func (c *AutoScaling) DeleteLifecycleHookRequest(input *DeleteLifecycleHookInput) (req *request.Request, output *DeleteLifecycleHookOutput) {
 	op := &request.Operation{
 		Name:       opDeleteLifecycleHook,
@@ -915,6 +1101,7 @@ func (c *AutoScaling) DeleteLifecycleHookRequest(input *DeleteLifecycleHookInput
 
 	output = &DeleteLifecycleHookOutput{}
 	req = c.newRequest(op, input, output)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -934,10 +1121,10 @@ func (c *AutoScaling) DeleteLifecycleHookRequest(input *DeleteLifecycleHookInput
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteLifecycleHook
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteLifecycleHook
 func (c *AutoScaling) DeleteLifecycleHook(input *DeleteLifecycleHookInput) (*DeleteLifecycleHookOutput, error) {
 	req, out := c.DeleteLifecycleHookRequest(input)
 	return out, req.Send()
@@ -963,8 +1150,8 @@ const opDeleteNotificationConfiguration = "DeleteNotificationConfiguration"
 
 // DeleteNotificationConfigurationRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteNotificationConfiguration operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -984,7 +1171,7 @@ const opDeleteNotificationConfiguration = "DeleteNotificationConfiguration"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteNotificationConfiguration
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteNotificationConfiguration
 func (c *AutoScaling) DeleteNotificationConfigurationRequest(input *DeleteNotificationConfigurationInput) (req *request.Request, output *DeleteNotificationConfigurationOutput) {
 	op := &request.Operation{
 		Name:       opDeleteNotificationConfiguration,
@@ -998,8 +1185,7 @@ func (c *AutoScaling) DeleteNotificationConfigurationRequest(input *DeleteNotifi
 
 	output = &DeleteNotificationConfigurationOutput{}
 	req = c.newRequest(op, input, output)
-	req.Handlers.Unmarshal.Remove(query.UnmarshalHandler)
-	req.Handlers.Unmarshal.PushBackNamed(protocol.UnmarshalDiscardBodyHandler)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -1016,10 +1202,10 @@ func (c *AutoScaling) DeleteNotificationConfigurationRequest(input *DeleteNotifi
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteNotificationConfiguration
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteNotificationConfiguration
 func (c *AutoScaling) DeleteNotificationConfiguration(input *DeleteNotificationConfigurationInput) (*DeleteNotificationConfigurationOutput, error) {
 	req, out := c.DeleteNotificationConfigurationRequest(input)
 	return out, req.Send()
@@ -1045,8 +1231,8 @@ const opDeletePolicy = "DeletePolicy"
 
 // DeletePolicyRequest generates a "aws/request.Request" representing the
 // client's request for the DeletePolicy operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1066,7 +1252,7 @@ const opDeletePolicy = "DeletePolicy"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeletePolicy
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeletePolicy
 func (c *AutoScaling) DeletePolicyRequest(input *DeletePolicyInput) (req *request.Request, output *DeletePolicyOutput) {
 	op := &request.Operation{
 		Name:       opDeletePolicy,
@@ -1080,17 +1266,20 @@ func (c *AutoScaling) DeletePolicyRequest(input *DeletePolicyInput) (req *reques
 
 	output = &DeletePolicyOutput{}
 	req = c.newRequest(op, input, output)
-	req.Handlers.Unmarshal.Remove(query.UnmarshalHandler)
-	req.Handlers.Unmarshal.PushBackNamed(protocol.UnmarshalDiscardBodyHandler)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
 // DeletePolicy API operation for Auto Scaling.
 //
-// Deletes the specified Auto Scaling policy.
+// Deletes the specified scaling policy.
 //
-// Deleting a policy deletes the underlying alarm action, but does not delete
-// the alarm, even if it no longer has an associated action.
+// Deleting either a step scaling policy or a simple scaling policy deletes
+// the underlying alarm action, but does not delete the alarm, even if it no
+// longer has an associated action.
+//
+// For more information, see Deleting a Scaling Policy (https://docs.aws.amazon.com/autoscaling/ec2/userguide/deleting-scaling-policy.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -1101,10 +1290,13 @@ func (c *AutoScaling) DeletePolicyRequest(input *DeletePolicyInput) (req *reques
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeletePolicy
+//   * ErrCodeServiceLinkedRoleFailure "ServiceLinkedRoleFailure"
+//   The service-linked role is not yet ready for use.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeletePolicy
 func (c *AutoScaling) DeletePolicy(input *DeletePolicyInput) (*DeletePolicyOutput, error) {
 	req, out := c.DeletePolicyRequest(input)
 	return out, req.Send()
@@ -1130,8 +1322,8 @@ const opDeleteScheduledAction = "DeleteScheduledAction"
 
 // DeleteScheduledActionRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteScheduledAction operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1151,7 +1343,7 @@ const opDeleteScheduledAction = "DeleteScheduledAction"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteScheduledAction
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteScheduledAction
 func (c *AutoScaling) DeleteScheduledActionRequest(input *DeleteScheduledActionInput) (req *request.Request, output *DeleteScheduledActionOutput) {
 	op := &request.Operation{
 		Name:       opDeleteScheduledAction,
@@ -1165,8 +1357,7 @@ func (c *AutoScaling) DeleteScheduledActionRequest(input *DeleteScheduledActionI
 
 	output = &DeleteScheduledActionOutput{}
 	req = c.newRequest(op, input, output)
-	req.Handlers.Unmarshal.Remove(query.UnmarshalHandler)
-	req.Handlers.Unmarshal.PushBackNamed(protocol.UnmarshalDiscardBodyHandler)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -1183,10 +1374,10 @@ func (c *AutoScaling) DeleteScheduledActionRequest(input *DeleteScheduledActionI
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteScheduledAction
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteScheduledAction
 func (c *AutoScaling) DeleteScheduledAction(input *DeleteScheduledActionInput) (*DeleteScheduledActionOutput, error) {
 	req, out := c.DeleteScheduledActionRequest(input)
 	return out, req.Send()
@@ -1212,8 +1403,8 @@ const opDeleteTags = "DeleteTags"
 
 // DeleteTagsRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteTags operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1233,7 +1424,7 @@ const opDeleteTags = "DeleteTags"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteTags
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteTags
 func (c *AutoScaling) DeleteTagsRequest(input *DeleteTagsInput) (req *request.Request, output *DeleteTagsOutput) {
 	op := &request.Operation{
 		Name:       opDeleteTags,
@@ -1247,8 +1438,7 @@ func (c *AutoScaling) DeleteTagsRequest(input *DeleteTagsInput) (req *request.Re
 
 	output = &DeleteTagsOutput{}
 	req = c.newRequest(op, input, output)
-	req.Handlers.Unmarshal.Remove(query.UnmarshalHandler)
-	req.Handlers.Unmarshal.PushBackNamed(protocol.UnmarshalDiscardBodyHandler)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -1265,13 +1455,13 @@ func (c *AutoScaling) DeleteTagsRequest(input *DeleteTagsInput) (req *request.Re
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
 //   * ErrCodeResourceInUseFault "ResourceInUse"
 //   The operation can't be performed because the resource is in use.
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteTags
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteTags
 func (c *AutoScaling) DeleteTags(input *DeleteTagsInput) (*DeleteTagsOutput, error) {
 	req, out := c.DeleteTagsRequest(input)
 	return out, req.Send()
@@ -1297,8 +1487,8 @@ const opDescribeAccountLimits = "DescribeAccountLimits"
 
 // DescribeAccountLimitsRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeAccountLimits operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1318,7 +1508,7 @@ const opDescribeAccountLimits = "DescribeAccountLimits"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAccountLimits
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAccountLimits
 func (c *AutoScaling) DescribeAccountLimitsRequest(input *DescribeAccountLimitsInput) (req *request.Request, output *DescribeAccountLimitsOutput) {
 	op := &request.Operation{
 		Name:       opDescribeAccountLimits,
@@ -1337,11 +1527,12 @@ func (c *AutoScaling) DescribeAccountLimitsRequest(input *DescribeAccountLimitsI
 
 // DescribeAccountLimits API operation for Auto Scaling.
 //
-// Describes the current Auto Scaling resource limits for your AWS account.
+// Describes the current Amazon EC2 Auto Scaling resource limits for your AWS
+// account.
 //
-// For information about requesting an increase in these limits, see AWS Service
-// Limits (http://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html)
-// in the Amazon Web Services General Reference.
+// For information about requesting an increase in these limits, see Amazon
+// EC2 Auto Scaling Limits (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-account-limits.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -1352,10 +1543,10 @@ func (c *AutoScaling) DescribeAccountLimitsRequest(input *DescribeAccountLimitsI
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAccountLimits
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAccountLimits
 func (c *AutoScaling) DescribeAccountLimits(input *DescribeAccountLimitsInput) (*DescribeAccountLimitsOutput, error) {
 	req, out := c.DescribeAccountLimitsRequest(input)
 	return out, req.Send()
@@ -1381,8 +1572,8 @@ const opDescribeAdjustmentTypes = "DescribeAdjustmentTypes"
 
 // DescribeAdjustmentTypesRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeAdjustmentTypes operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1402,7 +1593,7 @@ const opDescribeAdjustmentTypes = "DescribeAdjustmentTypes"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAdjustmentTypes
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAdjustmentTypes
 func (c *AutoScaling) DescribeAdjustmentTypesRequest(input *DescribeAdjustmentTypesInput) (req *request.Request, output *DescribeAdjustmentTypesOutput) {
 	op := &request.Operation{
 		Name:       opDescribeAdjustmentTypes,
@@ -1432,10 +1623,10 @@ func (c *AutoScaling) DescribeAdjustmentTypesRequest(input *DescribeAdjustmentTy
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAdjustmentTypes
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAdjustmentTypes
 func (c *AutoScaling) DescribeAdjustmentTypes(input *DescribeAdjustmentTypesInput) (*DescribeAdjustmentTypesOutput, error) {
 	req, out := c.DescribeAdjustmentTypesRequest(input)
 	return out, req.Send()
@@ -1461,8 +1652,8 @@ const opDescribeAutoScalingGroups = "DescribeAutoScalingGroups"
 
 // DescribeAutoScalingGroupsRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeAutoScalingGroups operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1482,7 +1673,7 @@ const opDescribeAutoScalingGroups = "DescribeAutoScalingGroups"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAutoScalingGroups
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAutoScalingGroups
 func (c *AutoScaling) DescribeAutoScalingGroupsRequest(input *DescribeAutoScalingGroupsInput) (req *request.Request, output *DescribeAutoScalingGroupsOutput) {
 	op := &request.Operation{
 		Name:       opDescribeAutoScalingGroups,
@@ -1521,10 +1712,10 @@ func (c *AutoScaling) DescribeAutoScalingGroupsRequest(input *DescribeAutoScalin
 //   The NextToken value is not valid.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAutoScalingGroups
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAutoScalingGroups
 func (c *AutoScaling) DescribeAutoScalingGroups(input *DescribeAutoScalingGroupsInput) (*DescribeAutoScalingGroupsOutput, error) {
 	req, out := c.DescribeAutoScalingGroupsRequest(input)
 	return out, req.Send()
@@ -1557,7 +1748,7 @@ func (c *AutoScaling) DescribeAutoScalingGroupsWithContext(ctx aws.Context, inpu
 //    // Example iterating over at most 3 pages of a DescribeAutoScalingGroups operation.
 //    pageNum := 0
 //    err := client.DescribeAutoScalingGroupsPages(params,
-//        func(page *DescribeAutoScalingGroupsOutput, lastPage bool) bool {
+//        func(page *autoscaling.DescribeAutoScalingGroupsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -1600,8 +1791,8 @@ const opDescribeAutoScalingInstances = "DescribeAutoScalingInstances"
 
 // DescribeAutoScalingInstancesRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeAutoScalingInstances operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1621,7 +1812,7 @@ const opDescribeAutoScalingInstances = "DescribeAutoScalingInstances"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAutoScalingInstances
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAutoScalingInstances
 func (c *AutoScaling) DescribeAutoScalingInstancesRequest(input *DescribeAutoScalingInstancesInput) (req *request.Request, output *DescribeAutoScalingInstancesOutput) {
 	op := &request.Operation{
 		Name:       opDescribeAutoScalingInstances,
@@ -1660,10 +1851,10 @@ func (c *AutoScaling) DescribeAutoScalingInstancesRequest(input *DescribeAutoSca
 //   The NextToken value is not valid.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAutoScalingInstances
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAutoScalingInstances
 func (c *AutoScaling) DescribeAutoScalingInstances(input *DescribeAutoScalingInstancesInput) (*DescribeAutoScalingInstancesOutput, error) {
 	req, out := c.DescribeAutoScalingInstancesRequest(input)
 	return out, req.Send()
@@ -1696,7 +1887,7 @@ func (c *AutoScaling) DescribeAutoScalingInstancesWithContext(ctx aws.Context, i
 //    // Example iterating over at most 3 pages of a DescribeAutoScalingInstances operation.
 //    pageNum := 0
 //    err := client.DescribeAutoScalingInstancesPages(params,
-//        func(page *DescribeAutoScalingInstancesOutput, lastPage bool) bool {
+//        func(page *autoscaling.DescribeAutoScalingInstancesOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -1739,8 +1930,8 @@ const opDescribeAutoScalingNotificationTypes = "DescribeAutoScalingNotificationT
 
 // DescribeAutoScalingNotificationTypesRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeAutoScalingNotificationTypes operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1760,7 +1951,7 @@ const opDescribeAutoScalingNotificationTypes = "DescribeAutoScalingNotificationT
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAutoScalingNotificationTypes
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAutoScalingNotificationTypes
 func (c *AutoScaling) DescribeAutoScalingNotificationTypesRequest(input *DescribeAutoScalingNotificationTypesInput) (req *request.Request, output *DescribeAutoScalingNotificationTypesOutput) {
 	op := &request.Operation{
 		Name:       opDescribeAutoScalingNotificationTypes,
@@ -1779,7 +1970,7 @@ func (c *AutoScaling) DescribeAutoScalingNotificationTypesRequest(input *Describ
 
 // DescribeAutoScalingNotificationTypes API operation for Auto Scaling.
 //
-// Describes the notification types that are supported by Auto Scaling.
+// Describes the notification types that are supported by Amazon EC2 Auto Scaling.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -1790,10 +1981,10 @@ func (c *AutoScaling) DescribeAutoScalingNotificationTypesRequest(input *Describ
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAutoScalingNotificationTypes
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAutoScalingNotificationTypes
 func (c *AutoScaling) DescribeAutoScalingNotificationTypes(input *DescribeAutoScalingNotificationTypesInput) (*DescribeAutoScalingNotificationTypesOutput, error) {
 	req, out := c.DescribeAutoScalingNotificationTypesRequest(input)
 	return out, req.Send()
@@ -1819,8 +2010,8 @@ const opDescribeLaunchConfigurations = "DescribeLaunchConfigurations"
 
 // DescribeLaunchConfigurationsRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeLaunchConfigurations operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1840,7 +2031,7 @@ const opDescribeLaunchConfigurations = "DescribeLaunchConfigurations"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLaunchConfigurations
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLaunchConfigurations
 func (c *AutoScaling) DescribeLaunchConfigurationsRequest(input *DescribeLaunchConfigurationsInput) (req *request.Request, output *DescribeLaunchConfigurationsOutput) {
 	op := &request.Operation{
 		Name:       opDescribeLaunchConfigurations,
@@ -1879,10 +2070,10 @@ func (c *AutoScaling) DescribeLaunchConfigurationsRequest(input *DescribeLaunchC
 //   The NextToken value is not valid.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLaunchConfigurations
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLaunchConfigurations
 func (c *AutoScaling) DescribeLaunchConfigurations(input *DescribeLaunchConfigurationsInput) (*DescribeLaunchConfigurationsOutput, error) {
 	req, out := c.DescribeLaunchConfigurationsRequest(input)
 	return out, req.Send()
@@ -1915,7 +2106,7 @@ func (c *AutoScaling) DescribeLaunchConfigurationsWithContext(ctx aws.Context, i
 //    // Example iterating over at most 3 pages of a DescribeLaunchConfigurations operation.
 //    pageNum := 0
 //    err := client.DescribeLaunchConfigurationsPages(params,
-//        func(page *DescribeLaunchConfigurationsOutput, lastPage bool) bool {
+//        func(page *autoscaling.DescribeLaunchConfigurationsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -1958,8 +2149,8 @@ const opDescribeLifecycleHookTypes = "DescribeLifecycleHookTypes"
 
 // DescribeLifecycleHookTypesRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeLifecycleHookTypes operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1979,7 +2170,7 @@ const opDescribeLifecycleHookTypes = "DescribeLifecycleHookTypes"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLifecycleHookTypes
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLifecycleHookTypes
 func (c *AutoScaling) DescribeLifecycleHookTypesRequest(input *DescribeLifecycleHookTypesInput) (req *request.Request, output *DescribeLifecycleHookTypesOutput) {
 	op := &request.Operation{
 		Name:       opDescribeLifecycleHookTypes,
@@ -2000,6 +2191,12 @@ func (c *AutoScaling) DescribeLifecycleHookTypesRequest(input *DescribeLifecycle
 //
 // Describes the available types of lifecycle hooks.
 //
+// The following hook types are supported:
+//
+//    * autoscaling:EC2_INSTANCE_LAUNCHING
+//
+//    * autoscaling:EC2_INSTANCE_TERMINATING
+//
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
 // the error.
@@ -2009,10 +2206,10 @@ func (c *AutoScaling) DescribeLifecycleHookTypesRequest(input *DescribeLifecycle
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLifecycleHookTypes
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLifecycleHookTypes
 func (c *AutoScaling) DescribeLifecycleHookTypes(input *DescribeLifecycleHookTypesInput) (*DescribeLifecycleHookTypesOutput, error) {
 	req, out := c.DescribeLifecycleHookTypesRequest(input)
 	return out, req.Send()
@@ -2038,8 +2235,8 @@ const opDescribeLifecycleHooks = "DescribeLifecycleHooks"
 
 // DescribeLifecycleHooksRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeLifecycleHooks operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2059,7 +2256,7 @@ const opDescribeLifecycleHooks = "DescribeLifecycleHooks"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLifecycleHooks
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLifecycleHooks
 func (c *AutoScaling) DescribeLifecycleHooksRequest(input *DescribeLifecycleHooksInput) (req *request.Request, output *DescribeLifecycleHooksOutput) {
 	op := &request.Operation{
 		Name:       opDescribeLifecycleHooks,
@@ -2089,10 +2286,10 @@ func (c *AutoScaling) DescribeLifecycleHooksRequest(input *DescribeLifecycleHook
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLifecycleHooks
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLifecycleHooks
 func (c *AutoScaling) DescribeLifecycleHooks(input *DescribeLifecycleHooksInput) (*DescribeLifecycleHooksOutput, error) {
 	req, out := c.DescribeLifecycleHooksRequest(input)
 	return out, req.Send()
@@ -2118,8 +2315,8 @@ const opDescribeLoadBalancerTargetGroups = "DescribeLoadBalancerTargetGroups"
 
 // DescribeLoadBalancerTargetGroupsRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeLoadBalancerTargetGroups operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2139,7 +2336,7 @@ const opDescribeLoadBalancerTargetGroups = "DescribeLoadBalancerTargetGroups"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLoadBalancerTargetGroups
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLoadBalancerTargetGroups
 func (c *AutoScaling) DescribeLoadBalancerTargetGroupsRequest(input *DescribeLoadBalancerTargetGroupsInput) (req *request.Request, output *DescribeLoadBalancerTargetGroupsOutput) {
 	op := &request.Operation{
 		Name:       opDescribeLoadBalancerTargetGroups,
@@ -2169,10 +2366,10 @@ func (c *AutoScaling) DescribeLoadBalancerTargetGroupsRequest(input *DescribeLoa
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLoadBalancerTargetGroups
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLoadBalancerTargetGroups
 func (c *AutoScaling) DescribeLoadBalancerTargetGroups(input *DescribeLoadBalancerTargetGroupsInput) (*DescribeLoadBalancerTargetGroupsOutput, error) {
 	req, out := c.DescribeLoadBalancerTargetGroupsRequest(input)
 	return out, req.Send()
@@ -2198,8 +2395,8 @@ const opDescribeLoadBalancers = "DescribeLoadBalancers"
 
 // DescribeLoadBalancersRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeLoadBalancers operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2219,7 +2416,7 @@ const opDescribeLoadBalancers = "DescribeLoadBalancers"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLoadBalancers
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLoadBalancers
 func (c *AutoScaling) DescribeLoadBalancersRequest(input *DescribeLoadBalancersInput) (req *request.Request, output *DescribeLoadBalancersOutput) {
 	op := &request.Operation{
 		Name:       opDescribeLoadBalancers,
@@ -2240,8 +2437,9 @@ func (c *AutoScaling) DescribeLoadBalancersRequest(input *DescribeLoadBalancersI
 //
 // Describes the load balancers for the specified Auto Scaling group.
 //
-// Note that this operation describes only Classic Load Balancers. If you have
-// Application Load Balancers, use DescribeLoadBalancerTargetGroups instead.
+// This operation describes only Classic Load Balancers. If you have Application
+// Load Balancers or Network Load Balancers, use DescribeLoadBalancerTargetGroups
+// instead.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -2252,10 +2450,10 @@ func (c *AutoScaling) DescribeLoadBalancersRequest(input *DescribeLoadBalancersI
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLoadBalancers
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLoadBalancers
 func (c *AutoScaling) DescribeLoadBalancers(input *DescribeLoadBalancersInput) (*DescribeLoadBalancersOutput, error) {
 	req, out := c.DescribeLoadBalancersRequest(input)
 	return out, req.Send()
@@ -2281,8 +2479,8 @@ const opDescribeMetricCollectionTypes = "DescribeMetricCollectionTypes"
 
 // DescribeMetricCollectionTypesRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeMetricCollectionTypes operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2302,7 +2500,7 @@ const opDescribeMetricCollectionTypes = "DescribeMetricCollectionTypes"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeMetricCollectionTypes
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeMetricCollectionTypes
 func (c *AutoScaling) DescribeMetricCollectionTypesRequest(input *DescribeMetricCollectionTypesInput) (req *request.Request, output *DescribeMetricCollectionTypesOutput) {
 	op := &request.Operation{
 		Name:       opDescribeMetricCollectionTypes,
@@ -2321,10 +2519,10 @@ func (c *AutoScaling) DescribeMetricCollectionTypesRequest(input *DescribeMetric
 
 // DescribeMetricCollectionTypes API operation for Auto Scaling.
 //
-// Describes the available CloudWatch metrics for Auto Scaling.
+// Describes the available CloudWatch metrics for Amazon EC2 Auto Scaling.
 //
-// Note that the GroupStandbyInstances metric is not returned by default. You
-// must explicitly request this metric when calling EnableMetricsCollection.
+// The GroupStandbyInstances metric is not returned by default. You must explicitly
+// request this metric when calling EnableMetricsCollection.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -2335,10 +2533,10 @@ func (c *AutoScaling) DescribeMetricCollectionTypesRequest(input *DescribeMetric
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeMetricCollectionTypes
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeMetricCollectionTypes
 func (c *AutoScaling) DescribeMetricCollectionTypes(input *DescribeMetricCollectionTypesInput) (*DescribeMetricCollectionTypesOutput, error) {
 	req, out := c.DescribeMetricCollectionTypesRequest(input)
 	return out, req.Send()
@@ -2364,8 +2562,8 @@ const opDescribeNotificationConfigurations = "DescribeNotificationConfigurations
 
 // DescribeNotificationConfigurationsRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeNotificationConfigurations operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2385,7 +2583,7 @@ const opDescribeNotificationConfigurations = "DescribeNotificationConfigurations
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeNotificationConfigurations
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeNotificationConfigurations
 func (c *AutoScaling) DescribeNotificationConfigurationsRequest(input *DescribeNotificationConfigurationsInput) (req *request.Request, output *DescribeNotificationConfigurationsOutput) {
 	op := &request.Operation{
 		Name:       opDescribeNotificationConfigurations,
@@ -2425,10 +2623,10 @@ func (c *AutoScaling) DescribeNotificationConfigurationsRequest(input *DescribeN
 //   The NextToken value is not valid.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeNotificationConfigurations
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeNotificationConfigurations
 func (c *AutoScaling) DescribeNotificationConfigurations(input *DescribeNotificationConfigurationsInput) (*DescribeNotificationConfigurationsOutput, error) {
 	req, out := c.DescribeNotificationConfigurationsRequest(input)
 	return out, req.Send()
@@ -2461,7 +2659,7 @@ func (c *AutoScaling) DescribeNotificationConfigurationsWithContext(ctx aws.Cont
 //    // Example iterating over at most 3 pages of a DescribeNotificationConfigurations operation.
 //    pageNum := 0
 //    err := client.DescribeNotificationConfigurationsPages(params,
-//        func(page *DescribeNotificationConfigurationsOutput, lastPage bool) bool {
+//        func(page *autoscaling.DescribeNotificationConfigurationsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -2504,8 +2702,8 @@ const opDescribePolicies = "DescribePolicies"
 
 // DescribePoliciesRequest generates a "aws/request.Request" representing the
 // client's request for the DescribePolicies operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2525,7 +2723,7 @@ const opDescribePolicies = "DescribePolicies"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribePolicies
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribePolicies
 func (c *AutoScaling) DescribePoliciesRequest(input *DescribePoliciesInput) (req *request.Request, output *DescribePoliciesOutput) {
 	op := &request.Operation{
 		Name:       opDescribePolicies,
@@ -2564,10 +2762,13 @@ func (c *AutoScaling) DescribePoliciesRequest(input *DescribePoliciesInput) (req
 //   The NextToken value is not valid.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribePolicies
+//   * ErrCodeServiceLinkedRoleFailure "ServiceLinkedRoleFailure"
+//   The service-linked role is not yet ready for use.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribePolicies
 func (c *AutoScaling) DescribePolicies(input *DescribePoliciesInput) (*DescribePoliciesOutput, error) {
 	req, out := c.DescribePoliciesRequest(input)
 	return out, req.Send()
@@ -2600,7 +2801,7 @@ func (c *AutoScaling) DescribePoliciesWithContext(ctx aws.Context, input *Descri
 //    // Example iterating over at most 3 pages of a DescribePolicies operation.
 //    pageNum := 0
 //    err := client.DescribePoliciesPages(params,
-//        func(page *DescribePoliciesOutput, lastPage bool) bool {
+//        func(page *autoscaling.DescribePoliciesOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -2643,8 +2844,8 @@ const opDescribeScalingActivities = "DescribeScalingActivities"
 
 // DescribeScalingActivitiesRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeScalingActivities operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2664,7 +2865,7 @@ const opDescribeScalingActivities = "DescribeScalingActivities"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeScalingActivities
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeScalingActivities
 func (c *AutoScaling) DescribeScalingActivitiesRequest(input *DescribeScalingActivitiesInput) (req *request.Request, output *DescribeScalingActivitiesOutput) {
 	op := &request.Operation{
 		Name:       opDescribeScalingActivities,
@@ -2703,10 +2904,10 @@ func (c *AutoScaling) DescribeScalingActivitiesRequest(input *DescribeScalingAct
 //   The NextToken value is not valid.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeScalingActivities
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeScalingActivities
 func (c *AutoScaling) DescribeScalingActivities(input *DescribeScalingActivitiesInput) (*DescribeScalingActivitiesOutput, error) {
 	req, out := c.DescribeScalingActivitiesRequest(input)
 	return out, req.Send()
@@ -2739,7 +2940,7 @@ func (c *AutoScaling) DescribeScalingActivitiesWithContext(ctx aws.Context, inpu
 //    // Example iterating over at most 3 pages of a DescribeScalingActivities operation.
 //    pageNum := 0
 //    err := client.DescribeScalingActivitiesPages(params,
-//        func(page *DescribeScalingActivitiesOutput, lastPage bool) bool {
+//        func(page *autoscaling.DescribeScalingActivitiesOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -2782,8 +2983,8 @@ const opDescribeScalingProcessTypes = "DescribeScalingProcessTypes"
 
 // DescribeScalingProcessTypesRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeScalingProcessTypes operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2803,7 +3004,7 @@ const opDescribeScalingProcessTypes = "DescribeScalingProcessTypes"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeScalingProcessTypes
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeScalingProcessTypes
 func (c *AutoScaling) DescribeScalingProcessTypesRequest(input *DescribeScalingProcessTypesInput) (req *request.Request, output *DescribeScalingProcessTypesOutput) {
 	op := &request.Operation{
 		Name:       opDescribeScalingProcessTypes,
@@ -2833,10 +3034,10 @@ func (c *AutoScaling) DescribeScalingProcessTypesRequest(input *DescribeScalingP
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeScalingProcessTypes
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeScalingProcessTypes
 func (c *AutoScaling) DescribeScalingProcessTypes(input *DescribeScalingProcessTypesInput) (*DescribeScalingProcessTypesOutput, error) {
 	req, out := c.DescribeScalingProcessTypesRequest(input)
 	return out, req.Send()
@@ -2862,8 +3063,8 @@ const opDescribeScheduledActions = "DescribeScheduledActions"
 
 // DescribeScheduledActionsRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeScheduledActions operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2883,7 +3084,7 @@ const opDescribeScheduledActions = "DescribeScheduledActions"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeScheduledActions
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeScheduledActions
 func (c *AutoScaling) DescribeScheduledActionsRequest(input *DescribeScheduledActionsInput) (req *request.Request, output *DescribeScheduledActionsOutput) {
 	op := &request.Operation{
 		Name:       opDescribeScheduledActions,
@@ -2909,7 +3110,8 @@ func (c *AutoScaling) DescribeScheduledActionsRequest(input *DescribeScheduledAc
 // DescribeScheduledActions API operation for Auto Scaling.
 //
 // Describes the actions scheduled for your Auto Scaling group that haven't
-// run. To describe the actions that have already run, use DescribeScalingActivities.
+// run or that have not reached their end time. To describe the actions that
+// have already run, use DescribeScalingActivities.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -2923,10 +3125,10 @@ func (c *AutoScaling) DescribeScheduledActionsRequest(input *DescribeScheduledAc
 //   The NextToken value is not valid.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeScheduledActions
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeScheduledActions
 func (c *AutoScaling) DescribeScheduledActions(input *DescribeScheduledActionsInput) (*DescribeScheduledActionsOutput, error) {
 	req, out := c.DescribeScheduledActionsRequest(input)
 	return out, req.Send()
@@ -2959,7 +3161,7 @@ func (c *AutoScaling) DescribeScheduledActionsWithContext(ctx aws.Context, input
 //    // Example iterating over at most 3 pages of a DescribeScheduledActions operation.
 //    pageNum := 0
 //    err := client.DescribeScheduledActionsPages(params,
-//        func(page *DescribeScheduledActionsOutput, lastPage bool) bool {
+//        func(page *autoscaling.DescribeScheduledActionsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -3002,8 +3204,8 @@ const opDescribeTags = "DescribeTags"
 
 // DescribeTagsRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeTags operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3023,7 +3225,7 @@ const opDescribeTags = "DescribeTags"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeTags
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeTags
 func (c *AutoScaling) DescribeTagsRequest(input *DescribeTagsInput) (req *request.Request, output *DescribeTagsOutput) {
 	op := &request.Operation{
 		Name:       opDescribeTags,
@@ -3071,10 +3273,10 @@ func (c *AutoScaling) DescribeTagsRequest(input *DescribeTagsInput) (req *reques
 //   The NextToken value is not valid.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeTags
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeTags
 func (c *AutoScaling) DescribeTags(input *DescribeTagsInput) (*DescribeTagsOutput, error) {
 	req, out := c.DescribeTagsRequest(input)
 	return out, req.Send()
@@ -3107,7 +3309,7 @@ func (c *AutoScaling) DescribeTagsWithContext(ctx aws.Context, input *DescribeTa
 //    // Example iterating over at most 3 pages of a DescribeTags operation.
 //    pageNum := 0
 //    err := client.DescribeTagsPages(params,
-//        func(page *DescribeTagsOutput, lastPage bool) bool {
+//        func(page *autoscaling.DescribeTagsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -3150,8 +3352,8 @@ const opDescribeTerminationPolicyTypes = "DescribeTerminationPolicyTypes"
 
 // DescribeTerminationPolicyTypesRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeTerminationPolicyTypes operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3171,7 +3373,7 @@ const opDescribeTerminationPolicyTypes = "DescribeTerminationPolicyTypes"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeTerminationPolicyTypes
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeTerminationPolicyTypes
 func (c *AutoScaling) DescribeTerminationPolicyTypesRequest(input *DescribeTerminationPolicyTypesInput) (req *request.Request, output *DescribeTerminationPolicyTypesOutput) {
 	op := &request.Operation{
 		Name:       opDescribeTerminationPolicyTypes,
@@ -3190,7 +3392,11 @@ func (c *AutoScaling) DescribeTerminationPolicyTypesRequest(input *DescribeTermi
 
 // DescribeTerminationPolicyTypes API operation for Auto Scaling.
 //
-// Describes the termination policies supported by Auto Scaling.
+// Describes the termination policies supported by Amazon EC2 Auto Scaling.
+//
+// For more information, see Controlling Which Auto Scaling Instances Terminate
+// During Scale In (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -3201,10 +3407,10 @@ func (c *AutoScaling) DescribeTerminationPolicyTypesRequest(input *DescribeTermi
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeTerminationPolicyTypes
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeTerminationPolicyTypes
 func (c *AutoScaling) DescribeTerminationPolicyTypes(input *DescribeTerminationPolicyTypesInput) (*DescribeTerminationPolicyTypesOutput, error) {
 	req, out := c.DescribeTerminationPolicyTypesRequest(input)
 	return out, req.Send()
@@ -3230,8 +3436,8 @@ const opDetachInstances = "DetachInstances"
 
 // DetachInstancesRequest generates a "aws/request.Request" representing the
 // client's request for the DetachInstances operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3251,7 +3457,7 @@ const opDetachInstances = "DetachInstances"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DetachInstances
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DetachInstances
 func (c *AutoScaling) DetachInstancesRequest(input *DetachInstancesInput) (req *request.Request, output *DetachInstancesOutput) {
 	op := &request.Operation{
 		Name:       opDetachInstances,
@@ -3275,8 +3481,8 @@ func (c *AutoScaling) DetachInstancesRequest(input *DetachInstancesInput) (req *
 // After the instances are detached, you can manage them independent of the
 // Auto Scaling group.
 //
-// If you do not specify the option to decrement the desired capacity, Auto
-// Scaling launches instances to replace the ones that are detached.
+// If you do not specify the option to decrement the desired capacity, Amazon
+// EC2 Auto Scaling launches instances to replace the ones that are detached.
 //
 // If there is a Classic Load Balancer attached to the Auto Scaling group, the
 // instances are deregistered from the load balancer. If there are target groups
@@ -3284,8 +3490,8 @@ func (c *AutoScaling) DetachInstancesRequest(input *DetachInstancesInput) (req *
 // target groups.
 //
 // For more information, see Detach EC2 Instances from Your Auto Scaling Group
-// (http://docs.aws.amazon.com/autoscaling/latest/userguide/detach-instance-asg.html)
-// in the Auto Scaling User Guide.
+// (https://docs.aws.amazon.com/autoscaling/ec2/userguide/detach-instance-asg.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -3296,10 +3502,10 @@ func (c *AutoScaling) DetachInstancesRequest(input *DetachInstancesInput) (req *
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DetachInstances
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DetachInstances
 func (c *AutoScaling) DetachInstances(input *DetachInstancesInput) (*DetachInstancesOutput, error) {
 	req, out := c.DetachInstancesRequest(input)
 	return out, req.Send()
@@ -3325,8 +3531,8 @@ const opDetachLoadBalancerTargetGroups = "DetachLoadBalancerTargetGroups"
 
 // DetachLoadBalancerTargetGroupsRequest generates a "aws/request.Request" representing the
 // client's request for the DetachLoadBalancerTargetGroups operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3346,7 +3552,7 @@ const opDetachLoadBalancerTargetGroups = "DetachLoadBalancerTargetGroups"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DetachLoadBalancerTargetGroups
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DetachLoadBalancerTargetGroups
 func (c *AutoScaling) DetachLoadBalancerTargetGroupsRequest(input *DetachLoadBalancerTargetGroupsInput) (req *request.Request, output *DetachLoadBalancerTargetGroupsOutput) {
 	op := &request.Operation{
 		Name:       opDetachLoadBalancerTargetGroups,
@@ -3360,6 +3566,7 @@ func (c *AutoScaling) DetachLoadBalancerTargetGroupsRequest(input *DetachLoadBal
 
 	output = &DetachLoadBalancerTargetGroupsOutput{}
 	req = c.newRequest(op, input, output)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -3376,10 +3583,10 @@ func (c *AutoScaling) DetachLoadBalancerTargetGroupsRequest(input *DetachLoadBal
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DetachLoadBalancerTargetGroups
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DetachLoadBalancerTargetGroups
 func (c *AutoScaling) DetachLoadBalancerTargetGroups(input *DetachLoadBalancerTargetGroupsInput) (*DetachLoadBalancerTargetGroupsOutput, error) {
 	req, out := c.DetachLoadBalancerTargetGroupsRequest(input)
 	return out, req.Send()
@@ -3405,8 +3612,8 @@ const opDetachLoadBalancers = "DetachLoadBalancers"
 
 // DetachLoadBalancersRequest generates a "aws/request.Request" representing the
 // client's request for the DetachLoadBalancers operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3426,7 +3633,7 @@ const opDetachLoadBalancers = "DetachLoadBalancers"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DetachLoadBalancers
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DetachLoadBalancers
 func (c *AutoScaling) DetachLoadBalancersRequest(input *DetachLoadBalancersInput) (req *request.Request, output *DetachLoadBalancersOutput) {
 	op := &request.Operation{
 		Name:       opDetachLoadBalancers,
@@ -3440,6 +3647,7 @@ func (c *AutoScaling) DetachLoadBalancersRequest(input *DetachLoadBalancersInput
 
 	output = &DetachLoadBalancersOutput{}
 	req = c.newRequest(op, input, output)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -3448,13 +3656,14 @@ func (c *AutoScaling) DetachLoadBalancersRequest(input *DetachLoadBalancersInput
 // Detaches one or more Classic Load Balancers from the specified Auto Scaling
 // group.
 //
-// Note that this operation detaches only Classic Load Balancers. If you have
-// Application Load Balancers, use DetachLoadBalancerTargetGroups instead.
+// This operation detaches only Classic Load Balancers. If you have Application
+// Load Balancers or Network Load Balancers, use DetachLoadBalancerTargetGroups
+// instead.
 //
 // When you detach a load balancer, it enters the Removing state while deregistering
 // the instances in the group. When all instances are deregistered, then you
-// can no longer describe the load balancer using DescribeLoadBalancers. Note
-// that the instances remain running.
+// can no longer describe the load balancer using DescribeLoadBalancers. The
+// instances remain running.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -3465,10 +3674,10 @@ func (c *AutoScaling) DetachLoadBalancersRequest(input *DetachLoadBalancersInput
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DetachLoadBalancers
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DetachLoadBalancers
 func (c *AutoScaling) DetachLoadBalancers(input *DetachLoadBalancersInput) (*DetachLoadBalancersOutput, error) {
 	req, out := c.DetachLoadBalancersRequest(input)
 	return out, req.Send()
@@ -3494,8 +3703,8 @@ const opDisableMetricsCollection = "DisableMetricsCollection"
 
 // DisableMetricsCollectionRequest generates a "aws/request.Request" representing the
 // client's request for the DisableMetricsCollection operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3515,7 +3724,7 @@ const opDisableMetricsCollection = "DisableMetricsCollection"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DisableMetricsCollection
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DisableMetricsCollection
 func (c *AutoScaling) DisableMetricsCollectionRequest(input *DisableMetricsCollectionInput) (req *request.Request, output *DisableMetricsCollectionOutput) {
 	op := &request.Operation{
 		Name:       opDisableMetricsCollection,
@@ -3529,8 +3738,7 @@ func (c *AutoScaling) DisableMetricsCollectionRequest(input *DisableMetricsColle
 
 	output = &DisableMetricsCollectionOutput{}
 	req = c.newRequest(op, input, output)
-	req.Handlers.Unmarshal.Remove(query.UnmarshalHandler)
-	req.Handlers.Unmarshal.PushBackNamed(protocol.UnmarshalDiscardBodyHandler)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -3547,10 +3755,10 @@ func (c *AutoScaling) DisableMetricsCollectionRequest(input *DisableMetricsColle
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DisableMetricsCollection
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DisableMetricsCollection
 func (c *AutoScaling) DisableMetricsCollection(input *DisableMetricsCollectionInput) (*DisableMetricsCollectionOutput, error) {
 	req, out := c.DisableMetricsCollectionRequest(input)
 	return out, req.Send()
@@ -3576,8 +3784,8 @@ const opEnableMetricsCollection = "EnableMetricsCollection"
 
 // EnableMetricsCollectionRequest generates a "aws/request.Request" representing the
 // client's request for the EnableMetricsCollection operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3597,7 +3805,7 @@ const opEnableMetricsCollection = "EnableMetricsCollection"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/EnableMetricsCollection
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/EnableMetricsCollection
 func (c *AutoScaling) EnableMetricsCollectionRequest(input *EnableMetricsCollectionInput) (req *request.Request, output *EnableMetricsCollectionOutput) {
 	op := &request.Operation{
 		Name:       opEnableMetricsCollection,
@@ -3611,16 +3819,15 @@ func (c *AutoScaling) EnableMetricsCollectionRequest(input *EnableMetricsCollect
 
 	output = &EnableMetricsCollectionOutput{}
 	req = c.newRequest(op, input, output)
-	req.Handlers.Unmarshal.Remove(query.UnmarshalHandler)
-	req.Handlers.Unmarshal.PushBackNamed(protocol.UnmarshalDiscardBodyHandler)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
 // EnableMetricsCollection API operation for Auto Scaling.
 //
 // Enables group metrics for the specified Auto Scaling group. For more information,
-// see Monitoring Your Auto Scaling Groups and Instances (http://docs.aws.amazon.com/autoscaling/latest/userguide/as-instance-monitoring.html)
-// in the Auto Scaling User Guide.
+// see Monitoring Your Auto Scaling Groups and Instances (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-monitoring.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -3631,10 +3838,10 @@ func (c *AutoScaling) EnableMetricsCollectionRequest(input *EnableMetricsCollect
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/EnableMetricsCollection
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/EnableMetricsCollection
 func (c *AutoScaling) EnableMetricsCollection(input *EnableMetricsCollectionInput) (*EnableMetricsCollectionOutput, error) {
 	req, out := c.EnableMetricsCollectionRequest(input)
 	return out, req.Send()
@@ -3660,8 +3867,8 @@ const opEnterStandby = "EnterStandby"
 
 // EnterStandbyRequest generates a "aws/request.Request" representing the
 // client's request for the EnterStandby operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3681,7 +3888,7 @@ const opEnterStandby = "EnterStandby"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/EnterStandby
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/EnterStandby
 func (c *AutoScaling) EnterStandbyRequest(input *EnterStandbyInput) (req *request.Request, output *EnterStandbyOutput) {
 	op := &request.Operation{
 		Name:       opEnterStandby,
@@ -3703,8 +3910,8 @@ func (c *AutoScaling) EnterStandbyRequest(input *EnterStandbyInput) (req *reques
 // Moves the specified instances into the standby state.
 //
 // For more information, see Temporarily Removing Instances from Your Auto Scaling
-// Group (http://docs.aws.amazon.com/autoscaling/latest/userguide/as-enter-exit-standby.html)
-// in the Auto Scaling User Guide.
+// Group (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-enter-exit-standby.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -3715,10 +3922,10 @@ func (c *AutoScaling) EnterStandbyRequest(input *EnterStandbyInput) (req *reques
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/EnterStandby
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/EnterStandby
 func (c *AutoScaling) EnterStandby(input *EnterStandbyInput) (*EnterStandbyOutput, error) {
 	req, out := c.EnterStandbyRequest(input)
 	return out, req.Send()
@@ -3744,8 +3951,8 @@ const opExecutePolicy = "ExecutePolicy"
 
 // ExecutePolicyRequest generates a "aws/request.Request" representing the
 // client's request for the ExecutePolicy operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3765,7 +3972,7 @@ const opExecutePolicy = "ExecutePolicy"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ExecutePolicy
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ExecutePolicy
 func (c *AutoScaling) ExecutePolicyRequest(input *ExecutePolicyInput) (req *request.Request, output *ExecutePolicyOutput) {
 	op := &request.Operation{
 		Name:       opExecutePolicy,
@@ -3779,8 +3986,7 @@ func (c *AutoScaling) ExecutePolicyRequest(input *ExecutePolicyInput) (req *requ
 
 	output = &ExecutePolicyOutput{}
 	req = c.newRequest(op, input, output)
-	req.Handlers.Unmarshal.Remove(query.UnmarshalHandler)
-	req.Handlers.Unmarshal.PushBackNamed(protocol.UnmarshalDiscardBodyHandler)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -3801,10 +4007,10 @@ func (c *AutoScaling) ExecutePolicyRequest(input *ExecutePolicyInput) (req *requ
 //   progress.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ExecutePolicy
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ExecutePolicy
 func (c *AutoScaling) ExecutePolicy(input *ExecutePolicyInput) (*ExecutePolicyOutput, error) {
 	req, out := c.ExecutePolicyRequest(input)
 	return out, req.Send()
@@ -3830,8 +4036,8 @@ const opExitStandby = "ExitStandby"
 
 // ExitStandbyRequest generates a "aws/request.Request" representing the
 // client's request for the ExitStandby operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3851,7 +4057,7 @@ const opExitStandby = "ExitStandby"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ExitStandby
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ExitStandby
 func (c *AutoScaling) ExitStandbyRequest(input *ExitStandbyInput) (req *request.Request, output *ExitStandbyOutput) {
 	op := &request.Operation{
 		Name:       opExitStandby,
@@ -3873,8 +4079,8 @@ func (c *AutoScaling) ExitStandbyRequest(input *ExitStandbyInput) (req *request.
 // Moves the specified instances out of the standby state.
 //
 // For more information, see Temporarily Removing Instances from Your Auto Scaling
-// Group (http://docs.aws.amazon.com/autoscaling/latest/userguide/as-enter-exit-standby.html)
-// in the Auto Scaling User Guide.
+// Group (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-enter-exit-standby.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -3885,10 +4091,10 @@ func (c *AutoScaling) ExitStandbyRequest(input *ExitStandbyInput) (req *request.
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ExitStandby
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ExitStandby
 func (c *AutoScaling) ExitStandby(input *ExitStandbyInput) (*ExitStandbyOutput, error) {
 	req, out := c.ExitStandbyRequest(input)
 	return out, req.Send()
@@ -3914,8 +4120,8 @@ const opPutLifecycleHook = "PutLifecycleHook"
 
 // PutLifecycleHookRequest generates a "aws/request.Request" representing the
 // client's request for the PutLifecycleHook operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3935,7 +4141,7 @@ const opPutLifecycleHook = "PutLifecycleHook"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutLifecycleHook
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutLifecycleHook
 func (c *AutoScaling) PutLifecycleHookRequest(input *PutLifecycleHookInput) (req *request.Request, output *PutLifecycleHookOutput) {
 	op := &request.Operation{
 		Name:       opPutLifecycleHook,
@@ -3949,42 +4155,46 @@ func (c *AutoScaling) PutLifecycleHookRequest(input *PutLifecycleHookInput) (req
 
 	output = &PutLifecycleHookOutput{}
 	req = c.newRequest(op, input, output)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
 // PutLifecycleHook API operation for Auto Scaling.
 //
-// Creates or updates a lifecycle hook for the specified Auto Scaling Group.
+// Creates or updates a lifecycle hook for the specified Auto Scaling group.
 //
-// A lifecycle hook tells Auto Scaling that you want to perform an action on
-// an instance that is not actively in service; for example, either when the
-// instance launches or before the instance terminates.
+// A lifecycle hook tells Amazon EC2 Auto Scaling to perform an action on an
+// instance when the instance launches (before it is put into service) or as
+// the instance terminates (before it is fully terminated).
 //
 // This step is a part of the procedure for adding a lifecycle hook to an Auto
 // Scaling group:
 //
 // (Optional) Create a Lambda function and a rule that allows CloudWatch Events
-// to invoke your Lambda function when Auto Scaling launches or terminates instances.
+// to invoke your Lambda function when Amazon EC2 Auto Scaling launches or terminates
+// instances.
 //
 // (Optional) Create a notification target and an IAM role. The target can be
-// either an Amazon SQS queue or an Amazon SNS topic. The role allows Auto Scaling
-// to publish lifecycle notifications to the target.
+// either an Amazon SQS queue or an Amazon SNS topic. The role allows Amazon
+// EC2 Auto Scaling to publish lifecycle notifications to the target.
 //
 // Create the lifecycle hook. Specify whether the hook is used when the instances
 // launch or terminate.
 //
 // If you need more time, record the lifecycle action heartbeat to keep the
-// instance in a pending state.
+// instance in a pending state using using RecordLifecycleActionHeartbeat.
 //
-// If you finish before the timeout period ends, complete the lifecycle action.
+// If you finish before the timeout period ends, complete the lifecycle action
+// using CompleteLifecycleAction.
 //
-// For more information, see Auto Scaling Lifecycle Hooks (http://docs.aws.amazon.com/autoscaling/latest/userguide/lifecycle-hooks.html)
-// in the Auto Scaling User Guide.
+// For more information, see Amazon EC2 Auto Scaling Lifecycle Hooks (https://docs.aws.amazon.com/autoscaling/ec2/userguide/lifecycle-hooks.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // If you exceed your maximum limit of lifecycle hooks, which by default is
-// 50 per Auto Scaling group, the call fails. For information about updating
-// this limit, see AWS Service Limits (http://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html)
-// in the Amazon Web Services General Reference.
+// 50 per Auto Scaling group, the call fails.
+//
+// You can view the lifecycle hooks for an Auto Scaling group using DescribeLifecycleHooks.
+// If you are no longer using a lifecycle hook, you can delete it using DeleteLifecycleHook.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -3995,15 +4205,15 @@ func (c *AutoScaling) PutLifecycleHookRequest(input *PutLifecycleHookInput) (req
 //
 // Returned Error Codes:
 //   * ErrCodeLimitExceededFault "LimitExceeded"
-//   You have already reached a limit for your Auto Scaling resources (for example,
-//   groups, launch configurations, or lifecycle hooks). For more information,
-//   see DescribeAccountLimits.
+//   You have already reached a limit for your Amazon EC2 Auto Scaling resources
+//   (for example, Auto Scaling groups, launch configurations, or lifecycle hooks).
+//   For more information, see DescribeAccountLimits.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutLifecycleHook
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutLifecycleHook
 func (c *AutoScaling) PutLifecycleHook(input *PutLifecycleHookInput) (*PutLifecycleHookOutput, error) {
 	req, out := c.PutLifecycleHookRequest(input)
 	return out, req.Send()
@@ -4029,8 +4239,8 @@ const opPutNotificationConfiguration = "PutNotificationConfiguration"
 
 // PutNotificationConfigurationRequest generates a "aws/request.Request" representing the
 // client's request for the PutNotificationConfiguration operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4050,7 +4260,7 @@ const opPutNotificationConfiguration = "PutNotificationConfiguration"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutNotificationConfiguration
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutNotificationConfiguration
 func (c *AutoScaling) PutNotificationConfigurationRequest(input *PutNotificationConfigurationInput) (req *request.Request, output *PutNotificationConfigurationOutput) {
 	op := &request.Operation{
 		Name:       opPutNotificationConfiguration,
@@ -4064,8 +4274,7 @@ func (c *AutoScaling) PutNotificationConfigurationRequest(input *PutNotification
 
 	output = &PutNotificationConfigurationOutput{}
 	req = c.newRequest(op, input, output)
-	req.Handlers.Unmarshal.Remove(query.UnmarshalHandler)
-	req.Handlers.Unmarshal.PushBackNamed(protocol.UnmarshalDiscardBodyHandler)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -4077,9 +4286,9 @@ func (c *AutoScaling) PutNotificationConfigurationRequest(input *PutNotification
 //
 // This configuration overwrites any existing configuration.
 //
-// For more information see Getting SNS Notifications When Your Auto Scaling
-// Group Scales (http://docs.aws.amazon.com/autoscaling/latest/userguide/ASGettingNotifications.html)
-// in the Auto Scaling User Guide.
+// For more information, see Getting Amazon SNS Notifications When Your Auto
+// Scaling Group Scales (https://docs.aws.amazon.com/autoscaling/ec2/userguide/ASGettingNotifications.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -4090,15 +4299,18 @@ func (c *AutoScaling) PutNotificationConfigurationRequest(input *PutNotification
 //
 // Returned Error Codes:
 //   * ErrCodeLimitExceededFault "LimitExceeded"
-//   You have already reached a limit for your Auto Scaling resources (for example,
-//   groups, launch configurations, or lifecycle hooks). For more information,
-//   see DescribeAccountLimits.
+//   You have already reached a limit for your Amazon EC2 Auto Scaling resources
+//   (for example, Auto Scaling groups, launch configurations, or lifecycle hooks).
+//   For more information, see DescribeAccountLimits.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutNotificationConfiguration
+//   * ErrCodeServiceLinkedRoleFailure "ServiceLinkedRoleFailure"
+//   The service-linked role is not yet ready for use.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutNotificationConfiguration
 func (c *AutoScaling) PutNotificationConfiguration(input *PutNotificationConfigurationInput) (*PutNotificationConfigurationOutput, error) {
 	req, out := c.PutNotificationConfigurationRequest(input)
 	return out, req.Send()
@@ -4124,8 +4336,8 @@ const opPutScalingPolicy = "PutScalingPolicy"
 
 // PutScalingPolicyRequest generates a "aws/request.Request" representing the
 // client's request for the PutScalingPolicy operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4145,7 +4357,7 @@ const opPutScalingPolicy = "PutScalingPolicy"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutScalingPolicy
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutScalingPolicy
 func (c *AutoScaling) PutScalingPolicyRequest(input *PutScalingPolicyInput) (req *request.Request, output *PutScalingPolicyOutput) {
 	op := &request.Operation{
 		Name:       opPutScalingPolicy,
@@ -4165,14 +4377,9 @@ func (c *AutoScaling) PutScalingPolicyRequest(input *PutScalingPolicyInput) (req
 // PutScalingPolicy API operation for Auto Scaling.
 //
 // Creates or updates a policy for an Auto Scaling group. To update an existing
-// policy, use the existing policy name and set the parameters you want to change.
-// Any existing parameter not changed in an update to an existing policy is
-// not changed in this update request.
-//
-// If you exceed your maximum limit of step adjustments, which by default is
-// 20 per region, the call fails. For information about updating this limit,
-// see AWS Service Limits (http://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html)
-// in the Amazon Web Services General Reference.
+// policy, use the existing policy name and set the parameters to change. Any
+// existing parameter not changed in an update to an existing policy is not
+// changed in this update request.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -4183,15 +4390,18 @@ func (c *AutoScaling) PutScalingPolicyRequest(input *PutScalingPolicyInput) (req
 //
 // Returned Error Codes:
 //   * ErrCodeLimitExceededFault "LimitExceeded"
-//   You have already reached a limit for your Auto Scaling resources (for example,
-//   groups, launch configurations, or lifecycle hooks). For more information,
-//   see DescribeAccountLimits.
+//   You have already reached a limit for your Amazon EC2 Auto Scaling resources
+//   (for example, Auto Scaling groups, launch configurations, or lifecycle hooks).
+//   For more information, see DescribeAccountLimits.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutScalingPolicy
+//   * ErrCodeServiceLinkedRoleFailure "ServiceLinkedRoleFailure"
+//   The service-linked role is not yet ready for use.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutScalingPolicy
 func (c *AutoScaling) PutScalingPolicy(input *PutScalingPolicyInput) (*PutScalingPolicyOutput, error) {
 	req, out := c.PutScalingPolicyRequest(input)
 	return out, req.Send()
@@ -4217,8 +4427,8 @@ const opPutScheduledUpdateGroupAction = "PutScheduledUpdateGroupAction"
 
 // PutScheduledUpdateGroupActionRequest generates a "aws/request.Request" representing the
 // client's request for the PutScheduledUpdateGroupAction operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4238,7 +4448,7 @@ const opPutScheduledUpdateGroupAction = "PutScheduledUpdateGroupAction"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutScheduledUpdateGroupAction
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutScheduledUpdateGroupAction
 func (c *AutoScaling) PutScheduledUpdateGroupActionRequest(input *PutScheduledUpdateGroupActionInput) (req *request.Request, output *PutScheduledUpdateGroupActionOutput) {
 	op := &request.Operation{
 		Name:       opPutScheduledUpdateGroupAction,
@@ -4252,19 +4462,18 @@ func (c *AutoScaling) PutScheduledUpdateGroupActionRequest(input *PutScheduledUp
 
 	output = &PutScheduledUpdateGroupActionOutput{}
 	req = c.newRequest(op, input, output)
-	req.Handlers.Unmarshal.Remove(query.UnmarshalHandler)
-	req.Handlers.Unmarshal.PushBackNamed(protocol.UnmarshalDiscardBodyHandler)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
 // PutScheduledUpdateGroupAction API operation for Auto Scaling.
 //
 // Creates or updates a scheduled scaling action for an Auto Scaling group.
-// When updating a scheduled scaling action, if you leave a parameter unspecified,
+// If you leave a parameter unspecified when updating a scheduled scaling action,
 // the corresponding value remains unchanged.
 //
-// For more information, see Scheduled Scaling (http://docs.aws.amazon.com/autoscaling/latest/userguide/schedule_time.html)
-// in the Auto Scaling User Guide.
+// For more information, see Scheduled Scaling (https://docs.aws.amazon.com/autoscaling/ec2/userguide/schedule_time.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -4279,15 +4488,15 @@ func (c *AutoScaling) PutScheduledUpdateGroupActionRequest(input *PutScheduledUp
 //   name.
 //
 //   * ErrCodeLimitExceededFault "LimitExceeded"
-//   You have already reached a limit for your Auto Scaling resources (for example,
-//   groups, launch configurations, or lifecycle hooks). For more information,
-//   see DescribeAccountLimits.
+//   You have already reached a limit for your Amazon EC2 Auto Scaling resources
+//   (for example, Auto Scaling groups, launch configurations, or lifecycle hooks).
+//   For more information, see DescribeAccountLimits.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutScheduledUpdateGroupAction
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutScheduledUpdateGroupAction
 func (c *AutoScaling) PutScheduledUpdateGroupAction(input *PutScheduledUpdateGroupActionInput) (*PutScheduledUpdateGroupActionOutput, error) {
 	req, out := c.PutScheduledUpdateGroupActionRequest(input)
 	return out, req.Send()
@@ -4313,8 +4522,8 @@ const opRecordLifecycleActionHeartbeat = "RecordLifecycleActionHeartbeat"
 
 // RecordLifecycleActionHeartbeatRequest generates a "aws/request.Request" representing the
 // client's request for the RecordLifecycleActionHeartbeat operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4334,7 +4543,7 @@ const opRecordLifecycleActionHeartbeat = "RecordLifecycleActionHeartbeat"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/RecordLifecycleActionHeartbeat
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/RecordLifecycleActionHeartbeat
 func (c *AutoScaling) RecordLifecycleActionHeartbeatRequest(input *RecordLifecycleActionHeartbeatInput) (req *request.Request, output *RecordLifecycleActionHeartbeatOutput) {
 	op := &request.Operation{
 		Name:       opRecordLifecycleActionHeartbeat,
@@ -4348,6 +4557,7 @@ func (c *AutoScaling) RecordLifecycleActionHeartbeatRequest(input *RecordLifecyc
 
 	output = &RecordLifecycleActionHeartbeatOutput{}
 	req = c.newRequest(op, input, output)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -4361,11 +4571,12 @@ func (c *AutoScaling) RecordLifecycleActionHeartbeatRequest(input *RecordLifecyc
 // Scaling group:
 //
 // (Optional) Create a Lambda function and a rule that allows CloudWatch Events
-// to invoke your Lambda function when Auto Scaling launches or terminates instances.
+// to invoke your Lambda function when Amazon EC2 Auto Scaling launches or terminates
+// instances.
 //
 // (Optional) Create a notification target and an IAM role. The target can be
-// either an Amazon SQS queue or an Amazon SNS topic. The role allows Auto Scaling
-// to publish lifecycle notifications to the target.
+// either an Amazon SQS queue or an Amazon SNS topic. The role allows Amazon
+// EC2 Auto Scaling to publish lifecycle notifications to the target.
 //
 // Create the lifecycle hook. Specify whether the hook is used when the instances
 // launch or terminate.
@@ -4375,8 +4586,8 @@ func (c *AutoScaling) RecordLifecycleActionHeartbeatRequest(input *RecordLifecyc
 //
 // If you finish before the timeout period ends, complete the lifecycle action.
 //
-// For more information, see Auto Scaling Lifecycle (http://docs.aws.amazon.com/autoscaling/latest/userguide/AutoScalingGroupLifecycle.html)
-// in the Auto Scaling User Guide.
+// For more information, see Auto Scaling Lifecycle (https://docs.aws.amazon.com/autoscaling/ec2/userguide/AutoScalingGroupLifecycle.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -4387,10 +4598,10 @@ func (c *AutoScaling) RecordLifecycleActionHeartbeatRequest(input *RecordLifecyc
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/RecordLifecycleActionHeartbeat
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/RecordLifecycleActionHeartbeat
 func (c *AutoScaling) RecordLifecycleActionHeartbeat(input *RecordLifecycleActionHeartbeatInput) (*RecordLifecycleActionHeartbeatOutput, error) {
 	req, out := c.RecordLifecycleActionHeartbeatRequest(input)
 	return out, req.Send()
@@ -4416,8 +4627,8 @@ const opResumeProcesses = "ResumeProcesses"
 
 // ResumeProcessesRequest generates a "aws/request.Request" representing the
 // client's request for the ResumeProcesses operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4437,7 +4648,7 @@ const opResumeProcesses = "ResumeProcesses"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ResumeProcesses
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ResumeProcesses
 func (c *AutoScaling) ResumeProcessesRequest(input *ScalingProcessQuery) (req *request.Request, output *ResumeProcessesOutput) {
 	op := &request.Operation{
 		Name:       opResumeProcesses,
@@ -4451,19 +4662,17 @@ func (c *AutoScaling) ResumeProcessesRequest(input *ScalingProcessQuery) (req *r
 
 	output = &ResumeProcessesOutput{}
 	req = c.newRequest(op, input, output)
-	req.Handlers.Unmarshal.Remove(query.UnmarshalHandler)
-	req.Handlers.Unmarshal.PushBackNamed(protocol.UnmarshalDiscardBodyHandler)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
 // ResumeProcesses API operation for Auto Scaling.
 //
-// Resumes the specified suspended Auto Scaling processes, or all suspended
+// Resumes the specified suspended automatic scaling processes, or all suspended
 // process, for the specified Auto Scaling group.
 //
-// For more information, see Suspending and Resuming Auto Scaling Processes
-// (http://docs.aws.amazon.com/autoscaling/latest/userguide/as-suspend-resume-processes.html)
-// in the Auto Scaling User Guide.
+// For more information, see Suspending and Resuming Scaling Processes (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -4477,10 +4686,10 @@ func (c *AutoScaling) ResumeProcessesRequest(input *ScalingProcessQuery) (req *r
 //   The operation can't be performed because the resource is in use.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ResumeProcesses
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ResumeProcesses
 func (c *AutoScaling) ResumeProcesses(input *ScalingProcessQuery) (*ResumeProcessesOutput, error) {
 	req, out := c.ResumeProcessesRequest(input)
 	return out, req.Send()
@@ -4506,8 +4715,8 @@ const opSetDesiredCapacity = "SetDesiredCapacity"
 
 // SetDesiredCapacityRequest generates a "aws/request.Request" representing the
 // client's request for the SetDesiredCapacity operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4527,7 +4736,7 @@ const opSetDesiredCapacity = "SetDesiredCapacity"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SetDesiredCapacity
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SetDesiredCapacity
 func (c *AutoScaling) SetDesiredCapacityRequest(input *SetDesiredCapacityInput) (req *request.Request, output *SetDesiredCapacityOutput) {
 	op := &request.Operation{
 		Name:       opSetDesiredCapacity,
@@ -4541,8 +4750,7 @@ func (c *AutoScaling) SetDesiredCapacityRequest(input *SetDesiredCapacityInput) 
 
 	output = &SetDesiredCapacityOutput{}
 	req = c.newRequest(op, input, output)
-	req.Handlers.Unmarshal.Remove(query.UnmarshalHandler)
-	req.Handlers.Unmarshal.PushBackNamed(protocol.UnmarshalDiscardBodyHandler)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -4550,8 +4758,9 @@ func (c *AutoScaling) SetDesiredCapacityRequest(input *SetDesiredCapacityInput) 
 //
 // Sets the size of the specified Auto Scaling group.
 //
-// For more information about desired capacity, see What Is Auto Scaling? (http://docs.aws.amazon.com/autoscaling/latest/userguide/WhatIsAutoScaling.html)
-// in the Auto Scaling User Guide.
+// For more information about desired capacity, see What Is Amazon EC2 Auto
+// Scaling? (https://docs.aws.amazon.com/autoscaling/ec2/userguide/what-is-amazon-ec2-auto-scaling.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -4566,10 +4775,10 @@ func (c *AutoScaling) SetDesiredCapacityRequest(input *SetDesiredCapacityInput) 
 //   progress.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SetDesiredCapacity
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SetDesiredCapacity
 func (c *AutoScaling) SetDesiredCapacity(input *SetDesiredCapacityInput) (*SetDesiredCapacityOutput, error) {
 	req, out := c.SetDesiredCapacityRequest(input)
 	return out, req.Send()
@@ -4595,8 +4804,8 @@ const opSetInstanceHealth = "SetInstanceHealth"
 
 // SetInstanceHealthRequest generates a "aws/request.Request" representing the
 // client's request for the SetInstanceHealth operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4616,7 +4825,7 @@ const opSetInstanceHealth = "SetInstanceHealth"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SetInstanceHealth
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SetInstanceHealth
 func (c *AutoScaling) SetInstanceHealthRequest(input *SetInstanceHealthInput) (req *request.Request, output *SetInstanceHealthOutput) {
 	op := &request.Operation{
 		Name:       opSetInstanceHealth,
@@ -4630,8 +4839,7 @@ func (c *AutoScaling) SetInstanceHealthRequest(input *SetInstanceHealthInput) (r
 
 	output = &SetInstanceHealthOutput{}
 	req = c.newRequest(op, input, output)
-	req.Handlers.Unmarshal.Remove(query.UnmarshalHandler)
-	req.Handlers.Unmarshal.PushBackNamed(protocol.UnmarshalDiscardBodyHandler)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -4639,8 +4847,8 @@ func (c *AutoScaling) SetInstanceHealthRequest(input *SetInstanceHealthInput) (r
 //
 // Sets the health status of the specified instance.
 //
-// For more information, see Health Checks (http://docs.aws.amazon.com/autoscaling/latest/userguide/healthcheck.html)
-// in the Auto Scaling User Guide.
+// For more information, see Health Checks for Auto Scaling Instances (https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -4651,10 +4859,10 @@ func (c *AutoScaling) SetInstanceHealthRequest(input *SetInstanceHealthInput) (r
 //
 // Returned Error Codes:
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SetInstanceHealth
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SetInstanceHealth
 func (c *AutoScaling) SetInstanceHealth(input *SetInstanceHealthInput) (*SetInstanceHealthOutput, error) {
 	req, out := c.SetInstanceHealthRequest(input)
 	return out, req.Send()
@@ -4680,8 +4888,8 @@ const opSetInstanceProtection = "SetInstanceProtection"
 
 // SetInstanceProtectionRequest generates a "aws/request.Request" representing the
 // client's request for the SetInstanceProtection operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4701,7 +4909,7 @@ const opSetInstanceProtection = "SetInstanceProtection"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SetInstanceProtection
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SetInstanceProtection
 func (c *AutoScaling) SetInstanceProtectionRequest(input *SetInstanceProtectionInput) (req *request.Request, output *SetInstanceProtectionOutput) {
 	op := &request.Operation{
 		Name:       opSetInstanceProtection,
@@ -4715,6 +4923,7 @@ func (c *AutoScaling) SetInstanceProtectionRequest(input *SetInstanceProtectionI
 
 	output = &SetInstanceProtectionOutput{}
 	req = c.newRequest(op, input, output)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -4722,8 +4931,9 @@ func (c *AutoScaling) SetInstanceProtectionRequest(input *SetInstanceProtectionI
 //
 // Updates the instance protection settings of the specified instances.
 //
-// For more information, see Instance Protection (http://docs.aws.amazon.com/autoscaling/latest/userguide/as-instance-termination.html#instance-protection)
-// in the Auto Scaling User Guide.
+// For more information about preventing instances that are part of an Auto
+// Scaling group from terminating on scale in, see Instance Protection (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#instance-protection)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -4734,15 +4944,15 @@ func (c *AutoScaling) SetInstanceProtectionRequest(input *SetInstanceProtectionI
 //
 // Returned Error Codes:
 //   * ErrCodeLimitExceededFault "LimitExceeded"
-//   You have already reached a limit for your Auto Scaling resources (for example,
-//   groups, launch configurations, or lifecycle hooks). For more information,
-//   see DescribeAccountLimits.
+//   You have already reached a limit for your Amazon EC2 Auto Scaling resources
+//   (for example, Auto Scaling groups, launch configurations, or lifecycle hooks).
+//   For more information, see DescribeAccountLimits.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SetInstanceProtection
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SetInstanceProtection
 func (c *AutoScaling) SetInstanceProtection(input *SetInstanceProtectionInput) (*SetInstanceProtectionOutput, error) {
 	req, out := c.SetInstanceProtectionRequest(input)
 	return out, req.Send()
@@ -4768,8 +4978,8 @@ const opSuspendProcesses = "SuspendProcesses"
 
 // SuspendProcessesRequest generates a "aws/request.Request" representing the
 // client's request for the SuspendProcesses operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4789,7 +4999,7 @@ const opSuspendProcesses = "SuspendProcesses"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SuspendProcesses
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SuspendProcesses
 func (c *AutoScaling) SuspendProcessesRequest(input *ScalingProcessQuery) (req *request.Request, output *SuspendProcessesOutput) {
 	op := &request.Operation{
 		Name:       opSuspendProcesses,
@@ -4803,24 +5013,22 @@ func (c *AutoScaling) SuspendProcessesRequest(input *ScalingProcessQuery) (req *
 
 	output = &SuspendProcessesOutput{}
 	req = c.newRequest(op, input, output)
-	req.Handlers.Unmarshal.Remove(query.UnmarshalHandler)
-	req.Handlers.Unmarshal.PushBackNamed(protocol.UnmarshalDiscardBodyHandler)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
 // SuspendProcesses API operation for Auto Scaling.
 //
-// Suspends the specified Auto Scaling processes, or all processes, for the
-// specified Auto Scaling group.
+// Suspends the specified automatic scaling processes, or all processes, for
+// the specified Auto Scaling group.
 //
-// Note that if you suspend either the Launch or Terminate process types, it
-// can prevent other process types from functioning properly.
+// If you suspend either the Launch or Terminate process types, it can prevent
+// other process types from functioning properly.
 //
 // To resume processes that have been suspended, use ResumeProcesses.
 //
-// For more information, see Suspending and Resuming Auto Scaling Processes
-// (http://docs.aws.amazon.com/autoscaling/latest/userguide/as-suspend-resume-processes.html)
-// in the Auto Scaling User Guide.
+// For more information, see Suspending and Resuming Scaling Processes (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -4834,10 +5042,10 @@ func (c *AutoScaling) SuspendProcessesRequest(input *ScalingProcessQuery) (req *
 //   The operation can't be performed because the resource is in use.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SuspendProcesses
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SuspendProcesses
 func (c *AutoScaling) SuspendProcesses(input *ScalingProcessQuery) (*SuspendProcessesOutput, error) {
 	req, out := c.SuspendProcessesRequest(input)
 	return out, req.Send()
@@ -4863,8 +5071,8 @@ const opTerminateInstanceInAutoScalingGroup = "TerminateInstanceInAutoScalingGro
 
 // TerminateInstanceInAutoScalingGroupRequest generates a "aws/request.Request" representing the
 // client's request for the TerminateInstanceInAutoScalingGroup operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4884,7 +5092,7 @@ const opTerminateInstanceInAutoScalingGroup = "TerminateInstanceInAutoScalingGro
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/TerminateInstanceInAutoScalingGroup
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/TerminateInstanceInAutoScalingGroup
 func (c *AutoScaling) TerminateInstanceInAutoScalingGroupRequest(input *TerminateInstanceInAutoScalingGroupInput) (req *request.Request, output *TerminateInstanceInAutoScalingGroupOutput) {
 	op := &request.Operation{
 		Name:       opTerminateInstanceInAutoScalingGroup,
@@ -4922,10 +5130,10 @@ func (c *AutoScaling) TerminateInstanceInAutoScalingGroupRequest(input *Terminat
 //   progress.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/TerminateInstanceInAutoScalingGroup
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/TerminateInstanceInAutoScalingGroup
 func (c *AutoScaling) TerminateInstanceInAutoScalingGroup(input *TerminateInstanceInAutoScalingGroupInput) (*TerminateInstanceInAutoScalingGroupOutput, error) {
 	req, out := c.TerminateInstanceInAutoScalingGroupRequest(input)
 	return out, req.Send()
@@ -4951,8 +5159,8 @@ const opUpdateAutoScalingGroup = "UpdateAutoScalingGroup"
 
 // UpdateAutoScalingGroupRequest generates a "aws/request.Request" representing the
 // client's request for the UpdateAutoScalingGroup operation. The "output" return
-// value will be populated with the request's response once the request complets
-// successfuly.
+// value will be populated with the request's response once the request completes
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4972,7 +5180,7 @@ const opUpdateAutoScalingGroup = "UpdateAutoScalingGroup"
 //        fmt.Println(resp)
 //    }
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/UpdateAutoScalingGroup
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/UpdateAutoScalingGroup
 func (c *AutoScaling) UpdateAutoScalingGroupRequest(input *UpdateAutoScalingGroupInput) (req *request.Request, output *UpdateAutoScalingGroupOutput) {
 	op := &request.Operation{
 		Name:       opUpdateAutoScalingGroup,
@@ -4986,8 +5194,7 @@ func (c *AutoScaling) UpdateAutoScalingGroupRequest(input *UpdateAutoScalingGrou
 
 	output = &UpdateAutoScalingGroupOutput{}
 	req = c.newRequest(op, input, output)
-	req.Handlers.Unmarshal.Remove(query.UnmarshalHandler)
-	req.Handlers.Unmarshal.PushBackNamed(protocol.UnmarshalDiscardBodyHandler)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
 	return
 }
 
@@ -4995,27 +5202,43 @@ func (c *AutoScaling) UpdateAutoScalingGroupRequest(input *UpdateAutoScalingGrou
 //
 // Updates the configuration for the specified Auto Scaling group.
 //
-// The new settings take effect on any scaling activities after this call returns.
-// Scaling activities that are currently in progress aren't affected.
+// To update an Auto Scaling group, specify the name of the group and the parameter
+// that you want to change. Any parameters that you don't specify are not changed
+// by this update request. The new settings take effect on any scaling activities
+// after this call returns. Scaling activities that are currently in progress
+// aren't affected.
 //
-// To update an Auto Scaling group with a launch configuration with InstanceMonitoring
-// set to false, you must first disable the collection of group metrics. Otherwise,
-// you will get an error. If you have previously enabled the collection of group
-// metrics, you can disable it using DisableMetricsCollection.
+// If you associate a new launch configuration or template with an Auto Scaling
+// group, all new instances will get the updated configuration, but existing
+// instances continue to run with the configuration that they were originally
+// launched with. When you update a group to specify a mixed instances policy
+// instead of a launch configuration or template, existing instances may be
+// replaced to match the new purchasing options that you specified in the policy.
+// For example, if the group currently has 100% On-Demand capacity and the policy
+// specifies 50% Spot capacity, this means that half of your instances will
+// be gradually terminated and relaunched as Spot Instances. When replacing
+// instances, Amazon EC2 Auto Scaling launches new instances before terminating
+// the old ones, so that updating your group does not compromise the performance
+// or availability of your application.
 //
-// Note the following:
+// Note the following about changing DesiredCapacity, MaxSize, or MinSize:
+//
+//    * If a scale-in event occurs as a result of a new DesiredCapacity value
+//    that is lower than the current size of the group, the Auto Scaling group
+//    uses its termination policy to determine which instances to terminate.
 //
 //    * If you specify a new value for MinSize without specifying a value for
 //    DesiredCapacity, and the new MinSize is larger than the current size of
-//    the group, we implicitly call SetDesiredCapacity to set the size of the
-//    group to the new value of MinSize.
+//    the group, this sets the group's DesiredCapacity to the new MinSize value.
 //
 //    * If you specify a new value for MaxSize without specifying a value for
 //    DesiredCapacity, and the new MaxSize is smaller than the current size
-//    of the group, we implicitly call SetDesiredCapacity to set the size of
-//    the group to the new value of MaxSize.
+//    of the group, this sets the group's DesiredCapacity to the new MaxSize
+//    value.
 //
-//    * All other optional parameters are left unchanged if not specified.
+// To see which parameters have been set, use DescribeAutoScalingGroups. You
+// can also view the scaling policies for an Auto Scaling group using DescribePolicies.
+// If the group has scaling policies, you can update them using PutScalingPolicy.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -5030,10 +5253,13 @@ func (c *AutoScaling) UpdateAutoScalingGroupRequest(input *UpdateAutoScalingGrou
 //   progress.
 //
 //   * ErrCodeResourceContentionFault "ResourceContention"
-//   You already have a pending update to an Auto Scaling resource (for example,
-//   a group, instance, or load balancer).
+//   You already have a pending update to an Amazon EC2 Auto Scaling resource
+//   (for example, an Auto Scaling group, instance, or load balancer).
 //
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/UpdateAutoScalingGroup
+//   * ErrCodeServiceLinkedRoleFailure "ServiceLinkedRoleFailure"
+//   The service-linked role is not yet ready for use.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/UpdateAutoScalingGroup
 func (c *AutoScaling) UpdateAutoScalingGroup(input *UpdateAutoScalingGroupInput) (*UpdateAutoScalingGroupOutput, error) {
 	req, out := c.UpdateAutoScalingGroupRequest(input)
 	return out, req.Send()
@@ -5058,7 +5284,6 @@ func (c *AutoScaling) UpdateAutoScalingGroupWithContext(ctx aws.Context, input *
 // Describes scaling activity, which is a long-running process that represents
 // a change to your Auto Scaling group, such as changing its size or replacing
 // an instance.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/Activity
 type Activity struct {
 	_ struct{} `type:"structure"`
 
@@ -5084,7 +5309,7 @@ type Activity struct {
 	Details *string `type:"string"`
 
 	// The end time of the activity.
-	EndTime *time.Time `type:"timestamp" timestampFormat:"iso8601"`
+	EndTime *time.Time `type:"timestamp"`
 
 	// A value between 0 and 100 that indicates the progress of the activity.
 	Progress *int64 `type:"integer"`
@@ -5092,7 +5317,7 @@ type Activity struct {
 	// The start time of the activity.
 	//
 	// StartTime is a required field
-	StartTime *time.Time `type:"timestamp" timestampFormat:"iso8601" required:"true"`
+	StartTime *time.Time `type:"timestamp" required:"true"`
 
 	// The current status of the activity.
 	//
@@ -5174,10 +5399,6 @@ func (s *Activity) SetStatusMessage(v string) *Activity {
 }
 
 // Describes a policy adjustment type.
-//
-// For more information, see Dynamic Scaling (http://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/as-scale-based-on-demand.html)
-// in the Auto Scaling User Guide.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/AdjustmentType
 type AdjustmentType struct {
 	_ struct{} `type:"structure"`
 
@@ -5203,7 +5424,6 @@ func (s *AdjustmentType) SetAdjustmentType(v string) *AdjustmentType {
 }
 
 // Describes an alarm.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/Alarm
 type Alarm struct {
 	_ struct{} `type:"structure"`
 
@@ -5236,7 +5456,6 @@ func (s *Alarm) SetAlarmName(v string) *Alarm {
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/AttachInstancesQuery
 type AttachInstancesInput struct {
 	_ struct{} `type:"structure"`
 
@@ -5245,7 +5464,7 @@ type AttachInstancesInput struct {
 	// AutoScalingGroupName is a required field
 	AutoScalingGroupName *string `min:"1" type:"string" required:"true"`
 
-	// One or more instance IDs.
+	// The IDs of the instances. You can specify up to 20 instances.
 	InstanceIds []*string `type:"list"`
 }
 
@@ -5287,7 +5506,6 @@ func (s *AttachInstancesInput) SetInstanceIds(v []*string) *AttachInstancesInput
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/AttachInstancesOutput
 type AttachInstancesOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -5302,7 +5520,6 @@ func (s AttachInstancesOutput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/AttachLoadBalancerTargetGroupsType
 type AttachLoadBalancerTargetGroupsInput struct {
 	_ struct{} `type:"structure"`
 
@@ -5311,7 +5528,8 @@ type AttachLoadBalancerTargetGroupsInput struct {
 	// AutoScalingGroupName is a required field
 	AutoScalingGroupName *string `min:"1" type:"string" required:"true"`
 
-	// The Amazon Resource Names (ARN) of the target groups.
+	// The Amazon Resource Names (ARN) of the target groups. You can specify up
+	// to 10 target groups.
 	//
 	// TargetGroupARNs is a required field
 	TargetGroupARNs []*string `type:"list" required:"true"`
@@ -5358,7 +5576,6 @@ func (s *AttachLoadBalancerTargetGroupsInput) SetTargetGroupARNs(v []*string) *A
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/AttachLoadBalancerTargetGroupsResultType
 type AttachLoadBalancerTargetGroupsOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -5373,7 +5590,6 @@ func (s AttachLoadBalancerTargetGroupsOutput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/AttachLoadBalancersType
 type AttachLoadBalancersInput struct {
 	_ struct{} `type:"structure"`
 
@@ -5382,7 +5598,7 @@ type AttachLoadBalancersInput struct {
 	// AutoScalingGroupName is a required field
 	AutoScalingGroupName *string `min:"1" type:"string" required:"true"`
 
-	// One or more load balancer names.
+	// The names of the load balancers. You can specify up to 10 load balancers.
 	//
 	// LoadBalancerNames is a required field
 	LoadBalancerNames []*string `type:"list" required:"true"`
@@ -5429,7 +5645,6 @@ func (s *AttachLoadBalancersInput) SetLoadBalancerNames(v []*string) *AttachLoad
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/AttachLoadBalancersResultType
 type AttachLoadBalancersOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -5444,12 +5659,182 @@ func (s AttachLoadBalancersOutput) GoString() string {
 	return s.String()
 }
 
+type BatchDeleteScheduledActionInput struct {
+	_ struct{} `type:"structure"`
+
+	// The name of the Auto Scaling group.
+	//
+	// AutoScalingGroupName is a required field
+	AutoScalingGroupName *string `min:"1" type:"string" required:"true"`
+
+	// The names of the scheduled actions to delete. The maximum number allowed
+	// is 50.
+	//
+	// ScheduledActionNames is a required field
+	ScheduledActionNames []*string `type:"list" required:"true"`
+}
+
+// String returns the string representation
+func (s BatchDeleteScheduledActionInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s BatchDeleteScheduledActionInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *BatchDeleteScheduledActionInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "BatchDeleteScheduledActionInput"}
+	if s.AutoScalingGroupName == nil {
+		invalidParams.Add(request.NewErrParamRequired("AutoScalingGroupName"))
+	}
+	if s.AutoScalingGroupName != nil && len(*s.AutoScalingGroupName) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("AutoScalingGroupName", 1))
+	}
+	if s.ScheduledActionNames == nil {
+		invalidParams.Add(request.NewErrParamRequired("ScheduledActionNames"))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetAutoScalingGroupName sets the AutoScalingGroupName field's value.
+func (s *BatchDeleteScheduledActionInput) SetAutoScalingGroupName(v string) *BatchDeleteScheduledActionInput {
+	s.AutoScalingGroupName = &v
+	return s
+}
+
+// SetScheduledActionNames sets the ScheduledActionNames field's value.
+func (s *BatchDeleteScheduledActionInput) SetScheduledActionNames(v []*string) *BatchDeleteScheduledActionInput {
+	s.ScheduledActionNames = v
+	return s
+}
+
+type BatchDeleteScheduledActionOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The names of the scheduled actions that could not be deleted, including an
+	// error message.
+	FailedScheduledActions []*FailedScheduledUpdateGroupActionRequest `type:"list"`
+}
+
+// String returns the string representation
+func (s BatchDeleteScheduledActionOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s BatchDeleteScheduledActionOutput) GoString() string {
+	return s.String()
+}
+
+// SetFailedScheduledActions sets the FailedScheduledActions field's value.
+func (s *BatchDeleteScheduledActionOutput) SetFailedScheduledActions(v []*FailedScheduledUpdateGroupActionRequest) *BatchDeleteScheduledActionOutput {
+	s.FailedScheduledActions = v
+	return s
+}
+
+type BatchPutScheduledUpdateGroupActionInput struct {
+	_ struct{} `type:"structure"`
+
+	// The name of the Auto Scaling group.
+	//
+	// AutoScalingGroupName is a required field
+	AutoScalingGroupName *string `min:"1" type:"string" required:"true"`
+
+	// One or more scheduled actions. The maximum number allowed is 50.
+	//
+	// ScheduledUpdateGroupActions is a required field
+	ScheduledUpdateGroupActions []*ScheduledUpdateGroupActionRequest `type:"list" required:"true"`
+}
+
+// String returns the string representation
+func (s BatchPutScheduledUpdateGroupActionInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s BatchPutScheduledUpdateGroupActionInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *BatchPutScheduledUpdateGroupActionInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "BatchPutScheduledUpdateGroupActionInput"}
+	if s.AutoScalingGroupName == nil {
+		invalidParams.Add(request.NewErrParamRequired("AutoScalingGroupName"))
+	}
+	if s.AutoScalingGroupName != nil && len(*s.AutoScalingGroupName) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("AutoScalingGroupName", 1))
+	}
+	if s.ScheduledUpdateGroupActions == nil {
+		invalidParams.Add(request.NewErrParamRequired("ScheduledUpdateGroupActions"))
+	}
+	if s.ScheduledUpdateGroupActions != nil {
+		for i, v := range s.ScheduledUpdateGroupActions {
+			if v == nil {
+				continue
+			}
+			if err := v.Validate(); err != nil {
+				invalidParams.AddNested(fmt.Sprintf("%s[%v]", "ScheduledUpdateGroupActions", i), err.(request.ErrInvalidParams))
+			}
+		}
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetAutoScalingGroupName sets the AutoScalingGroupName field's value.
+func (s *BatchPutScheduledUpdateGroupActionInput) SetAutoScalingGroupName(v string) *BatchPutScheduledUpdateGroupActionInput {
+	s.AutoScalingGroupName = &v
+	return s
+}
+
+// SetScheduledUpdateGroupActions sets the ScheduledUpdateGroupActions field's value.
+func (s *BatchPutScheduledUpdateGroupActionInput) SetScheduledUpdateGroupActions(v []*ScheduledUpdateGroupActionRequest) *BatchPutScheduledUpdateGroupActionInput {
+	s.ScheduledUpdateGroupActions = v
+	return s
+}
+
+type BatchPutScheduledUpdateGroupActionOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The names of the scheduled actions that could not be created or updated,
+	// including an error message.
+	FailedScheduledUpdateGroupActions []*FailedScheduledUpdateGroupActionRequest `type:"list"`
+}
+
+// String returns the string representation
+func (s BatchPutScheduledUpdateGroupActionOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s BatchPutScheduledUpdateGroupActionOutput) GoString() string {
+	return s.String()
+}
+
+// SetFailedScheduledUpdateGroupActions sets the FailedScheduledUpdateGroupActions field's value.
+func (s *BatchPutScheduledUpdateGroupActionOutput) SetFailedScheduledUpdateGroupActions(v []*FailedScheduledUpdateGroupActionRequest) *BatchPutScheduledUpdateGroupActionOutput {
+	s.FailedScheduledUpdateGroupActions = v
+	return s
+}
+
 // Describes a block device mapping.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/BlockDeviceMapping
 type BlockDeviceMapping struct {
 	_ struct{} `type:"structure"`
 
 	// The device name exposed to the EC2 instance (for example, /dev/sdh or xvdh).
+	// For more information, see Device Naming on Linux Instances (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/device_naming.html)
+	// in the Amazon EC2 User Guide for Linux Instances.
 	//
 	// DeviceName is a required field
 	DeviceName *string `min:"1" type:"string" required:"true"`
@@ -5460,8 +5845,8 @@ type BlockDeviceMapping struct {
 	// Suppresses a device mapping.
 	//
 	// If this parameter is true for the root device, the instance might fail the
-	// EC2 health check. Auto Scaling launches a replacement instance if the instance
-	// fails the health check.
+	// EC2 health check. In that case, Amazon EC2 Auto Scaling launches a replacement
+	// instance.
 	NoDevice *bool `type:"boolean"`
 
 	// The name of the virtual device (for example, ephemeral0).
@@ -5526,7 +5911,6 @@ func (s *BlockDeviceMapping) SetVirtualName(v string) *BlockDeviceMapping {
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CompleteLifecycleActionType
 type CompleteLifecycleActionInput struct {
 	_ struct{} `type:"structure"`
 
@@ -5545,8 +5929,8 @@ type CompleteLifecycleActionInput struct {
 	LifecycleActionResult *string `type:"string" required:"true"`
 
 	// A universally unique identifier (UUID) that identifies a specific lifecycle
-	// action associated with an instance. Auto Scaling sends this token to the
-	// notification target you specified when you created the lifecycle hook.
+	// action associated with an instance. Amazon EC2 Auto Scaling sends this token
+	// to the notification target you specified when you created the lifecycle hook.
 	LifecycleActionToken *string `min:"36" type:"string"`
 
 	// The name of the lifecycle hook.
@@ -5626,7 +6010,6 @@ func (s *CompleteLifecycleActionInput) SetLifecycleHookName(v string) *CompleteL
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CompleteLifecycleActionAnswer
 type CompleteLifecycleActionOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -5641,82 +6024,101 @@ func (s CompleteLifecycleActionOutput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CreateAutoScalingGroupType
 type CreateAutoScalingGroupInput struct {
 	_ struct{} `type:"structure"`
 
-	// The name of the Auto Scaling group. This name must be unique within the scope
-	// of your AWS account.
+	// The name of the Auto Scaling group. This name must be unique per Region per
+	// account.
 	//
 	// AutoScalingGroupName is a required field
 	AutoScalingGroupName *string `min:"1" type:"string" required:"true"`
 
 	// One or more Availability Zones for the group. This parameter is optional
-	// if you specify one or more subnets.
+	// if you specify one or more subnets for VPCZoneIdentifier.
+	//
+	// Conditional: If your account supports EC2-Classic and VPC, this parameter
+	// is required to launch instances into EC2-Classic.
 	AvailabilityZones []*string `min:"1" type:"list"`
 
 	// The amount of time, in seconds, after a scaling activity completes before
-	// another scaling activity can start. The default is 300.
+	// another scaling activity can start. The default value is 300.
 	//
-	// For more information, see Auto Scaling Cooldowns (http://docs.aws.amazon.com/autoscaling/latest/userguide/Cooldown.html)
-	// in the Auto Scaling User Guide.
+	// For more information, see Scaling Cooldowns (https://docs.aws.amazon.com/autoscaling/ec2/userguide/Cooldown.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
 	DefaultCooldown *int64 `type:"integer"`
 
-	// The number of EC2 instances that should be running in the group. This number
-	// must be greater than or equal to the minimum size of the group and less than
-	// or equal to the maximum size of the group. If you do not specify a desired
-	// capacity, the default is the minimum size of the group.
+	// The number of Amazon EC2 instances that the Auto Scaling group attempts to
+	// maintain. This number must be greater than or equal to the minimum size of
+	// the group and less than or equal to the maximum size of the group. If you
+	// do not specify a desired capacity, the default is the minimum size of the
+	// group.
 	DesiredCapacity *int64 `type:"integer"`
 
-	// The amount of time, in seconds, that Auto Scaling waits before checking the
-	// health status of an EC2 instance that has come into service. During this
-	// time, any health check failures for the instance are ignored. The default
-	// is 0.
+	// The amount of time, in seconds, that Amazon EC2 Auto Scaling waits before
+	// checking the health status of an EC2 instance that has come into service.
+	// During this time, any health check failures for the instance are ignored.
+	// The default value is 0.
 	//
-	// This parameter is required if you are adding an ELB health check.
+	// For more information, see Health Checks for Auto Scaling Instances (https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
 	//
-	// For more information, see Health Checks (http://docs.aws.amazon.com/autoscaling/latest/userguide/healthcheck.html)
-	// in the Auto Scaling User Guide.
+	// Conditional: This parameter is required if you are adding an ELB health check.
 	HealthCheckGracePeriod *int64 `type:"integer"`
 
 	// The service to use for the health checks. The valid values are EC2 and ELB.
+	// The default value is EC2. If you configure an Auto Scaling group to use ELB
+	// health checks, it considers the instance unhealthy if it fails either the
+	// EC2 status checks or the load balancer health checks.
 	//
-	// By default, health checks use Amazon EC2 instance status checks to determine
-	// the health of an instance. For more information, see Health Checks (http://docs.aws.amazon.com/autoscaling/latest/userguide/healthcheck.html)
-	// in the Auto Scaling User Guide.
+	// For more information, see Health Checks for Auto Scaling Instances (https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
 	HealthCheckType *string `min:"1" type:"string"`
 
 	// The ID of the instance used to create a launch configuration for the group.
-	// You must specify one of the following: an EC2 instance, a launch configuration,
-	// or a launch template.
 	//
-	// When you specify an ID of an instance, Auto Scaling creates a new launch
-	// configuration and associates it with the group. This launch configuration
-	// derives its attributes from the specified instance, with the exception of
-	// the block device mapping.
+	// When you specify an ID of an instance, Amazon EC2 Auto Scaling creates a
+	// new launch configuration and associates it with the group. This launch configuration
+	// derives its attributes from the specified instance, except for the block
+	// device mapping.
 	//
 	// For more information, see Create an Auto Scaling Group Using an EC2 Instance
-	// (http://docs.aws.amazon.com/autoscaling/latest/userguide/create-asg-from-instance.html)
-	// in the Auto Scaling User Guide.
+	// (https://docs.aws.amazon.com/autoscaling/ec2/userguide/create-asg-from-instance.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
+	//
+	// You must specify one of the following parameters in your request: LaunchConfigurationName,
+	// LaunchTemplate, InstanceId, or MixedInstancesPolicy.
 	InstanceId *string `min:"1" type:"string"`
 
-	// The name of the launch configuration. You must specify one of the following:
-	// a launch configuration, a launch template, or an EC2 instance.
+	// The name of the launch configuration.
+	//
+	// For more information, see Creating an Auto Scaling Group Using a Launch Configuration
+	// (https://docs.aws.amazon.com/autoscaling/ec2/userguide/create-asg.html) in
+	// the Amazon EC2 Auto Scaling User Guide.
+	//
+	// If you do not specify LaunchConfigurationName, you must specify one of the
+	// following parameters: InstanceId, LaunchTemplate, or MixedInstancesPolicy.
 	LaunchConfigurationName *string `min:"1" type:"string"`
 
-	// The launch template to use to launch instances. You must specify one of the
-	// following: a launch template, a launch configuration, or an EC2 instance.
+	// The launch template to use to launch instances.
+	//
+	// For more information, see Creating an Auto Scaling Group Using a Launch Template
+	// (https://docs.aws.amazon.com/autoscaling/ec2/userguide/create-asg-launch-template.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
+	//
+	// If you do not specify LaunchTemplate, you must specify one of the following
+	// parameters: InstanceId, LaunchConfigurationName, or MixedInstancesPolicy.
 	LaunchTemplate *LaunchTemplateSpecification `type:"structure"`
 
 	// One or more lifecycle hooks.
 	LifecycleHookSpecificationList []*LifecycleHookSpecification `type:"list"`
 
-	// One or more Classic Load Balancers. To specify an Application Load Balancer,
-	// use TargetGroupARNs instead.
+	// A list of Classic Load Balancers associated with this Auto Scaling group.
+	// For Application Load Balancers and Network Load Balancers, specify a list
+	// of target groups using the TargetGroupARNs property instead.
 	//
-	// For more information, see Using a Load Balancer With an Auto Scaling Group
-	// (http://docs.aws.amazon.com/autoscaling/latest/userguide/create-asg-from-instance.html)
-	// in the Auto Scaling User Guide.
+	// For more information, see Using a Load Balancer with an Auto Scaling Group
+	// (https://docs.aws.amazon.com/autoscaling/ec2/userguide/autoscaling-load-balancer.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
 	LoadBalancerNames []*string `type:"list"`
 
 	// The maximum size of the group.
@@ -5729,40 +6131,77 @@ type CreateAutoScalingGroupInput struct {
 	// MinSize is a required field
 	MinSize *int64 `type:"integer" required:"true"`
 
+	// An embedded object that specifies a mixed instances policy. The required
+	// parameters must be specified. If optional parameters are unspecified, their
+	// default values are used.
+	//
+	// The policy includes parameters that not only define the distribution of On-Demand
+	// Instances and Spot Instances, the maximum price to pay for Spot instances,
+	// and how the Auto Scaling group allocates instance types to fulfill On-Demand
+	// and Spot capacity, but also the parameters that specify the instance configuration
+	// information—the launch template and instance types.
+	//
+	// For more information, see Auto Scaling Groups with Multiple Instance Types
+	// and Purchase Options (https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-purchase-options.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
+	//
+	// You must specify one of the following parameters in your request: LaunchConfigurationName,
+	// LaunchTemplate, InstanceId, or MixedInstancesPolicy.
+	MixedInstancesPolicy *MixedInstancesPolicy `type:"structure"`
+
 	// Indicates whether newly launched instances are protected from termination
-	// by Auto Scaling when scaling in.
+	// by Amazon EC2 Auto Scaling when scaling in.
+	//
+	// For more information about preventing instances from terminating on scale
+	// in, see Instance Protection (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#instance-protection)
+	// in the Amazon EC2 Auto Scaling User Guide.
 	NewInstancesProtectedFromScaleIn *bool `type:"boolean"`
 
-	// The name of the placement group into which you'll launch your instances,
-	// if any. For more information, see Placement Groups (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html)
-	// in the Amazon Elastic Compute Cloud User Guide.
+	// The name of the placement group into which to launch your instances, if any.
+	// A placement group is a logical grouping of instances within a single Availability
+	// Zone. You cannot specify multiple Availability Zones and a placement group.
+	// For more information, see Placement Groups (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html)
+	// in the Amazon EC2 User Guide for Linux Instances.
 	PlacementGroup *string `min:"1" type:"string"`
+
+	// The Amazon Resource Name (ARN) of the service-linked role that the Auto Scaling
+	// group uses to call other AWS services on your behalf. By default, Amazon
+	// EC2 Auto Scaling uses a service-linked role named AWSServiceRoleForAutoScaling,
+	// which it creates if it does not exist. For more information, see Service-Linked
+	// Roles (https://docs.aws.amazon.com/autoscaling/ec2/userguide/autoscaling-service-linked-role.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
+	ServiceLinkedRoleARN *string `min:"1" type:"string"`
 
 	// One or more tags.
 	//
-	// For more information, see Tagging Auto Scaling Groups and Instances (http://docs.aws.amazon.com/autoscaling/latest/userguide/autoscaling-tagging.html)
-	// in the Auto Scaling User Guide.
+	// For more information, see Tagging Auto Scaling Groups and Instances (https://docs.aws.amazon.com/autoscaling/ec2/userguide/autoscaling-tagging.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
 	Tags []*Tag `type:"list"`
 
-	// The Amazon Resource Names (ARN) of the target groups.
+	// The Amazon Resource Names (ARN) of the target groups to associate with the
+	// Auto Scaling group. Instances are registered as targets in a target group,
+	// and traffic is routed to the target group.
+	//
+	// For more information, see Using a Load Balancer with an Auto Scaling Group
+	// (https://docs.aws.amazon.com/autoscaling/ec2/userguide/autoscaling-load-balancer.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
 	TargetGroupARNs []*string `type:"list"`
 
 	// One or more termination policies used to select the instance to terminate.
 	// These policies are executed in the order that they are listed.
 	//
 	// For more information, see Controlling Which Instances Auto Scaling Terminates
-	// During Scale In (http://docs.aws.amazon.com/autoscaling/latest/userguide/as-instance-termination.html)
-	// in the Auto Scaling User Guide.
+	// During Scale In (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
 	TerminationPolicies []*string `type:"list"`
 
-	// A comma-separated list of subnet identifiers for your virtual private cloud
-	// (VPC).
+	// A comma-separated list of subnet IDs for your virtual private cloud (VPC).
 	//
-	// If you specify subnets and Availability Zones with this call, ensure that
-	// the subnets' Availability Zones match the Availability Zones specified.
+	// If you specify VPCZoneIdentifier with AvailabilityZones, the subnets that
+	// you specify for this parameter must reside in those Availability Zones.
 	//
-	// For more information, see Launching Auto Scaling Instances in a VPC (http://docs.aws.amazon.com/autoscaling/latest/userguide/asg-in-vpc.html)
-	// in the Auto Scaling User Guide.
+	// Conditional: If your account supports EC2-Classic and VPC, this parameter
+	// is required to launch instances into a VPC.
 	VPCZoneIdentifier *string `min:"1" type:"string"`
 }
 
@@ -5806,6 +6245,9 @@ func (s *CreateAutoScalingGroupInput) Validate() error {
 	if s.PlacementGroup != nil && len(*s.PlacementGroup) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("PlacementGroup", 1))
 	}
+	if s.ServiceLinkedRoleARN != nil && len(*s.ServiceLinkedRoleARN) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ServiceLinkedRoleARN", 1))
+	}
 	if s.VPCZoneIdentifier != nil && len(*s.VPCZoneIdentifier) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("VPCZoneIdentifier", 1))
 	}
@@ -5822,6 +6264,11 @@ func (s *CreateAutoScalingGroupInput) Validate() error {
 			if err := v.Validate(); err != nil {
 				invalidParams.AddNested(fmt.Sprintf("%s[%v]", "LifecycleHookSpecificationList", i), err.(request.ErrInvalidParams))
 			}
+		}
+	}
+	if s.MixedInstancesPolicy != nil {
+		if err := s.MixedInstancesPolicy.Validate(); err != nil {
+			invalidParams.AddNested("MixedInstancesPolicy", err.(request.ErrInvalidParams))
 		}
 	}
 	if s.Tags != nil {
@@ -5919,6 +6366,12 @@ func (s *CreateAutoScalingGroupInput) SetMinSize(v int64) *CreateAutoScalingGrou
 	return s
 }
 
+// SetMixedInstancesPolicy sets the MixedInstancesPolicy field's value.
+func (s *CreateAutoScalingGroupInput) SetMixedInstancesPolicy(v *MixedInstancesPolicy) *CreateAutoScalingGroupInput {
+	s.MixedInstancesPolicy = v
+	return s
+}
+
 // SetNewInstancesProtectedFromScaleIn sets the NewInstancesProtectedFromScaleIn field's value.
 func (s *CreateAutoScalingGroupInput) SetNewInstancesProtectedFromScaleIn(v bool) *CreateAutoScalingGroupInput {
 	s.NewInstancesProtectedFromScaleIn = &v
@@ -5928,6 +6381,12 @@ func (s *CreateAutoScalingGroupInput) SetNewInstancesProtectedFromScaleIn(v bool
 // SetPlacementGroup sets the PlacementGroup field's value.
 func (s *CreateAutoScalingGroupInput) SetPlacementGroup(v string) *CreateAutoScalingGroupInput {
 	s.PlacementGroup = &v
+	return s
+}
+
+// SetServiceLinkedRoleARN sets the ServiceLinkedRoleARN field's value.
+func (s *CreateAutoScalingGroupInput) SetServiceLinkedRoleARN(v string) *CreateAutoScalingGroupInput {
+	s.ServiceLinkedRoleARN = &v
 	return s
 }
 
@@ -5955,7 +6414,6 @@ func (s *CreateAutoScalingGroupInput) SetVPCZoneIdentifier(v string) *CreateAuto
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CreateAutoScalingGroupOutput
 type CreateAutoScalingGroupOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -5970,39 +6428,43 @@ func (s CreateAutoScalingGroupOutput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CreateLaunchConfigurationType
 type CreateLaunchConfigurationInput struct {
 	_ struct{} `type:"structure"`
 
 	// Used for groups that launch instances into a virtual private cloud (VPC).
 	// Specifies whether to assign a public IP address to each instance. For more
-	// information, see Launching Auto Scaling Instances in a VPC (http://docs.aws.amazon.com/autoscaling/latest/userguide/asg-in-vpc.html)
-	// in the Auto Scaling User Guide.
+	// information, see Launching Auto Scaling Instances in a VPC (https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-in-vpc.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
 	//
 	// If you specify this parameter, be sure to specify at least one subnet when
 	// you create your group.
 	//
 	// Default: If the instance is launched into a default subnet, the default is
-	// true. If the instance is launched into a nondefault subnet, the default is
-	// false. For more information, see Supported Platforms (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-supported-platforms.html)
-	// in the Amazon Elastic Compute Cloud User Guide.
+	// to assign a public IP address. If the instance is launched into a nondefault
+	// subnet, the default is not to assign a public IP address.
 	AssociatePublicIpAddress *bool `type:"boolean"`
 
 	// One or more mappings that specify how block devices are exposed to the instance.
-	// For more information, see Block Device Mapping (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html)
-	// in the Amazon Elastic Compute Cloud User Guide.
+	// For more information, see Block Device Mapping (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html)
+	// in the Amazon EC2 User Guide for Linux Instances.
 	BlockDeviceMappings []*BlockDeviceMapping `type:"list"`
 
 	// The ID of a ClassicLink-enabled VPC to link your EC2-Classic instances to.
 	// This parameter is supported only if you are launching EC2-Classic instances.
-	// For more information, see ClassicLink (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/vpc-classiclink.html)
-	// in the Amazon Elastic Compute Cloud User Guide.
+	// For more information, see ClassicLink (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/vpc-classiclink.html)
+	// in the Amazon EC2 User Guide for Linux Instances and Linking EC2-Classic
+	// Instances to a VPC (https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-in-vpc.html#as-ClassicLink)
+	// in the Amazon EC2 Auto Scaling User Guide.
 	ClassicLinkVPCId *string `min:"1" type:"string"`
 
 	// The IDs of one or more security groups for the specified ClassicLink-enabled
-	// VPC. This parameter is required if you specify a ClassicLink-enabled VPC,
-	// and is not supported otherwise. For more information, see ClassicLink (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/vpc-classiclink.html)
-	// in the Amazon Elastic Compute Cloud User Guide.
+	// VPC. For more information, see ClassicLink (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/vpc-classiclink.html)
+	// in the Amazon EC2 User Guide for Linux Instances and Linking EC2-Classic
+	// Instances to a VPC (https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-in-vpc.html#as-ClassicLink)
+	// in the Amazon EC2 Auto Scaling User Guide.
+	//
+	// Conditional: This parameter is required if you specify a ClassicLink-enabled
+	// VPC, and is not supported otherwise.
 	ClassicLinkVPCSecurityGroups []*string `type:"list"`
 
 	// Indicates whether the instance is optimized for Amazon EBS I/O. By default,
@@ -6010,66 +6472,66 @@ type CreateLaunchConfigurationInput struct {
 	// throughput to Amazon EBS and an optimized configuration stack to provide
 	// optimal I/O performance. This optimization is not available with all instance
 	// types. Additional usage charges apply. For more information, see Amazon EBS-Optimized
-	// Instances (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSOptimized.html)
-	// in the Amazon Elastic Compute Cloud User Guide.
+	// Instances (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSOptimized.html)
+	// in the Amazon EC2 User Guide for Linux Instances.
 	EbsOptimized *bool `type:"boolean"`
 
 	// The name or the Amazon Resource Name (ARN) of the instance profile associated
 	// with the IAM role for the instance.
 	//
-	// EC2 instances launched with an IAM role will automatically have AWS security
-	// credentials available. You can use IAM roles with Auto Scaling to automatically
+	// EC2 instances launched with an IAM role automatically have AWS security credentials
+	// available. You can use IAM roles with Amazon EC2 Auto Scaling to automatically
 	// enable applications running on your EC2 instances to securely access other
-	// AWS resources. For more information, see Launch Auto Scaling Instances with
-	// an IAM Role (http://docs.aws.amazon.com/autoscaling/latest/userguide/us-iam-role.html)
-	// in the Auto Scaling User Guide.
+	// AWS resources. For more information, see IAM Role for Applications That Run
+	// on Amazon EC2 Instances (https://docs.aws.amazon.com/autoscaling/ec2/userguide/us-iam-role.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
 	IamInstanceProfile *string `min:"1" type:"string"`
 
 	// The ID of the Amazon Machine Image (AMI) to use to launch your EC2 instances.
 	//
 	// If you do not specify InstanceId, you must specify ImageId.
 	//
-	// For more information, see Finding an AMI (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html)
-	// in the Amazon Elastic Compute Cloud User Guide.
+	// For more information, see Finding an AMI (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html)
+	// in the Amazon EC2 User Guide for Linux Instances.
 	ImageId *string `min:"1" type:"string"`
 
 	// The ID of the instance to use to create the launch configuration. The new
-	// launch configuration derives attributes from the instance, with the exception
-	// of the block device mapping.
-	//
-	// If you do not specify InstanceId, you must specify both ImageId and InstanceType.
+	// launch configuration derives attributes from the instance, except for the
+	// block device mapping.
 	//
 	// To create a launch configuration with a block device mapping or override
 	// any other instance attributes, specify them as part of the same request.
 	//
 	// For more information, see Create a Launch Configuration Using an EC2 Instance
-	// (http://docs.aws.amazon.com/autoscaling/latest/userguide/create-lc-with-instanceID.html)
-	// in the Auto Scaling User Guide.
+	// (https://docs.aws.amazon.com/autoscaling/ec2/userguide/create-lc-with-instanceID.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
+	//
+	// If you do not specify InstanceId, you must specify both ImageId and InstanceType.
 	InstanceId *string `min:"1" type:"string"`
 
 	// Enables detailed monitoring (true) or basic monitoring (false) for the Auto
-	// Scaling instances. The default is true.
+	// Scaling instances. The default value is true.
 	InstanceMonitoring *InstanceMonitoring `type:"structure"`
 
 	// The instance type of the EC2 instance.
 	//
-	// If you do not specify InstanceId, you must specify InstanceType.
-	//
 	// For information about available instance types, see Available Instance Types
-	// (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html#AvailableInstanceTypes)
-	// in the Amazon Elastic Compute Cloud User Guide.
+	// (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html#AvailableInstanceTypes)
+	// in the Amazon EC2 User Guide for Linux Instances.
+	//
+	// If you do not specify InstanceId, you must specify InstanceType.
 	InstanceType *string `min:"1" type:"string"`
 
 	// The ID of the kernel associated with the AMI.
 	KernelId *string `min:"1" type:"string"`
 
 	// The name of the key pair. For more information, see Amazon EC2 Key Pairs
-	// (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) in
-	// the Amazon Elastic Compute Cloud User Guide.
+	// (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html)
+	// in the Amazon EC2 User Guide for Linux Instances.
 	KeyName *string `min:"1" type:"string"`
 
-	// The name of the launch configuration. This name must be unique within the
-	// scope of your AWS account.
+	// The name of the launch configuration. This name must be unique per Region
+	// per account.
 	//
 	// LaunchConfigurationName is a required field
 	LaunchConfigurationName *string `min:"1" type:"string" required:"true"`
@@ -6077,15 +6539,15 @@ type CreateLaunchConfigurationInput struct {
 	// The tenancy of the instance. An instance with a tenancy of dedicated runs
 	// on single-tenant hardware and can only be launched into a VPC.
 	//
-	// You must set the value of this parameter to dedicated if want to launch Dedicated
-	// Instances into a shared tenancy VPC (VPC with instance placement tenancy
-	// attribute set to default).
+	// To launch Dedicated Instances into a shared tenancy VPC (a VPC with the instance
+	// placement tenancy attribute set to default), you must set the value of this
+	// parameter to dedicated.
 	//
-	// If you specify this parameter, be sure to specify at least one subnet when
+	// If you specify PlacementTenancy, be sure to specify at least one subnet when
 	// you create your group.
 	//
-	// For more information, see Launching Auto Scaling Instances in a VPC (http://docs.aws.amazon.com/autoscaling/latest/userguide/asg-in-vpc.html)
-	// in the Auto Scaling User Guide.
+	// For more information, see Instance Placement Tenancy (https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-in-vpc.html#as-vpc-tenancy)
+	// in the Amazon EC2 Auto Scaling User Guide.
 	//
 	// Valid values: default | dedicated
 	PlacementTenancy *string `min:"1" type:"string"`
@@ -6096,25 +6558,25 @@ type CreateLaunchConfigurationInput struct {
 	// One or more security groups with which to associate the instances.
 	//
 	// If your instances are launched in EC2-Classic, you can either specify security
-	// group names or the security group IDs. For more information about security
-	// groups for EC2-Classic, see Amazon EC2 Security Groups (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html)
-	// in the Amazon Elastic Compute Cloud User Guide.
+	// group names or the security group IDs. For more information, see Amazon EC2
+	// Security Groups (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html)
+	// in the Amazon EC2 User Guide for Linux Instances.
 	//
 	// If your instances are launched into a VPC, specify security group IDs. For
-	// more information, see Security Groups for Your VPC (http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_SecurityGroups.html)
+	// more information, see Security Groups for Your VPC (https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_SecurityGroups.html)
 	// in the Amazon Virtual Private Cloud User Guide.
 	SecurityGroups []*string `type:"list"`
 
 	// The maximum hourly price to be paid for any Spot Instance launched to fulfill
 	// the request. Spot Instances are launched when the price you specify exceeds
 	// the current Spot market price. For more information, see Launching Spot Instances
-	// in Your Auto Scaling Group (http://docs.aws.amazon.com/autoscaling/latest/userguide/US-SpotInstances.html)
-	// in the Auto Scaling User Guide.
+	// in Your Auto Scaling Group (https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-launch-spot-instances.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
 	SpotPrice *string `min:"1" type:"string"`
 
 	// The user data to make available to the launched EC2 instances. For more information,
-	// see Instance Metadata and User Data (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html)
-	// in the Amazon Elastic Compute Cloud User Guide.
+	// see Instance Metadata and User Data (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html)
+	// in the Amazon EC2 User Guide for Linux Instances.
 	UserData *string `type:"string"`
 }
 
@@ -6292,7 +6754,6 @@ func (s *CreateLaunchConfigurationInput) SetUserData(v string) *CreateLaunchConf
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CreateLaunchConfigurationOutput
 type CreateLaunchConfigurationOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -6307,7 +6768,6 @@ func (s CreateLaunchConfigurationOutput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CreateOrUpdateTagsType
 type CreateOrUpdateTagsInput struct {
 	_ struct{} `type:"structure"`
 
@@ -6356,7 +6816,6 @@ func (s *CreateOrUpdateTagsInput) SetTags(v []*Tag) *CreateOrUpdateTagsInput {
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CreateOrUpdateTagsOutput
 type CreateOrUpdateTagsOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -6371,12 +6830,30 @@ func (s CreateOrUpdateTagsOutput) GoString() string {
 	return s.String()
 }
 
-// Configures a customized metric for a target tracking policy.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/CustomizedMetricSpecification
+// Represents a CloudWatch metric of your choosing for a target tracking scaling
+// policy to use with Amazon EC2 Auto Scaling.
+//
+// To create your customized metric specification:
+//
+//    * Add values for each required parameter from CloudWatch. You can use
+//    an existing metric, or a new metric that you create. To use your own metric,
+//    you must first publish the metric to CloudWatch. For more information,
+//    see Publish Custom Metrics (https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html)
+//    in the Amazon CloudWatch User Guide.
+//
+//    * Choose a metric that changes proportionally with capacity. The value
+//    of the metric should increase or decrease in inverse proportion to the
+//    number of capacity units. That is, the value of the metric should decrease
+//    when capacity increases.
+//
+// For more information about CloudWatch, see Amazon CloudWatch Concepts (https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html).
 type CustomizedMetricSpecification struct {
 	_ struct{} `type:"structure"`
 
 	// The dimensions of the metric.
+	//
+	// Conditional: If you published your metric with dimensions, you must specify
+	// the same dimensions in your scaling policy.
 	Dimensions []*MetricDimension `type:"list"`
 
 	// The name of the metric.
@@ -6467,7 +6944,6 @@ func (s *CustomizedMetricSpecification) SetUnit(v string) *CustomizedMetricSpeci
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteAutoScalingGroupType
 type DeleteAutoScalingGroupInput struct {
 	_ struct{} `type:"structure"`
 
@@ -6476,7 +6952,7 @@ type DeleteAutoScalingGroupInput struct {
 	// AutoScalingGroupName is a required field
 	AutoScalingGroupName *string `min:"1" type:"string" required:"true"`
 
-	// Specifies that the group will be deleted along with all instances associated
+	// Specifies that the group is to be deleted along with all instances associated
 	// with the group, without waiting for all instances to be terminated. This
 	// parameter also deletes any lifecycle actions associated with the group.
 	ForceDelete *bool `type:"boolean"`
@@ -6520,7 +6996,6 @@ func (s *DeleteAutoScalingGroupInput) SetForceDelete(v bool) *DeleteAutoScalingG
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteAutoScalingGroupOutput
 type DeleteAutoScalingGroupOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -6535,7 +7010,6 @@ func (s DeleteAutoScalingGroupOutput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/LaunchConfigurationNameType
 type DeleteLaunchConfigurationInput struct {
 	_ struct{} `type:"structure"`
 
@@ -6577,7 +7051,6 @@ func (s *DeleteLaunchConfigurationInput) SetLaunchConfigurationName(v string) *D
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteLaunchConfigurationOutput
 type DeleteLaunchConfigurationOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -6592,7 +7065,6 @@ func (s DeleteLaunchConfigurationOutput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteLifecycleHookType
 type DeleteLifecycleHookInput struct {
 	_ struct{} `type:"structure"`
 
@@ -6651,7 +7123,6 @@ func (s *DeleteLifecycleHookInput) SetLifecycleHookName(v string) *DeleteLifecyc
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteLifecycleHookAnswer
 type DeleteLifecycleHookOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -6666,7 +7137,6 @@ func (s DeleteLifecycleHookOutput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteNotificationConfigurationType
 type DeleteNotificationConfigurationInput struct {
 	_ struct{} `type:"structure"`
 
@@ -6676,7 +7146,7 @@ type DeleteNotificationConfigurationInput struct {
 	AutoScalingGroupName *string `min:"1" type:"string" required:"true"`
 
 	// The Amazon Resource Name (ARN) of the Amazon Simple Notification Service
-	// (SNS) topic.
+	// (Amazon SNS) topic.
 	//
 	// TopicARN is a required field
 	TopicARN *string `min:"1" type:"string" required:"true"`
@@ -6726,7 +7196,6 @@ func (s *DeleteNotificationConfigurationInput) SetTopicARN(v string) *DeleteNoti
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteNotificationConfigurationOutput
 type DeleteNotificationConfigurationOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -6741,7 +7210,6 @@ func (s DeleteNotificationConfigurationOutput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeletePolicyType
 type DeletePolicyInput struct {
 	_ struct{} `type:"structure"`
 
@@ -6795,7 +7263,6 @@ func (s *DeletePolicyInput) SetPolicyName(v string) *DeletePolicyInput {
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeletePolicyOutput
 type DeletePolicyOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -6810,7 +7277,6 @@ func (s DeletePolicyOutput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteScheduledActionType
 type DeleteScheduledActionInput struct {
 	_ struct{} `type:"structure"`
 
@@ -6869,7 +7335,6 @@ func (s *DeleteScheduledActionInput) SetScheduledActionName(v string) *DeleteSch
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteScheduledActionOutput
 type DeleteScheduledActionOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -6884,7 +7349,6 @@ func (s DeleteScheduledActionOutput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteTagsType
 type DeleteTagsInput struct {
 	_ struct{} `type:"structure"`
 
@@ -6933,7 +7397,6 @@ func (s *DeleteTagsInput) SetTags(v []*Tag) *DeleteTagsInput {
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DeleteTagsOutput
 type DeleteTagsOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -6948,7 +7411,6 @@ func (s DeleteTagsOutput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAccountLimitsInput
 type DescribeAccountLimitsInput struct {
 	_ struct{} `type:"structure"`
 }
@@ -6963,16 +7425,15 @@ func (s DescribeAccountLimitsInput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAccountLimitsAnswer
 type DescribeAccountLimitsOutput struct {
 	_ struct{} `type:"structure"`
 
 	// The maximum number of groups allowed for your AWS account. The default limit
-	// is 20 per region.
+	// is 200 per region.
 	MaxNumberOfAutoScalingGroups *int64 `type:"integer"`
 
 	// The maximum number of launch configurations allowed for your AWS account.
-	// The default limit is 100 per region.
+	// The default limit is 200 per region.
 	MaxNumberOfLaunchConfigurations *int64 `type:"integer"`
 
 	// The current number of groups for your AWS account.
@@ -7016,7 +7477,6 @@ func (s *DescribeAccountLimitsOutput) SetNumberOfLaunchConfigurations(v int64) *
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAdjustmentTypesInput
 type DescribeAdjustmentTypesInput struct {
 	_ struct{} `type:"structure"`
 }
@@ -7031,7 +7491,6 @@ func (s DescribeAdjustmentTypesInput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAdjustmentTypesAnswer
 type DescribeAdjustmentTypesOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -7055,12 +7514,14 @@ func (s *DescribeAdjustmentTypesOutput) SetAdjustmentTypes(v []*AdjustmentType) 
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/GroupNamesType
 type DescribeAutoScalingGroupsInput struct {
 	_ struct{} `type:"structure"`
 
-	// The names of the Auto Scaling groups. If you omit this parameter, all Auto
-	// Scaling groups are described.
+	// The names of the Auto Scaling groups. Each name can be a maximum of 1600
+	// characters. By default, you can only specify up to 50 names. You can optionally
+	// increase this limit using the MaxRecords parameter.
+	//
+	// If you omit this parameter, all Auto Scaling groups are described.
 	AutoScalingGroupNames []*string `type:"list"`
 
 	// The maximum number of items to return with this call. The default value is
@@ -7100,7 +7561,6 @@ func (s *DescribeAutoScalingGroupsInput) SetNextToken(v string) *DescribeAutoSca
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/GroupsType
 type DescribeAutoScalingGroupsOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -7109,8 +7569,10 @@ type DescribeAutoScalingGroupsOutput struct {
 	// AutoScalingGroups is a required field
 	AutoScalingGroups []*Group `type:"list" required:"true"`
 
-	// The token to use when requesting the next set of items. If there are no additional
-	// items to return, the string is empty.
+	// A string that indicates that the response contains more items than can be
+	// returned in a single response. To receive additional items, specify this
+	// string for the NextToken value when requesting the next set of items. This
+	// value is null when there are no more items to return.
 	NextToken *string `type:"string"`
 }
 
@@ -7136,17 +7598,16 @@ func (s *DescribeAutoScalingGroupsOutput) SetNextToken(v string) *DescribeAutoSc
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAutoScalingInstancesType
 type DescribeAutoScalingInstancesInput struct {
 	_ struct{} `type:"structure"`
 
-	// The instances to describe; up to 50 instance IDs. If you omit this parameter,
-	// all Auto Scaling instances are described. If you specify an ID that does
-	// not exist, it is ignored with no error.
+	// The IDs of the instances. You can specify up to MaxRecords IDs. If you omit
+	// this parameter, all Auto Scaling instances are described. If you specify
+	// an ID that does not exist, it is ignored with no error.
 	InstanceIds []*string `type:"list"`
 
 	// The maximum number of items to return with this call. The default value is
-	// 50 and the maximum value is 100.
+	// 50 and the maximum value is 50.
 	MaxRecords *int64 `type:"integer"`
 
 	// The token for the next set of items to return. (You received this token from
@@ -7182,15 +7643,16 @@ func (s *DescribeAutoScalingInstancesInput) SetNextToken(v string) *DescribeAuto
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/InstancesType
 type DescribeAutoScalingInstancesOutput struct {
 	_ struct{} `type:"structure"`
 
 	// The instances.
 	AutoScalingInstances []*InstanceDetails `type:"list"`
 
-	// The token to use when requesting the next set of items. If there are no additional
-	// items to return, the string is empty.
+	// A string that indicates that the response contains more items than can be
+	// returned in a single response. To receive additional items, specify this
+	// string for the NextToken value when requesting the next set of items. This
+	// value is null when there are no more items to return.
 	NextToken *string `type:"string"`
 }
 
@@ -7216,7 +7678,6 @@ func (s *DescribeAutoScalingInstancesOutput) SetNextToken(v string) *DescribeAut
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAutoScalingNotificationTypesInput
 type DescribeAutoScalingNotificationTypesInput struct {
 	_ struct{} `type:"structure"`
 }
@@ -7231,7 +7692,6 @@ func (s DescribeAutoScalingNotificationTypesInput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeAutoScalingNotificationTypesAnswer
 type DescribeAutoScalingNotificationTypesOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -7255,7 +7715,6 @@ func (s *DescribeAutoScalingNotificationTypesOutput) SetAutoScalingNotificationT
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/LaunchConfigurationNamesType
 type DescribeLaunchConfigurationsInput struct {
 	_ struct{} `type:"structure"`
 
@@ -7300,7 +7759,6 @@ func (s *DescribeLaunchConfigurationsInput) SetNextToken(v string) *DescribeLaun
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/LaunchConfigurationsType
 type DescribeLaunchConfigurationsOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -7309,8 +7767,10 @@ type DescribeLaunchConfigurationsOutput struct {
 	// LaunchConfigurations is a required field
 	LaunchConfigurations []*LaunchConfiguration `type:"list" required:"true"`
 
-	// The token to use when requesting the next set of items. If there are no additional
-	// items to return, the string is empty.
+	// A string that indicates that the response contains more items than can be
+	// returned in a single response. To receive additional items, specify this
+	// string for the NextToken value when requesting the next set of items. This
+	// value is null when there are no more items to return.
 	NextToken *string `type:"string"`
 }
 
@@ -7336,7 +7796,6 @@ func (s *DescribeLaunchConfigurationsOutput) SetNextToken(v string) *DescribeLau
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLifecycleHookTypesInput
 type DescribeLifecycleHookTypesInput struct {
 	_ struct{} `type:"structure"`
 }
@@ -7351,7 +7810,6 @@ func (s DescribeLifecycleHookTypesInput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLifecycleHookTypesAnswer
 type DescribeLifecycleHookTypesOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -7375,7 +7833,6 @@ func (s *DescribeLifecycleHookTypesOutput) SetLifecycleHookTypes(v []*string) *D
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLifecycleHooksType
 type DescribeLifecycleHooksInput struct {
 	_ struct{} `type:"structure"`
 
@@ -7427,7 +7884,6 @@ func (s *DescribeLifecycleHooksInput) SetLifecycleHookNames(v []*string) *Descri
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLifecycleHooksAnswer
 type DescribeLifecycleHooksOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -7451,7 +7907,6 @@ func (s *DescribeLifecycleHooksOutput) SetLifecycleHooks(v []*LifecycleHook) *De
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLoadBalancerTargetGroupsRequest
 type DescribeLoadBalancerTargetGroupsInput struct {
 	_ struct{} `type:"structure"`
 
@@ -7461,7 +7916,7 @@ type DescribeLoadBalancerTargetGroupsInput struct {
 	AutoScalingGroupName *string `min:"1" type:"string" required:"true"`
 
 	// The maximum number of items to return with this call. The default value is
-	// 50 and the maximum value is 100.
+	// 100 and the maximum value is 100.
 	MaxRecords *int64 `type:"integer"`
 
 	// The token for the next set of items to return. (You received this token from
@@ -7513,15 +7968,16 @@ func (s *DescribeLoadBalancerTargetGroupsInput) SetNextToken(v string) *Describe
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLoadBalancerTargetGroupsResponse
 type DescribeLoadBalancerTargetGroupsOutput struct {
 	_ struct{} `type:"structure"`
 
 	// Information about the target groups.
 	LoadBalancerTargetGroups []*LoadBalancerTargetGroupState `type:"list"`
 
-	// The token to use when requesting the next set of items. If there are no additional
-	// items to return, the string is empty.
+	// A string that indicates that the response contains more items than can be
+	// returned in a single response. To receive additional items, specify this
+	// string for the NextToken value when requesting the next set of items. This
+	// value is null when there are no more items to return.
 	NextToken *string `type:"string"`
 }
 
@@ -7547,7 +8003,6 @@ func (s *DescribeLoadBalancerTargetGroupsOutput) SetNextToken(v string) *Describ
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLoadBalancersRequest
 type DescribeLoadBalancersInput struct {
 	_ struct{} `type:"structure"`
 
@@ -7557,7 +8012,7 @@ type DescribeLoadBalancersInput struct {
 	AutoScalingGroupName *string `min:"1" type:"string" required:"true"`
 
 	// The maximum number of items to return with this call. The default value is
-	// 50 and the maximum value is 100.
+	// 100 and the maximum value is 100.
 	MaxRecords *int64 `type:"integer"`
 
 	// The token for the next set of items to return. (You received this token from
@@ -7609,15 +8064,16 @@ func (s *DescribeLoadBalancersInput) SetNextToken(v string) *DescribeLoadBalance
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeLoadBalancersResponse
 type DescribeLoadBalancersOutput struct {
 	_ struct{} `type:"structure"`
 
 	// The load balancers.
 	LoadBalancers []*LoadBalancerState `type:"list"`
 
-	// The token to use when requesting the next set of items. If there are no additional
-	// items to return, the string is empty.
+	// A string that indicates that the response contains more items than can be
+	// returned in a single response. To receive additional items, specify this
+	// string for the NextToken value when requesting the next set of items. This
+	// value is null when there are no more items to return.
 	NextToken *string `type:"string"`
 }
 
@@ -7643,7 +8099,6 @@ func (s *DescribeLoadBalancersOutput) SetNextToken(v string) *DescribeLoadBalanc
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeMetricCollectionTypesInput
 type DescribeMetricCollectionTypesInput struct {
 	_ struct{} `type:"structure"`
 }
@@ -7658,7 +8113,6 @@ func (s DescribeMetricCollectionTypesInput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeMetricCollectionTypesAnswer
 type DescribeMetricCollectionTypesOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -7691,7 +8145,6 @@ func (s *DescribeMetricCollectionTypesOutput) SetMetrics(v []*MetricCollectionTy
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeNotificationConfigurationsType
 type DescribeNotificationConfigurationsInput struct {
 	_ struct{} `type:"structure"`
 
@@ -7735,12 +8188,13 @@ func (s *DescribeNotificationConfigurationsInput) SetNextToken(v string) *Descri
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeNotificationConfigurationsAnswer
 type DescribeNotificationConfigurationsOutput struct {
 	_ struct{} `type:"structure"`
 
-	// The token to use when requesting the next set of items. If there are no additional
-	// items to return, the string is empty.
+	// A string that indicates that the response contains more items than can be
+	// returned in a single response. To receive additional items, specify this
+	// string for the NextToken value when requesting the next set of items. This
+	// value is null when there are no more items to return.
 	NextToken *string `type:"string"`
 
 	// The notification configurations.
@@ -7771,7 +8225,6 @@ func (s *DescribeNotificationConfigurationsOutput) SetNotificationConfigurations
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribePoliciesType
 type DescribePoliciesInput struct {
 	_ struct{} `type:"structure"`
 
@@ -7787,12 +8240,13 @@ type DescribePoliciesInput struct {
 	NextToken *string `type:"string"`
 
 	// The names of one or more policies. If you omit this parameter, all policies
-	// are described. If an group name is provided, the results are limited to that
+	// are described. If a group name is provided, the results are limited to that
 	// group. This list is limited to 50 items. If you specify an unknown policy
 	// name, it is ignored with no error.
 	PolicyNames []*string `type:"list"`
 
-	// One or more policy types. Valid values are SimpleScaling and StepScaling.
+	// One or more policy types. The valid values are SimpleScaling, StepScaling,
+	// and TargetTrackingScaling.
 	PolicyTypes []*string `type:"list"`
 }
 
@@ -7849,12 +8303,13 @@ func (s *DescribePoliciesInput) SetPolicyTypes(v []*string) *DescribePoliciesInp
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PoliciesType
 type DescribePoliciesOutput struct {
 	_ struct{} `type:"structure"`
 
-	// The token to use when requesting the next set of items. If there are no additional
-	// items to return, the string is empty.
+	// A string that indicates that the response contains more items than can be
+	// returned in a single response. To receive additional items, specify this
+	// string for the NextToken value when requesting the next set of items. This
+	// value is null when there are no more items to return.
 	NextToken *string `type:"string"`
 
 	// The scaling policies.
@@ -7883,22 +8338,21 @@ func (s *DescribePoliciesOutput) SetScalingPolicies(v []*ScalingPolicy) *Describ
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeScalingActivitiesType
 type DescribeScalingActivitiesInput struct {
 	_ struct{} `type:"structure"`
 
-	// The activity IDs of the desired scaling activities. If you omit this parameter,
-	// all activities for the past six weeks are described. If you specify an Auto
-	// Scaling group, the results are limited to that group. The list of requested
-	// activities cannot contain more than 50 items. If unknown activities are requested,
-	// they are ignored with no error.
+	// The activity IDs of the desired scaling activities. You can specify up to
+	// 50 IDs. If you omit this parameter, all activities for the past six weeks
+	// are described. If unknown activities are requested, they are ignored with
+	// no error. If you specify an Auto Scaling group, the results are limited to
+	// that group.
 	ActivityIds []*string `type:"list"`
 
 	// The name of the Auto Scaling group.
 	AutoScalingGroupName *string `min:"1" type:"string"`
 
 	// The maximum number of items to return with this call. The default value is
-	// 100.
+	// 100 and the maximum value is 100.
 	MaxRecords *int64 `type:"integer"`
 
 	// The token for the next set of items to return. (You received this token from
@@ -7953,7 +8407,6 @@ func (s *DescribeScalingActivitiesInput) SetNextToken(v string) *DescribeScaling
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ActivitiesType
 type DescribeScalingActivitiesOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -7963,8 +8416,10 @@ type DescribeScalingActivitiesOutput struct {
 	// Activities is a required field
 	Activities []*Activity `type:"list" required:"true"`
 
-	// The token to use when requesting the next set of items. If there are no additional
-	// items to return, the string is empty.
+	// A string that indicates that the response contains more items than can be
+	// returned in a single response. To receive additional items, specify this
+	// string for the NextToken value when requesting the next set of items. This
+	// value is null when there are no more items to return.
 	NextToken *string `type:"string"`
 }
 
@@ -7990,7 +8445,6 @@ func (s *DescribeScalingActivitiesOutput) SetNextToken(v string) *DescribeScalin
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeScalingProcessTypesInput
 type DescribeScalingProcessTypesInput struct {
 	_ struct{} `type:"structure"`
 }
@@ -8005,7 +8459,6 @@ func (s DescribeScalingProcessTypesInput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ProcessesType
 type DescribeScalingProcessTypesOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -8029,7 +8482,6 @@ func (s *DescribeScalingProcessTypesOutput) SetProcesses(v []*ProcessType) *Desc
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeScheduledActionsType
 type DescribeScheduledActionsInput struct {
 	_ struct{} `type:"structure"`
 
@@ -8038,7 +8490,7 @@ type DescribeScheduledActionsInput struct {
 
 	// The latest scheduled start time to return. If scheduled action names are
 	// provided, this parameter is ignored.
-	EndTime *time.Time `type:"timestamp" timestampFormat:"iso8601"`
+	EndTime *time.Time `type:"timestamp"`
 
 	// The maximum number of items to return with this call. The default value is
 	// 50 and the maximum value is 100.
@@ -8048,18 +8500,14 @@ type DescribeScheduledActionsInput struct {
 	// a previous call.)
 	NextToken *string `type:"string"`
 
-	// Describes one or more scheduled actions. If you omit this parameter, all
-	// scheduled actions are described. If you specify an unknown scheduled action,
-	// it is ignored with no error.
-	//
-	// You can describe up to a maximum of 50 instances with a single call. If there
-	// are more items to return, the call returns a token. To get the next set of
-	// items, repeat the call with the returned token.
+	// The names of one or more scheduled actions. You can specify up to 50 actions.
+	// If you omit this parameter, all scheduled actions are described. If you specify
+	// an unknown scheduled action, it is ignored with no error.
 	ScheduledActionNames []*string `type:"list"`
 
 	// The earliest scheduled start time to return. If scheduled action names are
 	// provided, this parameter is ignored.
-	StartTime *time.Time `type:"timestamp" timestampFormat:"iso8601"`
+	StartTime *time.Time `type:"timestamp"`
 }
 
 // String returns the string representation
@@ -8121,12 +8569,13 @@ func (s *DescribeScheduledActionsInput) SetStartTime(v time.Time) *DescribeSched
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ScheduledActionsType
 type DescribeScheduledActionsOutput struct {
 	_ struct{} `type:"structure"`
 
-	// The token to use when requesting the next set of items. If there are no additional
-	// items to return, the string is empty.
+	// A string that indicates that the response contains more items than can be
+	// returned in a single response. To receive additional items, specify this
+	// string for the NextToken value when requesting the next set of items. This
+	// value is null when there are no more items to return.
 	NextToken *string `type:"string"`
 
 	// The scheduled actions.
@@ -8155,11 +8604,11 @@ func (s *DescribeScheduledActionsOutput) SetScheduledUpdateGroupActions(v []*Sch
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeTagsType
 type DescribeTagsInput struct {
 	_ struct{} `type:"structure"`
 
-	// A filter used to scope the tags to return.
+	// One or more filters to scope the tags to return. The maximum number of filters
+	// per filter type (for example, auto-scaling-group) is 1000.
 	Filters []*Filter `type:"list"`
 
 	// The maximum number of items to return with this call. The default value is
@@ -8199,12 +8648,13 @@ func (s *DescribeTagsInput) SetNextToken(v string) *DescribeTagsInput {
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/TagsType
 type DescribeTagsOutput struct {
 	_ struct{} `type:"structure"`
 
-	// The token to use when requesting the next set of items. If there are no additional
-	// items to return, the string is empty.
+	// A string that indicates that the response contains more items than can be
+	// returned in a single response. To receive additional items, specify this
+	// string for the NextToken value when requesting the next set of items. This
+	// value is null when there are no more items to return.
 	NextToken *string `type:"string"`
 
 	// One or more tags.
@@ -8233,7 +8683,6 @@ func (s *DescribeTagsOutput) SetTags(v []*TagDescription) *DescribeTagsOutput {
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeTerminationPolicyTypesInput
 type DescribeTerminationPolicyTypesInput struct {
 	_ struct{} `type:"structure"`
 }
@@ -8248,12 +8697,12 @@ func (s DescribeTerminationPolicyTypesInput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DescribeTerminationPolicyTypesAnswer
 type DescribeTerminationPolicyTypesOutput struct {
 	_ struct{} `type:"structure"`
 
-	// The termination policies supported by Auto Scaling (OldestInstance, OldestLaunchConfiguration,
-	// NewestInstance, ClosestToNextInstanceHour, and Default).
+	// The termination policies supported by Amazon EC2 Auto Scaling: OldestInstance,
+	// OldestLaunchConfiguration, NewestInstance, ClosestToNextInstanceHour, Default,
+	// OldestLaunchTemplate, and AllocationStrategy.
 	TerminationPolicyTypes []*string `type:"list"`
 }
 
@@ -8273,7 +8722,6 @@ func (s *DescribeTerminationPolicyTypesOutput) SetTerminationPolicyTypes(v []*st
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DetachInstancesQuery
 type DetachInstancesInput struct {
 	_ struct{} `type:"structure"`
 
@@ -8282,11 +8730,11 @@ type DetachInstancesInput struct {
 	// AutoScalingGroupName is a required field
 	AutoScalingGroupName *string `min:"1" type:"string" required:"true"`
 
-	// One or more instance IDs.
+	// The IDs of the instances. You can specify up to 20 instances.
 	InstanceIds []*string `type:"list"`
 
-	// If True, the Auto Scaling group decrements the desired capacity value by
-	// the number of instances detached.
+	// Indicates whether the Auto Scaling group decrements the desired capacity
+	// value by the number of instances detached.
 	//
 	// ShouldDecrementDesiredCapacity is a required field
 	ShouldDecrementDesiredCapacity *bool `type:"boolean" required:"true"`
@@ -8339,7 +8787,6 @@ func (s *DetachInstancesInput) SetShouldDecrementDesiredCapacity(v bool) *Detach
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DetachInstancesAnswer
 type DetachInstancesOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -8363,7 +8810,6 @@ func (s *DetachInstancesOutput) SetActivities(v []*Activity) *DetachInstancesOut
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DetachLoadBalancerTargetGroupsType
 type DetachLoadBalancerTargetGroupsInput struct {
 	_ struct{} `type:"structure"`
 
@@ -8372,7 +8818,8 @@ type DetachLoadBalancerTargetGroupsInput struct {
 	// AutoScalingGroupName is a required field
 	AutoScalingGroupName *string `min:"1" type:"string" required:"true"`
 
-	// The Amazon Resource Names (ARN) of the target groups.
+	// The Amazon Resource Names (ARN) of the target groups. You can specify up
+	// to 10 target groups.
 	//
 	// TargetGroupARNs is a required field
 	TargetGroupARNs []*string `type:"list" required:"true"`
@@ -8419,7 +8866,6 @@ func (s *DetachLoadBalancerTargetGroupsInput) SetTargetGroupARNs(v []*string) *D
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DetachLoadBalancerTargetGroupsResultType
 type DetachLoadBalancerTargetGroupsOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -8434,7 +8880,6 @@ func (s DetachLoadBalancerTargetGroupsOutput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DetachLoadBalancersType
 type DetachLoadBalancersInput struct {
 	_ struct{} `type:"structure"`
 
@@ -8443,7 +8888,7 @@ type DetachLoadBalancersInput struct {
 	// AutoScalingGroupName is a required field
 	AutoScalingGroupName *string `min:"1" type:"string" required:"true"`
 
-	// One or more load balancer names.
+	// The names of the load balancers. You can specify up to 10 load balancers.
 	//
 	// LoadBalancerNames is a required field
 	LoadBalancerNames []*string `type:"list" required:"true"`
@@ -8490,7 +8935,6 @@ func (s *DetachLoadBalancersInput) SetLoadBalancerNames(v []*string) *DetachLoad
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DetachLoadBalancersResultType
 type DetachLoadBalancersOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -8505,7 +8949,6 @@ func (s DetachLoadBalancersOutput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DisableMetricsCollectionQuery
 type DisableMetricsCollectionInput struct {
 	_ struct{} `type:"structure"`
 
@@ -8573,7 +9016,6 @@ func (s *DisableMetricsCollectionInput) SetMetrics(v []*string) *DisableMetricsC
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/DisableMetricsCollectionOutput
 type DisableMetricsCollectionOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -8588,48 +9030,73 @@ func (s DisableMetricsCollectionOutput) GoString() string {
 	return s.String()
 }
 
-// Describes an Amazon EBS volume.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/Ebs
+// Describes an Amazon EBS volume. Used in combination with BlockDeviceMapping.
 type Ebs struct {
 	_ struct{} `type:"structure"`
 
-	// Indicates whether the volume is deleted on instance termination.
-	//
-	// Default: true
+	// Indicates whether the volume is deleted on instance termination. For Amazon
+	// EC2 Auto Scaling, the default value is true.
 	DeleteOnTermination *bool `type:"boolean"`
 
-	// Indicates whether the volume should be encrypted. Encrypted EBS volumes must
-	// be attached to instances that support Amazon EBS encryption. Volumes that
-	// are created from encrypted snapshots are automatically encrypted. There is
-	// no way to create an encrypted volume from an unencrypted snapshot or an unencrypted
-	// volume from an encrypted snapshot. For more information, see Amazon EBS Encryption
-	// (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html) in
-	// the Amazon Elastic Compute Cloud User Guide.
+	// Specifies whether the volume should be encrypted. Encrypted EBS volumes can
+	// only be attached to instances that support Amazon EBS encryption. For more
+	// information, see Supported Instance Types (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html#EBSEncryption_supported_instances).
+	// If your AMI uses encrypted volumes, you can also only launch it on supported
+	// instance types.
+	//
+	// If you are creating a volume from a snapshot, you cannot specify an encryption
+	// value. Volumes that are created from encrypted snapshots are automatically
+	// encrypted, and volumes that are created from unencrypted snapshots are automatically
+	// unencrypted. By default, encrypted snapshots use the AWS managed CMK that
+	// is used for EBS encryption, but you can specify a custom CMK when you create
+	// the snapshot. The ability to encrypt a snapshot during copying also allows
+	// you to apply a new CMK to an already-encrypted snapshot. Volumes restored
+	// from the resulting copy are only accessible using the new CMK.
+	//
+	// Enabling encryption by default (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html#encryption-by-default)
+	// results in all EBS volumes being encrypted with the AWS managed CMK or a
+	// customer managed CMK, whether or not the snapshot was encrypted.
+	//
+	// For more information, see Using Encryption with EBS-Backed AMIs (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIEncryption.html)
+	// in the Amazon EC2 User Guide for Linux Instances and Required CMK Key Policy
+	// for Use with Encrypted Volumes (https://docs.aws.amazon.com/autoscaling/ec2/userguide/key-policy-requirements-EBS-encryption.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
 	Encrypted *bool `type:"boolean"`
 
 	// The number of I/O operations per second (IOPS) to provision for the volume.
+	// The maximum ratio of IOPS to volume size (in GiB) is 50:1. For more information,
+	// see Amazon EBS Volume Types (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html)
+	// in the Amazon EC2 User Guide for Linux Instances.
 	//
-	// Constraint: Required when the volume type is io1.
+	// Conditional: This parameter is required when the volume type is io1. (Not
+	// used with standard, gp2, st1, or sc1 volumes.)
 	Iops *int64 `min:"100" type:"integer"`
 
-	// The ID of the snapshot.
+	// The snapshot ID of the volume to use.
+	//
+	// Conditional: This parameter is optional if you specify a volume size. If
+	// you specify both SnapshotId and VolumeSize, VolumeSize must be equal or greater
+	// than the size of the snapshot.
 	SnapshotId *string `min:"1" type:"string"`
 
-	// The volume size, in GiB. For standard volumes, specify a value from 1 to
-	// 1,024. For io1 volumes, specify a value from 4 to 16,384. For gp2 volumes,
-	// specify a value from 1 to 16,384. If you specify a snapshot, the volume size
-	// must be equal to or larger than the snapshot size.
+	// The volume size, in Gibibytes (GiB).
+	//
+	// This can be a number from 1-1,024 for standard, 4-16,384 for io1, 1-16,384
+	// for gp2, and 500-16,384 for st1 and sc1. If you specify a snapshot, the volume
+	// size must be equal to or larger than the snapshot size.
 	//
 	// Default: If you create a volume from a snapshot and you don't specify a volume
 	// size, the default is the snapshot size.
+	//
+	// At least one of VolumeSize or SnapshotId is required.
 	VolumeSize *int64 `min:"1" type:"integer"`
 
-	// The volume type. For more information, see Amazon EBS Volume Types (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html)
-	// in the Amazon Elastic Compute Cloud User Guide.
+	// The volume type, which can be standard for Magnetic, io1 for Provisioned
+	// IOPS SSD, gp2 for General Purpose SSD, st1 for Throughput Optimized HDD,
+	// or sc1 for Cold HDD. For more information, see Amazon EBS Volume Types (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html)
+	// in the Amazon EC2 User Guide for Linux Instances.
 	//
-	// Valid values: standard | io1 | gp2
-	//
-	// Default: standard
+	// Valid values: standard | io1 | gp2 | st1 | sc1
 	VolumeType *string `min:"1" type:"string"`
 }
 
@@ -8701,7 +9168,6 @@ func (s *Ebs) SetVolumeType(v string) *Ebs {
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/EnableMetricsCollectionQuery
 type EnableMetricsCollectionInput struct {
 	_ struct{} `type:"structure"`
 
@@ -8787,7 +9253,6 @@ func (s *EnableMetricsCollectionInput) SetMetrics(v []*string) *EnableMetricsCol
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/EnableMetricsCollectionOutput
 type EnableMetricsCollectionOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -8803,7 +9268,6 @@ func (s EnableMetricsCollectionOutput) GoString() string {
 }
 
 // Describes an enabled metric.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/EnabledMetric
 type EnabledMetric struct {
 	_ struct{} `type:"structure"`
 
@@ -8852,7 +9316,6 @@ func (s *EnabledMetric) SetMetric(v string) *EnabledMetric {
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/EnterStandbyQuery
 type EnterStandbyInput struct {
 	_ struct{} `type:"structure"`
 
@@ -8861,14 +9324,11 @@ type EnterStandbyInput struct {
 	// AutoScalingGroupName is a required field
 	AutoScalingGroupName *string `min:"1" type:"string" required:"true"`
 
-	// One or more instances to move into Standby mode. You must specify at least
-	// one instance ID.
+	// The IDs of the instances. You can specify up to 20 instances.
 	InstanceIds []*string `type:"list"`
 
-	// Specifies whether the instances moved to Standby mode count as part of the
-	// Auto Scaling group's desired capacity. If set, the desired capacity for the
-	// Auto Scaling group decrements by the number of instances moved to Standby
-	// mode.
+	// Indicates whether to decrement the desired capacity of the Auto Scaling group
+	// by the number of instances moved to Standby mode.
 	//
 	// ShouldDecrementDesiredCapacity is a required field
 	ShouldDecrementDesiredCapacity *bool `type:"boolean" required:"true"`
@@ -8921,7 +9381,6 @@ func (s *EnterStandbyInput) SetShouldDecrementDesiredCapacity(v bool) *EnterStan
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/EnterStandbyAnswer
 type EnterStandbyOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -8945,7 +9404,6 @@ func (s *EnterStandbyOutput) SetActivities(v []*Activity) *EnterStandbyOutput {
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ExecutePolicyType
 type ExecutePolicyInput struct {
 	_ struct{} `type:"structure"`
 
@@ -8954,18 +9412,17 @@ type ExecutePolicyInput struct {
 
 	// The breach threshold for the alarm.
 	//
-	// This parameter is required if the policy type is StepScaling and not supported
-	// otherwise.
+	// Conditional: This parameter is required if the policy type is StepScaling
+	// and not supported otherwise.
 	BreachThreshold *float64 `type:"double"`
 
-	// If this parameter is true, Auto Scaling waits for the cooldown period to
-	// complete before executing the policy. Otherwise, Auto Scaling executes the
-	// policy without waiting for the cooldown period to complete.
+	// Indicates whether Amazon EC2 Auto Scaling waits for the cooldown period to
+	// complete before executing the policy.
 	//
-	// This parameter is not supported if the policy type is StepScaling.
+	// This parameter is not supported if the policy type is StepScaling or TargetTrackingScaling.
 	//
-	// For more information, see Auto Scaling Cooldowns (http://docs.aws.amazon.com/autoscaling/latest/userguide/Cooldown.html)
-	// in the Auto Scaling User Guide.
+	// For more information, see Scaling Cooldowns (https://docs.aws.amazon.com/autoscaling/ec2/userguide/Cooldown.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
 	HonorCooldown *bool `type:"boolean"`
 
 	// The metric value to compare to BreachThreshold. This enables you to execute
@@ -8977,8 +9434,8 @@ type ExecutePolicyInput struct {
 	// If you specify a metric value that doesn't correspond to a step adjustment
 	// for the policy, the call returns an error.
 	//
-	// This parameter is required if the policy type is StepScaling and not supported
-	// otherwise.
+	// Conditional: This parameter is required if the policy type is StepScaling
+	// and not supported otherwise.
 	MetricValue *float64 `type:"double"`
 
 	// The name or ARN of the policy.
@@ -9046,7 +9503,6 @@ func (s *ExecutePolicyInput) SetPolicyName(v string) *ExecutePolicyInput {
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ExecutePolicyOutput
 type ExecutePolicyOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -9061,7 +9517,6 @@ func (s ExecutePolicyOutput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ExitStandbyQuery
 type ExitStandbyInput struct {
 	_ struct{} `type:"structure"`
 
@@ -9070,7 +9525,7 @@ type ExitStandbyInput struct {
 	// AutoScalingGroupName is a required field
 	AutoScalingGroupName *string `min:"1" type:"string" required:"true"`
 
-	// One or more instance IDs. You must specify at least one instance ID.
+	// The IDs of the instances. You can specify up to 20 instances.
 	InstanceIds []*string `type:"list"`
 }
 
@@ -9112,7 +9567,6 @@ func (s *ExitStandbyInput) SetInstanceIds(v []*string) *ExitStandbyInput {
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ExitStandbyAnswer
 type ExitStandbyOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -9136,8 +9590,51 @@ func (s *ExitStandbyOutput) SetActivities(v []*Activity) *ExitStandbyOutput {
 	return s
 }
 
+// Describes a scheduled action that could not be created, updated, or deleted.
+type FailedScheduledUpdateGroupActionRequest struct {
+	_ struct{} `type:"structure"`
+
+	// The error code.
+	ErrorCode *string `min:"1" type:"string"`
+
+	// The error message accompanying the error code.
+	ErrorMessage *string `type:"string"`
+
+	// The name of the scheduled action.
+	//
+	// ScheduledActionName is a required field
+	ScheduledActionName *string `min:"1" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s FailedScheduledUpdateGroupActionRequest) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s FailedScheduledUpdateGroupActionRequest) GoString() string {
+	return s.String()
+}
+
+// SetErrorCode sets the ErrorCode field's value.
+func (s *FailedScheduledUpdateGroupActionRequest) SetErrorCode(v string) *FailedScheduledUpdateGroupActionRequest {
+	s.ErrorCode = &v
+	return s
+}
+
+// SetErrorMessage sets the ErrorMessage field's value.
+func (s *FailedScheduledUpdateGroupActionRequest) SetErrorMessage(v string) *FailedScheduledUpdateGroupActionRequest {
+	s.ErrorMessage = &v
+	return s
+}
+
+// SetScheduledActionName sets the ScheduledActionName field's value.
+func (s *FailedScheduledUpdateGroupActionRequest) SetScheduledActionName(v string) *FailedScheduledUpdateGroupActionRequest {
+	s.ScheduledActionName = &v
+	return s
+}
+
 // Describes a filter.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/Filter
 type Filter struct {
 	_ struct{} `type:"structure"`
 
@@ -9172,7 +9669,6 @@ func (s *Filter) SetValues(v []*string) *Filter {
 }
 
 // Describes an Auto Scaling group.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/AutoScalingGroup
 type Group struct {
 	_ struct{} `type:"structure"`
 
@@ -9192,7 +9688,7 @@ type Group struct {
 	// The date and time the group was created.
 	//
 	// CreatedTime is a required field
-	CreatedTime *time.Time `type:"timestamp" timestampFormat:"iso8601" required:"true"`
+	CreatedTime *time.Time `type:"timestamp" required:"true"`
 
 	// The amount of time, in seconds, after a scaling activity completes before
 	// another scaling activity can start.
@@ -9208,11 +9704,14 @@ type Group struct {
 	// The metrics enabled for the group.
 	EnabledMetrics []*EnabledMetric `type:"list"`
 
-	// The amount of time, in seconds, that Auto Scaling waits before checking the
-	// health status of an EC2 instance that has come into service.
+	// The amount of time, in seconds, that Amazon EC2 Auto Scaling waits before
+	// checking the health status of an EC2 instance that has come into service.
 	HealthCheckGracePeriod *int64 `type:"integer"`
 
 	// The service to use for the health checks. The valid values are EC2 and ELB.
+	// If you configure an Auto Scaling group to use ELB health checks, it considers
+	// the instance unhealthy if it fails either the EC2 status checks or the load
+	// balancer health checks.
 	//
 	// HealthCheckType is a required field
 	HealthCheckType *string `min:"1" type:"string" required:"true"`
@@ -9239,14 +9738,19 @@ type Group struct {
 	// MinSize is a required field
 	MinSize *int64 `type:"integer" required:"true"`
 
+	// The mixed instances policy for the group.
+	MixedInstancesPolicy *MixedInstancesPolicy `type:"structure"`
+
 	// Indicates whether newly launched instances are protected from termination
-	// by Auto Scaling when scaling in.
+	// by Amazon EC2 Auto Scaling when scaling in.
 	NewInstancesProtectedFromScaleIn *bool `type:"boolean"`
 
-	// The name of the placement group into which you'll launch your instances,
-	// if any. For more information, see Placement Groups (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html)
-	// in the Amazon Elastic Compute Cloud User Guide.
+	// The name of the placement group into which to launch your instances, if any.
 	PlacementGroup *string `min:"1" type:"string"`
+
+	// The Amazon Resource Name (ARN) of the service-linked role that the Auto Scaling
+	// group uses to call other AWS services on your behalf.
+	ServiceLinkedRoleARN *string `min:"1" type:"string"`
 
 	// The current state of the group when DeleteAutoScalingGroup is in progress.
 	Status *string `min:"1" type:"string"`
@@ -9264,9 +9768,6 @@ type Group struct {
 	TerminationPolicies []*string `type:"list"`
 
 	// One or more subnet IDs, if applicable, separated by commas.
-	//
-	// If you specify VPCZoneIdentifier and AvailabilityZones, ensure that the Availability
-	// Zones of the subnets match the values for AvailabilityZones.
 	VPCZoneIdentifier *string `min:"1" type:"string"`
 }
 
@@ -9370,6 +9871,12 @@ func (s *Group) SetMinSize(v int64) *Group {
 	return s
 }
 
+// SetMixedInstancesPolicy sets the MixedInstancesPolicy field's value.
+func (s *Group) SetMixedInstancesPolicy(v *MixedInstancesPolicy) *Group {
+	s.MixedInstancesPolicy = v
+	return s
+}
+
 // SetNewInstancesProtectedFromScaleIn sets the NewInstancesProtectedFromScaleIn field's value.
 func (s *Group) SetNewInstancesProtectedFromScaleIn(v bool) *Group {
 	s.NewInstancesProtectedFromScaleIn = &v
@@ -9379,6 +9886,12 @@ func (s *Group) SetNewInstancesProtectedFromScaleIn(v bool) *Group {
 // SetPlacementGroup sets the PlacementGroup field's value.
 func (s *Group) SetPlacementGroup(v string) *Group {
 	s.PlacementGroup = &v
+	return s
+}
+
+// SetServiceLinkedRoleARN sets the ServiceLinkedRoleARN field's value.
+func (s *Group) SetServiceLinkedRoleARN(v string) *Group {
+	s.ServiceLinkedRoleARN = &v
 	return s
 }
 
@@ -9419,7 +9932,6 @@ func (s *Group) SetVPCZoneIdentifier(v string) *Group {
 }
 
 // Describes an EC2 instance.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/Instance
 type Instance struct {
 	_ struct{} `type:"structure"`
 
@@ -9430,7 +9942,8 @@ type Instance struct {
 
 	// The last reported health status of the instance. "Healthy" means that the
 	// instance is healthy and should remain in service. "Unhealthy" means that
-	// the instance is unhealthy and Auto Scaling should terminate and replace it.
+	// the instance is unhealthy and that Amazon EC2 Auto Scaling should terminate
+	// and replace it.
 	//
 	// HealthStatus is a required field
 	HealthStatus *string `min:"1" type:"string" required:"true"`
@@ -9446,14 +9959,14 @@ type Instance struct {
 	// The launch template for the instance.
 	LaunchTemplate *LaunchTemplateSpecification `type:"structure"`
 
-	// A description of the current lifecycle state. Note that the Quarantined state
-	// is not used.
+	// A description of the current lifecycle state. The Quarantined state is not
+	// used.
 	//
 	// LifecycleState is a required field
 	LifecycleState *string `type:"string" required:"true" enum:"LifecycleState"`
 
-	// Indicates whether the instance is protected from termination by Auto Scaling
-	// when scaling in.
+	// Indicates whether the instance is protected from termination by Amazon EC2
+	// Auto Scaling when scaling in.
 	//
 	// ProtectedFromScaleIn is a required field
 	ProtectedFromScaleIn *bool `type:"boolean" required:"true"`
@@ -9512,7 +10025,6 @@ func (s *Instance) SetProtectedFromScaleIn(v bool) *Instance {
 }
 
 // Describes an EC2 instance associated with an Auto Scaling group.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/AutoScalingInstanceDetails
 type InstanceDetails struct {
 	_ struct{} `type:"structure"`
 
@@ -9528,7 +10040,8 @@ type InstanceDetails struct {
 
 	// The last reported health status of this instance. "Healthy" means that the
 	// instance is healthy and should remain in service. "Unhealthy" means that
-	// the instance is unhealthy and Auto Scaling should terminate and replace it.
+	// the instance is unhealthy and Amazon EC2 Auto Scaling should terminate and
+	// replace it.
 	//
 	// HealthStatus is a required field
 	HealthStatus *string `min:"1" type:"string" required:"true"`
@@ -9545,15 +10058,13 @@ type InstanceDetails struct {
 	// The launch template for the instance.
 	LaunchTemplate *LaunchTemplateSpecification `type:"structure"`
 
-	// The lifecycle state for the instance. For more information, see Auto Scaling
-	// Lifecycle (http://docs.aws.amazon.com/autoscaling/latest/userguide/AutoScalingGroupLifecycle.html)
-	// in the Auto Scaling User Guide.
+	// The lifecycle state for the instance.
 	//
 	// LifecycleState is a required field
 	LifecycleState *string `min:"1" type:"string" required:"true"`
 
-	// Indicates whether the instance is protected from termination by Auto Scaling
-	// when scaling in.
+	// Indicates whether the instance is protected from termination by Amazon EC2
+	// Auto Scaling when scaling in.
 	//
 	// ProtectedFromScaleIn is a required field
 	ProtectedFromScaleIn *bool `type:"boolean" required:"true"`
@@ -9618,7 +10129,6 @@ func (s *InstanceDetails) SetProtectedFromScaleIn(v bool) *InstanceDetails {
 }
 
 // Describes whether detailed monitoring is enabled for the Auto Scaling instances.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/InstanceMonitoring
 type InstanceMonitoring struct {
 	_ struct{} `type:"structure"`
 
@@ -9642,8 +10152,112 @@ func (s *InstanceMonitoring) SetEnabled(v bool) *InstanceMonitoring {
 	return s
 }
 
+// Describes an instances distribution for an Auto Scaling group with MixedInstancesPolicy.
+//
+// The instances distribution specifies the distribution of On-Demand Instances
+// and Spot Instances, the maximum price to pay for Spot Instances, and how
+// the Auto Scaling group allocates instance types to fulfill On-Demand and
+// Spot capacity.
+type InstancesDistribution struct {
+	_ struct{} `type:"structure"`
+
+	// Indicates how to allocate instance types to fulfill On-Demand capacity.
+	//
+	// The only valid value is prioritized, which is also the default value. This
+	// strategy uses the order of instance type overrides for the LaunchTemplate
+	// to define the launch priority of each instance type. The first instance type
+	// in the array is prioritized higher than the last. If all your On-Demand capacity
+	// cannot be fulfilled using your highest priority instance, then the Auto Scaling
+	// groups launches the remaining capacity using the second priority instance
+	// type, and so on.
+	OnDemandAllocationStrategy *string `type:"string"`
+
+	// The minimum amount of the Auto Scaling group's capacity that must be fulfilled
+	// by On-Demand Instances. This base portion is provisioned first as your group
+	// scales.
+	//
+	// The default value is 0. If you leave this parameter set to 0, On-Demand Instances
+	// are launched as a percentage of the Auto Scaling group's desired capacity,
+	// per the OnDemandPercentageAboveBaseCapacity setting.
+	OnDemandBaseCapacity *int64 `type:"integer"`
+
+	// Controls the percentages of On-Demand Instances and Spot Instances for your
+	// additional capacity beyond OnDemandBaseCapacity. The range is 0–100.
+	//
+	// The default value is 100. If you leave this parameter set to 100, the percentages
+	// are 100% for On-Demand Instances and 0% for Spot Instances.
+	OnDemandPercentageAboveBaseCapacity *int64 `type:"integer"`
+
+	// Indicates how to allocate Spot capacity across Spot pools.
+	//
+	// The only valid value is lowest-price, which is also the default value. The
+	// Auto Scaling group selects the cheapest Spot pools and evenly allocates your
+	// Spot capacity across the number of Spot pools that you specify.
+	SpotAllocationStrategy *string `type:"string"`
+
+	// The number of Spot pools to use to allocate your Spot capacity. The Spot
+	// pools are determined from the different instance types in the Overrides array
+	// of LaunchTemplate. The range is 1–20.
+	//
+	// The default value is 2.
+	SpotInstancePools *int64 `type:"integer"`
+
+	// The maximum price per unit hour that you are willing to pay for a Spot Instance.
+	// If you leave the value of this parameter blank (which is the default), the
+	// maximum Spot price is set at the On-Demand price.
+	//
+	// To remove a value that you previously set, include the parameter but leave
+	// the value blank.
+	SpotMaxPrice *string `type:"string"`
+}
+
+// String returns the string representation
+func (s InstancesDistribution) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s InstancesDistribution) GoString() string {
+	return s.String()
+}
+
+// SetOnDemandAllocationStrategy sets the OnDemandAllocationStrategy field's value.
+func (s *InstancesDistribution) SetOnDemandAllocationStrategy(v string) *InstancesDistribution {
+	s.OnDemandAllocationStrategy = &v
+	return s
+}
+
+// SetOnDemandBaseCapacity sets the OnDemandBaseCapacity field's value.
+func (s *InstancesDistribution) SetOnDemandBaseCapacity(v int64) *InstancesDistribution {
+	s.OnDemandBaseCapacity = &v
+	return s
+}
+
+// SetOnDemandPercentageAboveBaseCapacity sets the OnDemandPercentageAboveBaseCapacity field's value.
+func (s *InstancesDistribution) SetOnDemandPercentageAboveBaseCapacity(v int64) *InstancesDistribution {
+	s.OnDemandPercentageAboveBaseCapacity = &v
+	return s
+}
+
+// SetSpotAllocationStrategy sets the SpotAllocationStrategy field's value.
+func (s *InstancesDistribution) SetSpotAllocationStrategy(v string) *InstancesDistribution {
+	s.SpotAllocationStrategy = &v
+	return s
+}
+
+// SetSpotInstancePools sets the SpotInstancePools field's value.
+func (s *InstancesDistribution) SetSpotInstancePools(v int64) *InstancesDistribution {
+	s.SpotInstancePools = &v
+	return s
+}
+
+// SetSpotMaxPrice sets the SpotMaxPrice field's value.
+func (s *InstancesDistribution) SetSpotMaxPrice(v string) *InstancesDistribution {
+	s.SpotMaxPrice = &v
+	return s
+}
+
 // Describes a launch configuration.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/LaunchConfiguration
 type LaunchConfiguration struct {
 	_ struct{} `type:"structure"`
 
@@ -9655,20 +10269,26 @@ type LaunchConfiguration struct {
 
 	// The ID of a ClassicLink-enabled VPC to link your EC2-Classic instances to.
 	// This parameter can only be used if you are launching EC2-Classic instances.
-	// For more information, see ClassicLink (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/vpc-classiclink.html)
-	// in the Amazon Elastic Compute Cloud User Guide.
+	// For more information, see ClassicLink (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/vpc-classiclink.html)
+	// in the Amazon EC2 User Guide for Linux Instances and Linking EC2-Classic
+	// Instances to a VPC (https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-in-vpc.html#as-ClassicLink)
+	// in the Amazon EC2 Auto Scaling User Guide.
 	ClassicLinkVPCId *string `min:"1" type:"string"`
 
 	// The IDs of one or more security groups for the VPC specified in ClassicLinkVPCId.
-	// This parameter is required if you specify a ClassicLink-enabled VPC, and
-	// cannot be used otherwise. For more information, see ClassicLink (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/vpc-classiclink.html)
-	// in the Amazon Elastic Compute Cloud User Guide.
+	// For more information, see ClassicLink (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/vpc-classiclink.html)
+	// in the Amazon EC2 User Guide for Linux Instances and Linking EC2-Classic
+	// Instances to a VPC (https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-in-vpc.html#as-ClassicLink)
+	// in the Amazon EC2 Auto Scaling User Guide.
+	//
+	// Conditional: This parameter is required if you specify a ClassicLink-enabled
+	// VPC, and cannot be used otherwise.
 	ClassicLinkVPCSecurityGroups []*string `type:"list"`
 
 	// The creation date and time for the launch configuration.
 	//
 	// CreatedTime is a required field
-	CreatedTime *time.Time `type:"timestamp" timestampFormat:"iso8601" required:"true"`
+	CreatedTime *time.Time `type:"timestamp" required:"true"`
 
 	// Controls whether the instance is optimized for EBS I/O (true) or not (false).
 	EbsOptimized *bool `type:"boolean"`
@@ -9847,8 +10467,118 @@ func (s *LaunchConfiguration) SetUserData(v string) *LaunchConfiguration {
 	return s
 }
 
-// Describes a launch template.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/LaunchTemplateSpecification
+// Describes a launch template and overrides.
+//
+// The overrides are used to override the instance type specified by the launch
+// template with multiple instance types that can be used to launch On-Demand
+// Instances and Spot Instances.
+type LaunchTemplate struct {
+	_ struct{} `type:"structure"`
+
+	// The launch template to use. You must specify either the launch template ID
+	// or launch template name in the request.
+	LaunchTemplateSpecification *LaunchTemplateSpecification `type:"structure"`
+
+	// Any parameters that you specify override the same parameters in the launch
+	// template. Currently, the only supported override is instance type. You must
+	// specify between 2 and 20 overrides.
+	Overrides []*LaunchTemplateOverrides `type:"list"`
+}
+
+// String returns the string representation
+func (s LaunchTemplate) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s LaunchTemplate) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *LaunchTemplate) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "LaunchTemplate"}
+	if s.LaunchTemplateSpecification != nil {
+		if err := s.LaunchTemplateSpecification.Validate(); err != nil {
+			invalidParams.AddNested("LaunchTemplateSpecification", err.(request.ErrInvalidParams))
+		}
+	}
+	if s.Overrides != nil {
+		for i, v := range s.Overrides {
+			if v == nil {
+				continue
+			}
+			if err := v.Validate(); err != nil {
+				invalidParams.AddNested(fmt.Sprintf("%s[%v]", "Overrides", i), err.(request.ErrInvalidParams))
+			}
+		}
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetLaunchTemplateSpecification sets the LaunchTemplateSpecification field's value.
+func (s *LaunchTemplate) SetLaunchTemplateSpecification(v *LaunchTemplateSpecification) *LaunchTemplate {
+	s.LaunchTemplateSpecification = v
+	return s
+}
+
+// SetOverrides sets the Overrides field's value.
+func (s *LaunchTemplate) SetOverrides(v []*LaunchTemplateOverrides) *LaunchTemplate {
+	s.Overrides = v
+	return s
+}
+
+// Describes an override for a launch template.
+type LaunchTemplateOverrides struct {
+	_ struct{} `type:"structure"`
+
+	// The instance type.
+	//
+	// For information about available instance types, see Available Instance Types
+	// (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html#AvailableInstanceTypes)
+	// in the Amazon Elastic Compute Cloud User Guide.
+	InstanceType *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s LaunchTemplateOverrides) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s LaunchTemplateOverrides) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *LaunchTemplateOverrides) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "LaunchTemplateOverrides"}
+	if s.InstanceType != nil && len(*s.InstanceType) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("InstanceType", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetInstanceType sets the InstanceType field's value.
+func (s *LaunchTemplateOverrides) SetInstanceType(v string) *LaunchTemplateOverrides {
+	s.InstanceType = &v
+	return s
+}
+
+// Describes a launch template and the launch template version.
+//
+// The launch template that is specified must be configured for use with an
+// Auto Scaling group. For more information, see Creating a Launch Template
+// for an Auto Scaling Group (https://docs.aws.amazon.com/autoscaling/ec2/userguide/create-launch-template.html)
+// in the Amazon EC2 Auto Scaling User Guide.
 type LaunchTemplateSpecification struct {
 	_ struct{} `type:"structure"`
 
@@ -9860,8 +10590,11 @@ type LaunchTemplateSpecification struct {
 	// or a template ID.
 	LaunchTemplateName *string `min:"3" type:"string"`
 
-	// The version number. By default, the default version of the launch template
-	// is used.
+	// The version number, $Latest, or $Default. If the value is $Latest, Amazon
+	// EC2 Auto Scaling selects the latest version of the launch template when launching
+	// instances. If the value is $Default, Amazon EC2 Auto Scaling selects the
+	// default version of the launch template when launching instances. The default
+	// value is $Default.
 	Version *string `min:"1" type:"string"`
 }
 
@@ -9912,12 +10645,9 @@ func (s *LaunchTemplateSpecification) SetVersion(v string) *LaunchTemplateSpecif
 	return s
 }
 
-// Describes a lifecycle hook, which tells Auto Scaling that you want to perform
-// an action whenever it launches instances or whenever it terminates instances.
-//
-// For more information, see Auto Scaling Lifecycle Hooks (http://docs.aws.amazon.com/autoscaling/latest/userguide/lifecycle-hooks.html)
-// in the Auto Scaling User Guide.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/LifecycleHook
+// Describes a lifecycle hook, which tells Amazon EC2 Auto Scaling that you
+// want to perform an action whenever it launches instances or whenever it terminates
+// instances. Used in response to DescribeLifecycleHooks.
 type LifecycleHook struct {
 	_ struct{} `type:"structure"`
 
@@ -9925,8 +10655,8 @@ type LifecycleHook struct {
 	AutoScalingGroupName *string `min:"1" type:"string"`
 
 	// Defines the action the Auto Scaling group should take when the lifecycle
-	// hook timeout elapses or if an unexpected failure occurs. The valid values
-	// are CONTINUE and ABANDON. The default value is CONTINUE.
+	// hook timeout elapses or if an unexpected failure occurs. The possible values
+	// are CONTINUE and ABANDON.
 	DefaultResult *string `type:"string"`
 
 	// The maximum time, in seconds, that an instance can remain in a Pending:Wait
@@ -9935,24 +10665,28 @@ type LifecycleHook struct {
 	GlobalTimeout *int64 `type:"integer"`
 
 	// The maximum time, in seconds, that can elapse before the lifecycle hook times
-	// out. If the lifecycle hook times out, Auto Scaling performs the default action.
-	// You can prevent the lifecycle hook from timing out by calling RecordLifecycleActionHeartbeat.
+	// out. If the lifecycle hook times out, Amazon EC2 Auto Scaling performs the
+	// action that you specified in the DefaultResult parameter.
 	HeartbeatTimeout *int64 `type:"integer"`
 
 	// The name of the lifecycle hook.
 	LifecycleHookName *string `min:"1" type:"string"`
 
-	// The state of the EC2 instance to which you want to attach the lifecycle hook.
-	// For a list of lifecycle hook types, see DescribeLifecycleHookTypes.
+	// The state of the EC2 instance to which to attach the lifecycle hook. The
+	// following are possible values:
+	//
+	//    * autoscaling:EC2_INSTANCE_LAUNCHING
+	//
+	//    * autoscaling:EC2_INSTANCE_TERMINATING
 	LifecycleTransition *string `type:"string"`
 
-	// Additional information that you want to include any time Auto Scaling sends
-	// a message to the notification target.
+	// Additional information that is included any time Amazon EC2 Auto Scaling
+	// sends a message to the notification target.
 	NotificationMetadata *string `min:"1" type:"string"`
 
-	// The ARN of the target that Auto Scaling sends notifications to when an instance
-	// is in the transition state for the lifecycle hook. The notification target
-	// can be either an SQS queue or an SNS topic.
+	// The ARN of the target that Amazon EC2 Auto Scaling sends notifications to
+	// when an instance is in the transition state for the lifecycle hook. The notification
+	// target can be either an SQS queue or an SNS topic.
 	NotificationTargetARN *string `min:"1" type:"string"`
 
 	// The ARN of the IAM role that allows the Auto Scaling group to publish to
@@ -10024,23 +10758,53 @@ func (s *LifecycleHook) SetRoleARN(v string) *LifecycleHook {
 	return s
 }
 
-// Describes a lifecycle hook, which tells Auto Scaling that you want to perform
-// an action whenever it launches instances or whenever it terminates instances.
+// Describes a lifecycle hook. Used in combination with CreateAutoScalingGroup.
 //
-// For more information, see Auto Scaling Lifecycle Hooks (http://docs.aws.amazon.com/autoscaling/latest/userguide/lifecycle-hooks.html)
-// in the Auto Scaling User Guide.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/LifecycleHookSpecification
+// A lifecycle hook tells Amazon EC2 Auto Scaling to perform an action on an
+// instance when the instance launches (before it is put into service) or as
+// the instance terminates (before it is fully terminated).
+//
+// This step is a part of the procedure for creating a lifecycle hook for an
+// Auto Scaling group:
+//
+// (Optional) Create a Lambda function and a rule that allows CloudWatch Events
+// to invoke your Lambda function when Amazon EC2 Auto Scaling launches or terminates
+// instances.
+//
+// (Optional) Create a notification target and an IAM role. The target can be
+// either an Amazon SQS queue or an Amazon SNS topic. The role allows Amazon
+// EC2 Auto Scaling to publish lifecycle notifications to the target.
+//
+// Create the lifecycle hook. Specify whether the hook is used when the instances
+// launch or terminate.
+//
+// If you need more time, record the lifecycle action heartbeat to keep the
+// instance in a pending state using using RecordLifecycleActionHeartbeat.
+//
+// If you finish before the timeout period ends, complete the lifecycle action
+// using CompleteLifecycleAction.
+//
+// For more information, see Amazon EC2 Auto Scaling Lifecycle Hooks (https://docs.aws.amazon.com/autoscaling/ec2/userguide/lifecycle-hooks.html)
+// in the Amazon EC2 Auto Scaling User Guide.
+//
+// You can view the lifecycle hooks for an Auto Scaling group using DescribeLifecycleHooks.
+// You can modify an existing lifecycle hook or create new lifecycle hooks using
+// PutLifecycleHook. If you are no longer using a lifecycle hook, you can delete
+// it using DeleteLifecycleHook.
 type LifecycleHookSpecification struct {
 	_ struct{} `type:"structure"`
 
 	// Defines the action the Auto Scaling group should take when the lifecycle
 	// hook timeout elapses or if an unexpected failure occurs. The valid values
-	// are CONTINUE and ABANDON.
+	// are CONTINUE and ABANDON. The default value is ABANDON.
 	DefaultResult *string `type:"string"`
 
 	// The maximum time, in seconds, that can elapse before the lifecycle hook times
-	// out. If the lifecycle hook times out, Auto Scaling performs the default action.
-	// You can prevent the lifecycle hook from timing out by calling RecordLifecycleActionHeartbeat.
+	// out.
+	//
+	// If the lifecycle hook times out, Amazon EC2 Auto Scaling performs the action
+	// that you specified in the DefaultResult parameter. You can prevent the lifecycle
+	// hook from timing out by calling RecordLifecycleActionHeartbeat.
 	HeartbeatTimeout *int64 `type:"integer"`
 
 	// The name of the lifecycle hook.
@@ -10049,22 +10813,27 @@ type LifecycleHookSpecification struct {
 	LifecycleHookName *string `min:"1" type:"string" required:"true"`
 
 	// The state of the EC2 instance to which you want to attach the lifecycle hook.
-	// For a list of lifecycle hook types, see DescribeLifecycleHookTypes.
+	// The valid values are:
+	//
+	//    * autoscaling:EC2_INSTANCE_LAUNCHING
+	//
+	//    * autoscaling:EC2_INSTANCE_TERMINATING
 	//
 	// LifecycleTransition is a required field
 	LifecycleTransition *string `type:"string" required:"true"`
 
-	// Additional information that you want to include any time Auto Scaling sends
-	// a message to the notification target.
+	// Additional information that you want to include any time Amazon EC2 Auto
+	// Scaling sends a message to the notification target.
 	NotificationMetadata *string `min:"1" type:"string"`
 
-	// The ARN of the target that Auto Scaling sends notifications to when an instance
-	// is in the transition state for the lifecycle hook. The notification target
-	// can be either an SQS queue or an SNS topic.
+	// The ARN of the target that Amazon EC2 Auto Scaling sends notifications to
+	// when an instance is in the transition state for the lifecycle hook. The notification
+	// target can be either an SQS queue or an SNS topic.
 	NotificationTargetARN *string `type:"string"`
 
 	// The ARN of the IAM role that allows the Auto Scaling group to publish to
-	// the specified notification target.
+	// the specified notification target, for example, an Amazon SNS topic or an
+	// Amazon SQS queue.
 	RoleARN *string `min:"1" type:"string"`
 }
 
@@ -10152,11 +10921,11 @@ func (s *LifecycleHookSpecification) SetRoleARN(v string) *LifecycleHookSpecific
 //
 // If you attach a load balancer to an existing Auto Scaling group, the initial
 // state is Adding. The state transitions to Added after all instances in the
-// group are registered with the load balancer. If ELB health checks are enabled
-// for the load balancer, the state transitions to InService after at least
-// one instance in the group passes the health check. If EC2 health checks are
-// enabled instead, the load balancer remains in the Added state.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/LoadBalancerState
+// group are registered with the load balancer. If Elastic Load Balancing health
+// checks are enabled for the load balancer, the state transitions to InService
+// after at least one instance in the group passes the health check. If EC2
+// health checks are enabled instead, the load balancer remains in the Added
+// state.
 type LoadBalancerState struct {
 	_ struct{} `type:"structure"`
 
@@ -10208,11 +10977,10 @@ func (s *LoadBalancerState) SetState(v string) *LoadBalancerState {
 //
 // If you attach a target group to an existing Auto Scaling group, the initial
 // state is Adding. The state transitions to Added after all Auto Scaling instances
-// are registered with the target group. If ELB health checks are enabled, the
-// state transitions to InService after at least one Auto Scaling instance passes
-// the health check. If EC2 health checks are enabled instead, the target group
-// remains in the Added state.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/LoadBalancerTargetGroupState
+// are registered with the target group. If Elastic Load Balancing health checks
+// are enabled, the state transitions to InService after at least one Auto Scaling
+// instance passes the health check. If EC2 health checks are enabled instead,
+// the target group remains in the Added state.
 type LoadBalancerTargetGroupState struct {
 	_ struct{} `type:"structure"`
 
@@ -10261,7 +11029,6 @@ func (s *LoadBalancerTargetGroupState) SetState(v string) *LoadBalancerTargetGro
 }
 
 // Describes a metric.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/MetricCollectionType
 type MetricCollectionType struct {
 	_ struct{} `type:"structure"`
 
@@ -10302,7 +11069,6 @@ func (s *MetricCollectionType) SetMetric(v string) *MetricCollectionType {
 }
 
 // Describes the dimension of a metric.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/MetricDimension
 type MetricDimension struct {
 	_ struct{} `type:"structure"`
 
@@ -10356,7 +11122,6 @@ func (s *MetricDimension) SetValue(v string) *MetricDimension {
 }
 
 // Describes a granularity of a metric.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/MetricGranularityType
 type MetricGranularityType struct {
 	_ struct{} `type:"structure"`
 
@@ -10380,8 +11145,70 @@ func (s *MetricGranularityType) SetGranularity(v string) *MetricGranularityType 
 	return s
 }
 
+// Describes a mixed instances policy for an Auto Scaling group. With mixed
+// instances, your Auto Scaling group can provision a combination of On-Demand
+// Instances and Spot Instances across multiple instance types. For more information,
+// see Auto Scaling Groups with Multiple Instance Types and Purchase Options
+// (https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-purchase-options.html)
+// in the Amazon EC2 Auto Scaling User Guide.
+//
+// You can create a mixed instances policy for a new Auto Scaling group (CreateAutoScalingGroup),
+// or you can create it for an existing group by updating the group (UpdateAutoScalingGroup)
+// to specify MixedInstancesPolicy as the top-level parameter instead of a launch
+// configuration or template.
+type MixedInstancesPolicy struct {
+	_ struct{} `type:"structure"`
+
+	// The instances distribution to use.
+	//
+	// If you leave this parameter unspecified when creating a mixed instances policy,
+	// the default values are used.
+	InstancesDistribution *InstancesDistribution `type:"structure"`
+
+	// The launch template and instance types (overrides).
+	//
+	// This parameter must be specified when creating a mixed instances policy.
+	LaunchTemplate *LaunchTemplate `type:"structure"`
+}
+
+// String returns the string representation
+func (s MixedInstancesPolicy) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s MixedInstancesPolicy) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *MixedInstancesPolicy) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "MixedInstancesPolicy"}
+	if s.LaunchTemplate != nil {
+		if err := s.LaunchTemplate.Validate(); err != nil {
+			invalidParams.AddNested("LaunchTemplate", err.(request.ErrInvalidParams))
+		}
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetInstancesDistribution sets the InstancesDistribution field's value.
+func (s *MixedInstancesPolicy) SetInstancesDistribution(v *InstancesDistribution) *MixedInstancesPolicy {
+	s.InstancesDistribution = v
+	return s
+}
+
+// SetLaunchTemplate sets the LaunchTemplate field's value.
+func (s *MixedInstancesPolicy) SetLaunchTemplate(v *LaunchTemplate) *MixedInstancesPolicy {
+	s.LaunchTemplate = v
+	return s
+}
+
 // Describes a notification.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/NotificationConfiguration
 type NotificationConfiguration struct {
 	_ struct{} `type:"structure"`
 
@@ -10402,7 +11229,7 @@ type NotificationConfiguration struct {
 	NotificationType *string `min:"1" type:"string"`
 
 	// The Amazon Resource Name (ARN) of the Amazon Simple Notification Service
-	// (SNS) topic.
+	// (Amazon SNS) topic.
 	TopicARN *string `min:"1" type:"string"`
 }
 
@@ -10434,8 +11261,8 @@ func (s *NotificationConfiguration) SetTopicARN(v string) *NotificationConfigura
 	return s
 }
 
-// Configures a predefined metric for a target tracking policy.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PredefinedMetricSpecification
+// Represents a predefined metric for a target tracking scaling policy to use
+// with Amazon EC2 Auto Scaling.
 type PredefinedMetricSpecification struct {
 	_ struct{} `type:"structure"`
 
@@ -10447,24 +11274,24 @@ type PredefinedMetricSpecification struct {
 	// Identifies the resource associated with the metric type. The following predefined
 	// metrics are available:
 	//
-	//    * ASGAverageCPUUtilization - average CPU utilization of the Auto Scaling
-	//    group
+	//    * ASGAverageCPUUtilization - Average CPU utilization of the Auto Scaling
+	//    group.
 	//
-	//    * ASGAverageNetworkIn - average number of bytes received on all network
-	//    interfaces by the Auto Scaling group
+	//    * ASGAverageNetworkIn - Average number of bytes received on all network
+	//    interfaces by the Auto Scaling group.
 	//
-	//    * ASGAverageNetworkOut - average number of bytes sent out on all network
-	//    interfaces by the Auto Scaling group
+	//    * ASGAverageNetworkOut - Average number of bytes sent out on all network
+	//    interfaces by the Auto Scaling group.
 	//
-	//    * ALBRequestCountPerTarget - number of requests completed per target in
-	//    an Application Load Balancer target group
+	//    * ALBRequestCountPerTarget - Number of requests completed per target in
+	//    an Application Load Balancer target group.
 	//
 	// For predefined metric types ASGAverageCPUUtilization, ASGAverageNetworkIn,
 	// and ASGAverageNetworkOut, the parameter must not be specified as the resource
 	// associated with the metric type is the Auto Scaling group. For predefined
 	// metric type ALBRequestCountPerTarget, the parameter must be specified in
-	// the format: app/load-balancer-name/load-balancer-id/targetgroup/target-group-name/target-group-id,
-	// where app/load-balancer-name/load-balancer-id is the final portion of the
+	// the format: app/load-balancer-name/load-balancer-id/targetgroup/target-group-name/target-group-id
+	// , where app/load-balancer-name/load-balancer-id is the final portion of the
 	// load balancer ARN, and targetgroup/target-group-name/target-group-id is the
 	// final portion of the target group ARN. The target group must be attached
 	// to the Auto Scaling group.
@@ -10511,9 +11338,8 @@ func (s *PredefinedMetricSpecification) SetResourceLabel(v string) *PredefinedMe
 
 // Describes a process type.
 //
-// For more information, see Auto Scaling Processes (http://docs.aws.amazon.com/autoscaling/latest/userguide/as-suspend-resume-processes.html#process-types)
-// in the Auto Scaling User Guide.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ProcessType
+// For more information, see Scaling Processes (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html#process-types)
+// in the Amazon EC2 Auto Scaling User Guide.
 type ProcessType struct {
 	_ struct{} `type:"structure"`
 
@@ -10555,7 +11381,6 @@ func (s *ProcessType) SetProcessName(v string) *ProcessType {
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutLifecycleHookType
 type PutLifecycleHookInput struct {
 	_ struct{} `type:"structure"`
 
@@ -10570,11 +11395,12 @@ type PutLifecycleHookInput struct {
 	DefaultResult *string `type:"string"`
 
 	// The maximum time, in seconds, that can elapse before the lifecycle hook times
-	// out. The range is from 30 to 7200 seconds. The default is 3600 seconds (1
-	// hour).
+	// out. The range is from 30 to 7200 seconds. The default value is 3600 seconds
+	// (1 hour).
 	//
-	// If the lifecycle hook times out, Auto Scaling performs the default action.
-	// You can prevent the lifecycle hook from timing out by calling RecordLifecycleActionHeartbeat.
+	// If the lifecycle hook times out, Amazon EC2 Auto Scaling performs the action
+	// that you specified in the DefaultResult parameter. You can prevent the lifecycle
+	// hook from timing out by calling RecordLifecycleActionHeartbeat.
 	HeartbeatTimeout *int64 `type:"integer"`
 
 	// The name of the lifecycle hook.
@@ -10582,36 +11408,42 @@ type PutLifecycleHookInput struct {
 	// LifecycleHookName is a required field
 	LifecycleHookName *string `min:"1" type:"string" required:"true"`
 
-	// The instance state to which you want to attach the lifecycle hook. For a
-	// list of lifecycle hook types, see DescribeLifecycleHookTypes.
+	// The instance state to which you want to attach the lifecycle hook. The valid
+	// values are:
 	//
-	// This parameter is required for new lifecycle hooks, but optional when updating
-	// existing hooks.
+	//    * autoscaling:EC2_INSTANCE_LAUNCHING
+	//
+	//    * autoscaling:EC2_INSTANCE_TERMINATING
+	//
+	// Conditional: This parameter is required for new lifecycle hooks, but optional
+	// when updating existing hooks.
 	LifecycleTransition *string `type:"string"`
 
-	// Contains additional information that you want to include any time Auto Scaling
-	// sends a message to the notification target.
+	// Additional information that you want to include any time Amazon EC2 Auto
+	// Scaling sends a message to the notification target.
 	NotificationMetadata *string `min:"1" type:"string"`
 
-	// The ARN of the notification target that Auto Scaling will use to notify you
-	// when an instance is in the transition state for the lifecycle hook. This
-	// target can be either an SQS queue or an SNS topic. If you specify an empty
-	// string, this overrides the current ARN.
+	// The ARN of the notification target that Amazon EC2 Auto Scaling uses to notify
+	// you when an instance is in the transition state for the lifecycle hook. This
+	// target can be either an SQS queue or an SNS topic.
+	//
+	// If you specify an empty string, this overrides the current ARN.
 	//
 	// This operation uses the JSON format when sending notifications to an Amazon
-	// SQS queue, and an email key/value pair format when sending notifications
+	// SQS queue, and an email key-value pair format when sending notifications
 	// to an Amazon SNS topic.
 	//
-	// When you specify a notification target, Auto Scaling sends it a test message.
-	// Test messages contains the following additional key/value pair: "Event":
-	// "autoscaling:TEST_NOTIFICATION".
+	// When you specify a notification target, Amazon EC2 Auto Scaling sends it
+	// a test message. Test messages contain the following additional key-value
+	// pair: "Event": "autoscaling:TEST_NOTIFICATION".
 	NotificationTargetARN *string `type:"string"`
 
 	// The ARN of the IAM role that allows the Auto Scaling group to publish to
-	// the specified notification target.
+	// the specified notification target, for example, an Amazon SNS topic or an
+	// Amazon SQS queue.
 	//
-	// This parameter is required for new lifecycle hooks, but optional when updating
-	// existing hooks.
+	// Conditional: This parameter is required for new lifecycle hooks, but optional
+	// when updating existing hooks.
 	RoleARN *string `min:"1" type:"string"`
 }
 
@@ -10701,7 +11533,6 @@ func (s *PutLifecycleHookInput) SetRoleARN(v string) *PutLifecycleHookInput {
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutLifecycleHookAnswer
 type PutLifecycleHookOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -10716,7 +11547,6 @@ func (s PutLifecycleHookOutput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutNotificationConfigurationType
 type PutNotificationConfigurationInput struct {
 	_ struct{} `type:"structure"`
 
@@ -10725,14 +11555,14 @@ type PutNotificationConfigurationInput struct {
 	// AutoScalingGroupName is a required field
 	AutoScalingGroupName *string `min:"1" type:"string" required:"true"`
 
-	// The type of event that will cause the notification to be sent. For details
-	// about notification types supported by Auto Scaling, see DescribeAutoScalingNotificationTypes.
+	// The type of event that causes the notification to be sent. For more information
+	// about notification types supported by Amazon EC2 Auto Scaling, see DescribeAutoScalingNotificationTypes.
 	//
 	// NotificationTypes is a required field
 	NotificationTypes []*string `type:"list" required:"true"`
 
 	// The Amazon Resource Name (ARN) of the Amazon Simple Notification Service
-	// (SNS) topic.
+	// (Amazon SNS) topic.
 	//
 	// TopicARN is a required field
 	TopicARN *string `min:"1" type:"string" required:"true"`
@@ -10791,7 +11621,6 @@ func (s *PutNotificationConfigurationInput) SetTopicARN(v string) *PutNotificati
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutNotificationConfigurationOutput
 type PutNotificationConfigurationOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -10806,7 +11635,6 @@ func (s PutNotificationConfigurationOutput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutScalingPolicyType
 type PutScalingPolicyInput struct {
 	_ struct{} `type:"structure"`
 
@@ -10815,8 +11643,8 @@ type PutScalingPolicyInput struct {
 	//
 	// This parameter is supported if the policy type is SimpleScaling or StepScaling.
 	//
-	// For more information, see Dynamic Scaling (http://docs.aws.amazon.com/autoscaling/latest/userguide/as-scale-based-on-demand.html)
-	// in the Auto Scaling User Guide.
+	// For more information, see Dynamic Scaling (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scale-based-on-demand.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
 	AdjustmentType *string `min:"1" type:"string"`
 
 	// The name of the Auto Scaling group.
@@ -10830,8 +11658,8 @@ type PutScalingPolicyInput struct {
 	//
 	// This parameter is supported if the policy type is SimpleScaling.
 	//
-	// For more information, see Auto Scaling Cooldowns (http://docs.aws.amazon.com/autoscaling/latest/userguide/Cooldown.html)
-	// in the Auto Scaling User Guide.
+	// For more information, see Scaling Cooldowns (https://docs.aws.amazon.com/autoscaling/ec2/userguide/Cooldown.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
 	Cooldown *int64 `type:"integer"`
 
 	// The estimated time, in seconds, until a newly launched instance can contribute
@@ -10872,21 +11700,22 @@ type PutScalingPolicyInput struct {
 	// value adds to the current capacity while a negative number removes from the
 	// current capacity.
 	//
-	// This parameter is required if the policy type is SimpleScaling and not supported
-	// otherwise.
+	// Conditional: This parameter is required if the policy type is SimpleScaling
+	// and not supported otherwise.
 	ScalingAdjustment *int64 `type:"integer"`
 
 	// A set of adjustments that enable you to scale based on the size of the alarm
 	// breach.
 	//
-	// This parameter is required if the policy type is StepScaling and not supported
-	// otherwise.
+	// Conditional: This parameter is required if the policy type is StepScaling
+	// and not supported otherwise.
 	StepAdjustments []*StepAdjustment `type:"list"`
 
-	// A target tracking policy.
+	// A target tracking scaling policy. Includes support for predefined or customized
+	// metrics.
 	//
-	// This parameter is required if the policy type is TargetTrackingScaling and
-	// not supported otherwise.
+	// Conditional: This parameter is required if the policy type is TargetTrackingScaling
+	// and not supported otherwise.
 	TargetTrackingConfiguration *TargetTrackingConfiguration `type:"structure"`
 }
 
@@ -11019,11 +11848,10 @@ func (s *PutScalingPolicyInput) SetTargetTrackingConfiguration(v *TargetTracking
 }
 
 // Contains the output of PutScalingPolicy.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PolicyARNType
 type PutScalingPolicyOutput struct {
 	_ struct{} `type:"structure"`
 
-	// The CloudWatch alarms created for the target tracking policy.
+	// The CloudWatch alarms created for the target tracking scaling policy.
 	Alarms []*Alarm `type:"list"`
 
 	// The Amazon Resource Name (ARN) of the policy.
@@ -11052,7 +11880,6 @@ func (s *PutScalingPolicyOutput) SetPolicyARN(v string) *PutScalingPolicyOutput 
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutScheduledUpdateGroupActionType
 type PutScheduledUpdateGroupActionInput struct {
 	_ struct{} `type:"structure"`
 
@@ -11061,21 +11888,27 @@ type PutScheduledUpdateGroupActionInput struct {
 	// AutoScalingGroupName is a required field
 	AutoScalingGroupName *string `min:"1" type:"string" required:"true"`
 
-	// The number of EC2 instances that should be running in the group.
+	// The number of EC2 instances that should be running in the Auto Scaling group.
 	DesiredCapacity *int64 `type:"integer"`
 
-	// The time for the recurring schedule to end. Auto Scaling does not perform
-	// the action after this time.
-	EndTime *time.Time `type:"timestamp" timestampFormat:"iso8601"`
+	// The date and time for the recurring schedule to end. Amazon EC2 Auto Scaling
+	// does not perform the action after this time.
+	EndTime *time.Time `type:"timestamp"`
 
-	// The maximum size for the Auto Scaling group.
+	// The maximum number of instances in the Auto Scaling group.
 	MaxSize *int64 `type:"integer"`
 
-	// The minimum size for the Auto Scaling group.
+	// The minimum number of instances in the Auto Scaling group.
 	MinSize *int64 `type:"integer"`
 
-	// The recurring schedule for this action, in Unix cron syntax format. For more
-	// information, see Cron (http://en.wikipedia.org/wiki/Cron) in Wikipedia.
+	// The recurring schedule for this action, in Unix cron syntax format. This
+	// format consists of five fields separated by white spaces: [Minute] [Hour]
+	// [Day_of_Month] [Month_of_Year] [Day_of_Week]. The value must be in quotes
+	// (for example, "30 0 1 1,6,12 *"). For more information about this format,
+	// see Crontab (http://crontab.org).
+	//
+	// When StartTime and EndTime are specified with Recurrence, they form the boundaries
+	// of when the recurring action starts and stops.
 	Recurrence *string `min:"1" type:"string"`
 
 	// The name of this scaling action.
@@ -11083,18 +11916,19 @@ type PutScheduledUpdateGroupActionInput struct {
 	// ScheduledActionName is a required field
 	ScheduledActionName *string `min:"1" type:"string" required:"true"`
 
-	// The time for this action to start, in "YYYY-MM-DDThh:mm:ssZ" format in UTC/GMT
-	// only (for example, 2014-06-01T00:00:00Z).
+	// The date and time for this action to start, in YYYY-MM-DDThh:mm:ssZ format
+	// in UTC/GMT only and in quotes (for example, "2019-06-01T00:00:00Z").
 	//
-	// If you specify Recurrence and StartTime, Auto Scaling performs the action
-	// at this time, and then performs the action based on the specified recurrence.
+	// If you specify Recurrence and StartTime, Amazon EC2 Auto Scaling performs
+	// the action at this time, and then performs the action based on the specified
+	// recurrence.
 	//
-	// If you try to schedule your action in the past, Auto Scaling returns an error
-	// message.
-	StartTime *time.Time `type:"timestamp" timestampFormat:"iso8601"`
+	// If you try to schedule your action in the past, Amazon EC2 Auto Scaling returns
+	// an error message.
+	StartTime *time.Time `type:"timestamp"`
 
 	// This parameter is deprecated.
-	Time *time.Time `type:"timestamp" timestampFormat:"iso8601"`
+	Time *time.Time `type:"timestamp"`
 }
 
 // String returns the string representation
@@ -11186,7 +12020,6 @@ func (s *PutScheduledUpdateGroupActionInput) SetTime(v time.Time) *PutScheduledU
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/PutScheduledUpdateGroupActionOutput
 type PutScheduledUpdateGroupActionOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -11201,7 +12034,6 @@ func (s PutScheduledUpdateGroupActionOutput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/RecordLifecycleActionHeartbeatType
 type RecordLifecycleActionHeartbeatInput struct {
 	_ struct{} `type:"structure"`
 
@@ -11214,8 +12046,8 @@ type RecordLifecycleActionHeartbeatInput struct {
 	InstanceId *string `min:"1" type:"string"`
 
 	// A token that uniquely identifies a specific lifecycle action associated with
-	// an instance. Auto Scaling sends this token to the notification target you
-	// specified when you created the lifecycle hook.
+	// an instance. Amazon EC2 Auto Scaling sends this token to the notification
+	// target that you specified when you created the lifecycle hook.
 	LifecycleActionToken *string `min:"36" type:"string"`
 
 	// The name of the lifecycle hook.
@@ -11286,7 +12118,6 @@ func (s *RecordLifecycleActionHeartbeatInput) SetLifecycleHookName(v string) *Re
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/RecordLifecycleActionHeartbeatAnswer
 type RecordLifecycleActionHeartbeatOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -11301,7 +12132,6 @@ func (s RecordLifecycleActionHeartbeatOutput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ResumeProcessesOutput
 type ResumeProcessesOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -11317,12 +12147,11 @@ func (s ResumeProcessesOutput) GoString() string {
 }
 
 // Describes a scaling policy.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ScalingPolicy
 type ScalingPolicy struct {
 	_ struct{} `type:"structure"`
 
 	// The adjustment type, which specifies how ScalingAdjustment is interpreted.
-	// Valid values are ChangeInCapacity, ExactCapacity, and PercentChangeInCapacity.
+	// The valid values are ChangeInCapacity, ExactCapacity, and PercentChangeInCapacity.
 	AdjustmentType *string `min:"1" type:"string"`
 
 	// The CloudWatch alarms related to the policy.
@@ -11339,7 +12168,7 @@ type ScalingPolicy struct {
 	// to the CloudWatch metrics.
 	EstimatedInstanceWarmup *int64 `type:"integer"`
 
-	// The aggregation type for the CloudWatch metrics. Valid values are Minimum,
+	// The aggregation type for the CloudWatch metrics. The valid values are Minimum,
 	// Maximum, and Average.
 	MetricAggregationType *string `min:"1" type:"string"`
 
@@ -11358,7 +12187,7 @@ type ScalingPolicy struct {
 	// The name of the scaling policy.
 	PolicyName *string `min:"1" type:"string"`
 
-	// The policy type. Valid values are SimpleScaling and StepScaling.
+	// The policy type. The valid values are SimpleScaling, StepScaling, and TargetTrackingScaling.
 	PolicyType *string `min:"1" type:"string"`
 
 	// The amount by which to scale, based on the specified adjustment type. A positive
@@ -11370,7 +12199,7 @@ type ScalingPolicy struct {
 	// breach.
 	StepAdjustments []*StepAdjustment `type:"list"`
 
-	// A target tracking policy.
+	// A target tracking scaling policy.
 	TargetTrackingConfiguration *TargetTrackingConfiguration `type:"structure"`
 }
 
@@ -11468,7 +12297,6 @@ func (s *ScalingPolicy) SetTargetTrackingConfiguration(v *TargetTrackingConfigur
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ScalingProcessQuery
 type ScalingProcessQuery struct {
 	_ struct{} `type:"structure"`
 
@@ -11536,8 +12364,7 @@ func (s *ScalingProcessQuery) SetScalingProcesses(v []*string) *ScalingProcessQu
 	return s
 }
 
-// Describes a scheduled update to an Auto Scaling group.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ScheduledUpdateGroupAction
+// Describes a scheduled scaling action. Used in response to DescribeScheduledActions.
 type ScheduledUpdateGroupAction struct {
 	_ struct{} `type:"structure"`
 
@@ -11547,17 +12374,20 @@ type ScheduledUpdateGroupAction struct {
 	// The number of instances you prefer to maintain in the group.
 	DesiredCapacity *int64 `type:"integer"`
 
-	// The date and time that the action is scheduled to end. This date and time
-	// can be up to one month in the future.
-	EndTime *time.Time `type:"timestamp" timestampFormat:"iso8601"`
+	// The date and time in UTC for the recurring schedule to end. For example,
+	// "2019-06-01T00:00:00Z".
+	EndTime *time.Time `type:"timestamp"`
 
-	// The maximum size of the group.
+	// The maximum number of instances in the Auto Scaling group.
 	MaxSize *int64 `type:"integer"`
 
-	// The minimum size of the group.
+	// The minimum number of instances in the Auto Scaling group.
 	MinSize *int64 `type:"integer"`
 
-	// The recurring schedule for the action.
+	// The recurring schedule for the action, in Unix cron syntax format.
+	//
+	// When StartTime and EndTime are specified with Recurrence, they form the boundaries
+	// of when the recurring action starts and stops.
 	Recurrence *string `min:"1" type:"string"`
 
 	// The Amazon Resource Name (ARN) of the scheduled action.
@@ -11566,15 +12396,11 @@ type ScheduledUpdateGroupAction struct {
 	// The name of the scheduled action.
 	ScheduledActionName *string `min:"1" type:"string"`
 
-	// The date and time that the action is scheduled to begin. This date and time
-	// can be up to one month in the future.
-	//
-	// When StartTime and EndTime are specified with Recurrence, they form the boundaries
-	// of when the recurring action will start and stop.
-	StartTime *time.Time `type:"timestamp" timestampFormat:"iso8601"`
+	// The date and time in UTC for this action to start. For example, "2019-06-01T00:00:00Z".
+	StartTime *time.Time `type:"timestamp"`
 
 	// This parameter is deprecated.
-	Time *time.Time `type:"timestamp" timestampFormat:"iso8601"`
+	Time *time.Time `type:"timestamp"`
 }
 
 // String returns the string representation
@@ -11647,7 +12473,124 @@ func (s *ScheduledUpdateGroupAction) SetTime(v time.Time) *ScheduledUpdateGroupA
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SetDesiredCapacityType
+// Describes one or more scheduled scaling action updates for a specified Auto
+// Scaling group. Used in combination with BatchPutScheduledUpdateGroupAction.
+//
+// When updating a scheduled scaling action, all optional parameters are left
+// unchanged if not specified.
+type ScheduledUpdateGroupActionRequest struct {
+	_ struct{} `type:"structure"`
+
+	// The number of EC2 instances that should be running in the group.
+	DesiredCapacity *int64 `type:"integer"`
+
+	// The date and time for the recurring schedule to end. Amazon EC2 Auto Scaling
+	// does not perform the action after this time.
+	EndTime *time.Time `type:"timestamp"`
+
+	// The maximum number of instances in the Auto Scaling group.
+	MaxSize *int64 `type:"integer"`
+
+	// The minimum number of instances in the Auto Scaling group.
+	MinSize *int64 `type:"integer"`
+
+	// The recurring schedule for the action, in Unix cron syntax format. This format
+	// consists of five fields separated by white spaces: [Minute] [Hour] [Day_of_Month]
+	// [Month_of_Year] [Day_of_Week]. The value must be in quotes (for example,
+	// "30 0 1 1,6,12 *"). For more information about this format, see Crontab (http://crontab.org).
+	//
+	// When StartTime and EndTime are specified with Recurrence, they form the boundaries
+	// of when the recurring action starts and stops.
+	Recurrence *string `min:"1" type:"string"`
+
+	// The name of the scaling action.
+	//
+	// ScheduledActionName is a required field
+	ScheduledActionName *string `min:"1" type:"string" required:"true"`
+
+	// The date and time for the action to start, in YYYY-MM-DDThh:mm:ssZ format
+	// in UTC/GMT only and in quotes (for example, "2019-06-01T00:00:00Z").
+	//
+	// If you specify Recurrence and StartTime, Amazon EC2 Auto Scaling performs
+	// the action at this time, and then performs the action based on the specified
+	// recurrence.
+	//
+	// If you try to schedule the action in the past, Amazon EC2 Auto Scaling returns
+	// an error message.
+	StartTime *time.Time `type:"timestamp"`
+}
+
+// String returns the string representation
+func (s ScheduledUpdateGroupActionRequest) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ScheduledUpdateGroupActionRequest) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *ScheduledUpdateGroupActionRequest) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "ScheduledUpdateGroupActionRequest"}
+	if s.Recurrence != nil && len(*s.Recurrence) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Recurrence", 1))
+	}
+	if s.ScheduledActionName == nil {
+		invalidParams.Add(request.NewErrParamRequired("ScheduledActionName"))
+	}
+	if s.ScheduledActionName != nil && len(*s.ScheduledActionName) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ScheduledActionName", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetDesiredCapacity sets the DesiredCapacity field's value.
+func (s *ScheduledUpdateGroupActionRequest) SetDesiredCapacity(v int64) *ScheduledUpdateGroupActionRequest {
+	s.DesiredCapacity = &v
+	return s
+}
+
+// SetEndTime sets the EndTime field's value.
+func (s *ScheduledUpdateGroupActionRequest) SetEndTime(v time.Time) *ScheduledUpdateGroupActionRequest {
+	s.EndTime = &v
+	return s
+}
+
+// SetMaxSize sets the MaxSize field's value.
+func (s *ScheduledUpdateGroupActionRequest) SetMaxSize(v int64) *ScheduledUpdateGroupActionRequest {
+	s.MaxSize = &v
+	return s
+}
+
+// SetMinSize sets the MinSize field's value.
+func (s *ScheduledUpdateGroupActionRequest) SetMinSize(v int64) *ScheduledUpdateGroupActionRequest {
+	s.MinSize = &v
+	return s
+}
+
+// SetRecurrence sets the Recurrence field's value.
+func (s *ScheduledUpdateGroupActionRequest) SetRecurrence(v string) *ScheduledUpdateGroupActionRequest {
+	s.Recurrence = &v
+	return s
+}
+
+// SetScheduledActionName sets the ScheduledActionName field's value.
+func (s *ScheduledUpdateGroupActionRequest) SetScheduledActionName(v string) *ScheduledUpdateGroupActionRequest {
+	s.ScheduledActionName = &v
+	return s
+}
+
+// SetStartTime sets the StartTime field's value.
+func (s *ScheduledUpdateGroupActionRequest) SetStartTime(v time.Time) *ScheduledUpdateGroupActionRequest {
+	s.StartTime = &v
+	return s
+}
+
 type SetDesiredCapacityInput struct {
 	_ struct{} `type:"structure"`
 
@@ -11661,10 +12604,10 @@ type SetDesiredCapacityInput struct {
 	// DesiredCapacity is a required field
 	DesiredCapacity *int64 `type:"integer" required:"true"`
 
-	// By default, SetDesiredCapacity overrides any cooldown period associated with
-	// the Auto Scaling group. Specify True to make Auto Scaling to wait for the
-	// cool-down period associated with the Auto Scaling group to complete before
-	// initiating a scaling activity to set your Auto Scaling group to its new capacity.
+	// Indicates whether Amazon EC2 Auto Scaling waits for the cooldown period to
+	// complete before initiating a scaling activity to set your Auto Scaling group
+	// to its new capacity. By default, Amazon EC2 Auto Scaling does not honor the
+	// cooldown period during manual scaling activities.
 	HonorCooldown *bool `type:"boolean"`
 }
 
@@ -11715,7 +12658,6 @@ func (s *SetDesiredCapacityInput) SetHonorCooldown(v bool) *SetDesiredCapacityIn
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SetDesiredCapacityOutput
 type SetDesiredCapacityOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -11730,13 +12672,12 @@ func (s SetDesiredCapacityOutput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SetInstanceHealthQuery
 type SetInstanceHealthInput struct {
 	_ struct{} `type:"structure"`
 
-	// The health status of the instance. Set to Healthy if you want the instance
-	// to remain in service. Set to Unhealthy if you want the instance to be out
-	// of service. Auto Scaling will terminate and replace the unhealthy instance.
+	// The health status of the instance. Set to Healthy to have the instance remain
+	// in service. Set to Unhealthy to have the instance be out of service. Amazon
+	// EC2 Auto Scaling terminates and replaces the unhealthy instance.
 	//
 	// HealthStatus is a required field
 	HealthStatus *string `min:"1" type:"string" required:"true"`
@@ -11747,12 +12688,11 @@ type SetInstanceHealthInput struct {
 	InstanceId *string `min:"1" type:"string" required:"true"`
 
 	// If the Auto Scaling group of the specified instance has a HealthCheckGracePeriod
-	// specified for the group, by default, this call will respect the grace period.
-	// Set this to False, if you do not want the call to respect the grace period
-	// associated with the group.
+	// specified for the group, by default, this call respects the grace period.
+	// Set this to False, to have the call not respect the grace period associated
+	// with the group.
 	//
-	// For more information, see the description of the health check grace period
-	// for CreateAutoScalingGroup.
+	// For more information about the health check grace period, see CreateAutoScalingGroup.
 	ShouldRespectGracePeriod *bool `type:"boolean"`
 }
 
@@ -11806,7 +12746,6 @@ func (s *SetInstanceHealthInput) SetShouldRespectGracePeriod(v bool) *SetInstanc
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SetInstanceHealthOutput
 type SetInstanceHealthOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -11821,7 +12760,6 @@ func (s SetInstanceHealthOutput) GoString() string {
 	return s.String()
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SetInstanceProtectionQuery
 type SetInstanceProtectionInput struct {
 	_ struct{} `type:"structure"`
 
@@ -11835,8 +12773,8 @@ type SetInstanceProtectionInput struct {
 	// InstanceIds is a required field
 	InstanceIds []*string `type:"list" required:"true"`
 
-	// Indicates whether the instance is protected from termination by Auto Scaling
-	// when scaling in.
+	// Indicates whether the instance is protected from termination by Amazon EC2
+	// Auto Scaling when scaling in.
 	//
 	// ProtectedFromScaleIn is a required field
 	ProtectedFromScaleIn *bool `type:"boolean" required:"true"`
@@ -11892,7 +12830,6 @@ func (s *SetInstanceProtectionInput) SetProtectedFromScaleIn(v bool) *SetInstanc
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SetInstanceProtectionAnswer
 type SetInstanceProtectionOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -11909,33 +12846,32 @@ func (s SetInstanceProtectionOutput) GoString() string {
 
 // Describes an adjustment based on the difference between the value of the
 // aggregated CloudWatch metric and the breach threshold that you've defined
-// for the alarm.
+// for the alarm. Used in combination with PutScalingPolicy.
 //
 // For the following examples, suppose that you have an alarm with a breach
 // threshold of 50:
 //
-//    * If you want the adjustment to be triggered when the metric is greater
-//    than or equal to 50 and less than 60, specify a lower bound of 0 and an
-//    upper bound of 10.
+//    * To trigger the adjustment when the metric is greater than or equal to
+//    50 and less than 60, specify a lower bound of 0 and an upper bound of
+//    10.
 //
-//    * If you want the adjustment to be triggered when the metric is greater
-//    than 40 and less than or equal to 50, specify a lower bound of -10 and
-//    an upper bound of 0.
+//    * To trigger the adjustment when the metric is greater than 40 and less
+//    than or equal to 50, specify a lower bound of -10 and an upper bound of
+//    0.
 //
 // There are a few rules for the step adjustments for your step policy:
 //
 //    * The ranges of your step adjustments can't overlap or have a gap.
 //
-//    * At most one step adjustment can have a null lower bound. If one step
+//    * At most, one step adjustment can have a null lower bound. If one step
 //    adjustment has a negative lower bound, then there must be a step adjustment
 //    with a null lower bound.
 //
-//    * At most one step adjustment can have a null upper bound. If one step
+//    * At most, one step adjustment can have a null upper bound. If one step
 //    adjustment has a positive upper bound, then there must be a step adjustment
 //    with a null upper bound.
 //
 //    * The upper and lower bound can't be null in the same step adjustment.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/StepAdjustment
 type StepAdjustment struct {
 	_ struct{} `type:"structure"`
 
@@ -12005,7 +12941,6 @@ func (s *StepAdjustment) SetScalingAdjustment(v int64) *StepAdjustment {
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SuspendProcessesOutput
 type SuspendProcessesOutput struct {
 	_ struct{} `type:"structure"`
 }
@@ -12020,9 +12955,8 @@ func (s SuspendProcessesOutput) GoString() string {
 	return s.String()
 }
 
-// Describes an Auto Scaling process that has been suspended. For more information,
-// see ProcessType.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/SuspendedProcess
+// Describes an automatic scaling process that has been suspended. For more
+// information, see ProcessType.
 type SuspendedProcess struct {
 	_ struct{} `type:"structure"`
 
@@ -12056,7 +12990,6 @@ func (s *SuspendedProcess) SetSuspensionReason(v string) *SuspendedProcess {
 }
 
 // Describes a tag for an Auto Scaling group.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/Tag
 type Tag struct {
 	_ struct{} `type:"structure"`
 
@@ -12136,7 +13069,6 @@ func (s *Tag) SetValue(v string) *Tag {
 }
 
 // Describes a tag for an Auto Scaling group.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/TagDescription
 type TagDescription struct {
 	_ struct{} `type:"structure"`
 
@@ -12197,22 +13129,22 @@ func (s *TagDescription) SetValue(v string) *TagDescription {
 	return s
 }
 
-// Represents a target tracking policy configuration.
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/TargetTrackingConfiguration
+// Represents a target tracking scaling policy configuration to use with Amazon
+// EC2 Auto Scaling.
 type TargetTrackingConfiguration struct {
 	_ struct{} `type:"structure"`
 
-	// A customized metric.
+	// A customized metric. You must specify either a predefined metric or a customized
+	// metric.
 	CustomizedMetricSpecification *CustomizedMetricSpecification `type:"structure"`
 
-	// Indicates whether scale in by the target tracking policy is disabled. If
-	// the value is true, scale in is disabled and the target tracking policy won't
-	// remove instances from the Auto Scaling group. Otherwise, scale in is enabled
-	// and the target tracking policy can remove instances from the Auto Scaling
-	// group. The default value is false.
+	// Indicates whether scaling in by the target tracking scaling policy is disabled.
+	// If scaling in is disabled, the target tracking scaling policy doesn't remove
+	// instances from the Auto Scaling group. Otherwise, the target tracking scaling
+	// policy can remove instances from the Auto Scaling group. The default is false.
 	DisableScaleIn *bool `type:"boolean"`
 
-	// A predefined metric. You can specify either a predefined metric or a customized
+	// A predefined metric. You must specify either a predefined metric or a customized
 	// metric.
 	PredefinedMetricSpecification *PredefinedMetricSpecification `type:"structure"`
 
@@ -12279,7 +13211,6 @@ func (s *TargetTrackingConfiguration) SetTargetValue(v float64) *TargetTrackingC
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/TerminateInstanceInAutoScalingGroupType
 type TerminateInstanceInAutoScalingGroupInput struct {
 	_ struct{} `type:"structure"`
 
@@ -12288,8 +13219,8 @@ type TerminateInstanceInAutoScalingGroupInput struct {
 	// InstanceId is a required field
 	InstanceId *string `min:"1" type:"string" required:"true"`
 
-	// If true, terminating the instance also decrements the size of the Auto Scaling
-	// group.
+	// Indicates whether terminating the instance also decrements the size of the
+	// Auto Scaling group.
 	//
 	// ShouldDecrementDesiredCapacity is a required field
 	ShouldDecrementDesiredCapacity *bool `type:"boolean" required:"true"`
@@ -12336,7 +13267,6 @@ func (s *TerminateInstanceInAutoScalingGroupInput) SetShouldDecrementDesiredCapa
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/ActivityType
 type TerminateInstanceInAutoScalingGroupOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -12360,7 +13290,6 @@ func (s *TerminateInstanceInAutoScalingGroupOutput) SetActivity(v *Activity) *Te
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/UpdateAutoScalingGroupType
 type UpdateAutoScalingGroupInput struct {
 	_ struct{} `type:"structure"`
 
@@ -12373,10 +13302,13 @@ type UpdateAutoScalingGroupInput struct {
 	AvailabilityZones []*string `min:"1" type:"list"`
 
 	// The amount of time, in seconds, after a scaling activity completes before
-	// another scaling activity can start. The default is 300.
+	// another scaling activity can start. The default value is 300. This cooldown
+	// period is not used when a scaling-specific cooldown is specified.
 	//
-	// For more information, see Auto Scaling Cooldowns (http://docs.aws.amazon.com/autoscaling/latest/userguide/Cooldown.html)
-	// in the Auto Scaling User Guide.
+	// Cooldown periods are not supported for target tracking scaling policies,
+	// step scaling policies, or scheduled scaling. For more information, see Scaling
+	// Cooldowns (https://docs.aws.amazon.com/autoscaling/ec2/userguide/Cooldown.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
 	DefaultCooldown *int64 `type:"integer"`
 
 	// The number of EC2 instances that should be running in the Auto Scaling group.
@@ -12384,23 +13316,34 @@ type UpdateAutoScalingGroupInput struct {
 	// and less than or equal to the maximum size of the group.
 	DesiredCapacity *int64 `type:"integer"`
 
-	// The amount of time, in seconds, that Auto Scaling waits before checking the
-	// health status of an EC2 instance that has come into service. The default
-	// is 0.
+	// The amount of time, in seconds, that Amazon EC2 Auto Scaling waits before
+	// checking the health status of an EC2 instance that has come into service.
+	// The default value is 0.
 	//
-	// For more information, see Health Checks (http://docs.aws.amazon.com/autoscaling/latest/userguide/healthcheck.html)
-	// in the Auto Scaling User Guide.
+	// For more information, see Health Checks for Auto Scaling Instances (https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
+	//
+	// Conditional: This parameter is required if you are adding an ELB health check.
 	HealthCheckGracePeriod *int64 `type:"integer"`
 
 	// The service to use for the health checks. The valid values are EC2 and ELB.
+	// If you configure an Auto Scaling group to use ELB health checks, it considers
+	// the instance unhealthy if it fails either the EC2 status checks or the load
+	// balancer health checks.
 	HealthCheckType *string `min:"1" type:"string"`
 
-	// The name of the launch configuration. You must specify either a launch configuration
-	// or a launch template.
+	// The name of the launch configuration. If you specify LaunchConfigurationName
+	// in your update request, you can't specify LaunchTemplate or MixedInstancesPolicy.
+	//
+	// To update an Auto Scaling group with a launch configuration with InstanceMonitoring
+	// set to false, you must first disable the collection of group metrics. Otherwise,
+	// you get an error. If you have previously enabled the collection of group
+	// metrics, you can disable it using DisableMetricsCollection.
 	LaunchConfigurationName *string `min:"1" type:"string"`
 
-	// The launch template to use to specify the updates. You must specify a launch
-	// configuration or a launch template.
+	// The launch template and version to use to specify the updates. If you specify
+	// LaunchTemplate in your update request, you can't specify LaunchConfigurationName
+	// or MixedInstancesPolicy.
 	LaunchTemplate *LaunchTemplateSpecification `type:"structure"`
 
 	// The maximum size of the Auto Scaling group.
@@ -12409,32 +13352,50 @@ type UpdateAutoScalingGroupInput struct {
 	// The minimum size of the Auto Scaling group.
 	MinSize *int64 `type:"integer"`
 
+	// An embedded object that specifies a mixed instances policy.
+	//
+	// In your call to UpdateAutoScalingGroup, you can make changes to the policy
+	// that is specified. All optional parameters are left unchanged if not specified.
+	//
+	// For more information, see Auto Scaling Groups with Multiple Instance Types
+	// and Purchase Options (https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-purchase-options.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
+	MixedInstancesPolicy *MixedInstancesPolicy `type:"structure"`
+
 	// Indicates whether newly launched instances are protected from termination
-	// by Auto Scaling when scaling in.
+	// by Amazon EC2 Auto Scaling when scaling in.
+	//
+	// For more information about preventing instances from terminating on scale
+	// in, see Instance Protection (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#instance-protection)
+	// in the Amazon EC2 Auto Scaling User Guide.
 	NewInstancesProtectedFromScaleIn *bool `type:"boolean"`
 
-	// The name of the placement group into which you'll launch your instances,
-	// if any. For more information, see Placement Groups (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html)
-	// in the Amazon Elastic Compute Cloud User Guide.
+	// The name of the placement group into which to launch your instances, if any.
+	// A placement group is a logical grouping of instances within a single Availability
+	// Zone. You cannot specify multiple Availability Zones and a placement group.
+	// For more information, see Placement Groups (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html)
+	// in the Amazon EC2 User Guide for Linux Instances.
 	PlacementGroup *string `min:"1" type:"string"`
+
+	// The Amazon Resource Name (ARN) of the service-linked role that the Auto Scaling
+	// group uses to call other AWS services on your behalf. For more information,
+	// see Service-Linked Roles (https://docs.aws.amazon.com/autoscaling/ec2/userguide/autoscaling-service-linked-role.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
+	ServiceLinkedRoleARN *string `min:"1" type:"string"`
 
 	// A standalone termination policy or a list of termination policies used to
 	// select the instance to terminate. The policies are executed in the order
 	// that they are listed.
 	//
 	// For more information, see Controlling Which Instances Auto Scaling Terminates
-	// During Scale In (http://docs.aws.amazon.com/autoscaling/latest/userguide/as-instance-termination.html)
-	// in the Auto Scaling User Guide.
+	// During Scale In (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html)
+	// in the Amazon EC2 Auto Scaling User Guide.
 	TerminationPolicies []*string `type:"list"`
 
-	// The ID of the subnet, if you are launching into a VPC. You can specify several
-	// subnets in a comma-separated list.
+	// A comma-separated list of subnet IDs for virtual private cloud (VPC).
 	//
-	// When you specify VPCZoneIdentifier with AvailabilityZones, ensure that the
-	// subnets' Availability Zones match the values you specify for AvailabilityZones.
-	//
-	// For more information, see Launching Auto Scaling Instances in a VPC (http://docs.aws.amazon.com/autoscaling/latest/userguide/asg-in-vpc.html)
-	// in the Auto Scaling User Guide.
+	// If you specify VPCZoneIdentifier with AvailabilityZones, the subnets that
+	// you specify for this parameter must reside in those Availability Zones.
 	VPCZoneIdentifier *string `min:"1" type:"string"`
 }
 
@@ -12469,12 +13430,20 @@ func (s *UpdateAutoScalingGroupInput) Validate() error {
 	if s.PlacementGroup != nil && len(*s.PlacementGroup) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("PlacementGroup", 1))
 	}
+	if s.ServiceLinkedRoleARN != nil && len(*s.ServiceLinkedRoleARN) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ServiceLinkedRoleARN", 1))
+	}
 	if s.VPCZoneIdentifier != nil && len(*s.VPCZoneIdentifier) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("VPCZoneIdentifier", 1))
 	}
 	if s.LaunchTemplate != nil {
 		if err := s.LaunchTemplate.Validate(); err != nil {
 			invalidParams.AddNested("LaunchTemplate", err.(request.ErrInvalidParams))
+		}
+	}
+	if s.MixedInstancesPolicy != nil {
+		if err := s.MixedInstancesPolicy.Validate(); err != nil {
+			invalidParams.AddNested("MixedInstancesPolicy", err.(request.ErrInvalidParams))
 		}
 	}
 
@@ -12544,6 +13513,12 @@ func (s *UpdateAutoScalingGroupInput) SetMinSize(v int64) *UpdateAutoScalingGrou
 	return s
 }
 
+// SetMixedInstancesPolicy sets the MixedInstancesPolicy field's value.
+func (s *UpdateAutoScalingGroupInput) SetMixedInstancesPolicy(v *MixedInstancesPolicy) *UpdateAutoScalingGroupInput {
+	s.MixedInstancesPolicy = v
+	return s
+}
+
 // SetNewInstancesProtectedFromScaleIn sets the NewInstancesProtectedFromScaleIn field's value.
 func (s *UpdateAutoScalingGroupInput) SetNewInstancesProtectedFromScaleIn(v bool) *UpdateAutoScalingGroupInput {
 	s.NewInstancesProtectedFromScaleIn = &v
@@ -12553,6 +13528,12 @@ func (s *UpdateAutoScalingGroupInput) SetNewInstancesProtectedFromScaleIn(v bool
 // SetPlacementGroup sets the PlacementGroup field's value.
 func (s *UpdateAutoScalingGroupInput) SetPlacementGroup(v string) *UpdateAutoScalingGroupInput {
 	s.PlacementGroup = &v
+	return s
+}
+
+// SetServiceLinkedRoleARN sets the ServiceLinkedRoleARN field's value.
+func (s *UpdateAutoScalingGroupInput) SetServiceLinkedRoleARN(v string) *UpdateAutoScalingGroupInput {
+	s.ServiceLinkedRoleARN = &v
 	return s
 }
 
@@ -12568,7 +13549,6 @@ func (s *UpdateAutoScalingGroupInput) SetVPCZoneIdentifier(v string) *UpdateAuto
 	return s
 }
 
-// Please also see https://docs.aws.amazon.com/goto/WebAPI/autoscaling-2011-01-01/UpdateAutoScalingGroupOutput
 type UpdateAutoScalingGroupOutput struct {
 	_ struct{} `type:"structure"`
 }
