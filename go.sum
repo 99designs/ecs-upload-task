@@ -1,0 +1,16 @@
+github.com/aws/aws-sdk-go v1.12.37 h1:+pQuKdTLhhEhCpcE9xl8YIwtmb4n4bbq0eCLrMZbYN4=
+github.com/aws/aws-sdk-go v1.12.37/go.mod h1:ZRmQr0FajVIyZ4ZzBYKG5P3ZqPz9IHG41ZoMu1ADI3k=
+github.com/buildkite/ecs-run-task v0.0.0-20171018231611-4bf0bd960fb2 h1:SOE/aVWizp28vWgdowT8fXwrZYBvazetv9XtOuBRR0Q=
+github.com/buildkite/ecs-run-task v0.0.0-20171018231611-4bf0bd960fb2/go.mod h1:gIBECWtS9PdRXB/ZtSOSR5cPwvWWgPosUj87Q5Cal/4=
+github.com/buildkite/interpolate v0.0.0-20171102025832-0f660c0d6d30 h1:umPdV4ABSVxoLNpW8t/bsQq5m4g0YUD9Ko/9ZoYsa0U=
+github.com/buildkite/interpolate v0.0.0-20171102025832-0f660c0d6d30/go.mod h1:gbPR1gPu9dB96mucYIR7T3B7p/78hRVSOuzIWLHK2Y4=
+github.com/ghodss/yaml v1.0.0 h1:wQHKEahhL6wmXdzwWG11gIVCkOv05bNOh+Rxn0yngAk=
+github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
+github.com/go-ini/ini v1.31.1 h1:Ir+/CttgobzfH80vVjhKUdZVaS2oVD7/33M37NwE5HM=
+github.com/go-ini/ini v1.31.1/go.mod h1:ByCAeIL28uOIIG0E3PJtZPDL8WnHpFKFOtgjp+3Ies8=
+github.com/jmespath/go-jmespath v0.0.0-20160202185014-0b12d6b521d8 h1:12VvqtR6Aowv3l/EQUlocDHW2Cp4G9WJVH7uyH8QFJE=
+github.com/jmespath/go-jmespath v0.0.0-20160202185014-0b12d6b521d8/go.mod h1:Nht3zPeWKUH0NzdCt2Blrr5ys8VGpn0CEB0cQHVjt7k=
+github.com/urfave/cli v1.20.0 h1:fDqGv3UG/4jbVl/QkFwEdddtEDjh/5Ov6X+0B/3bPaw=
+github.com/urfave/cli v1.20.0/go.mod h1:70zkFmudgCuE/ngEzBv17Jvp/497gISqfk5gWijbERA=
+gopkg.in/yaml.v2 v2.0.0-20170812160011-eb3733d160e7 h1:+t9dhfO+GNOIGJof6kPOAenx7YgrZMTdRPV+EsnPabk=
+gopkg.in/yaml.v2 v2.0.0-20170812160011-eb3733d160e7/go.mod h1:JAlM8MvJe8wmxCU4Bli9HhUf9+ttbYbLASfIpnQbh74=
