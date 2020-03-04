@@ -11,7 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ecs"
 	"github.com/buildkite/ecs-run-task/parser"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 )
 
 const ECS_POLL_INTERVAL = 1 * time.Second
@@ -24,9 +24,9 @@ func main() {
 	app.Action = run
 	app.Version = version
 	app.Flags = []cli.Flag{
-		cli.StringFlag{Name: "file", Value: "taskdefinition.json", Usage: "the task definition to upload"},
-		cli.StringFlag{Name: "cluster", Value: "default", Usage: "The cluster to update the services on"},
-		cli.StringFlag{Name: "service", Usage: "Optional service name to update"},
+		&cli.StringFlag{Name: "file", Value: "taskdefinition.json", Usage: "the task definition to upload"},
+		&cli.StringFlag{Name: "cluster", Value: "default", Usage: "The cluster to update the services on"},
+		&cli.StringFlag{Name: "service", Usage: "Optional service name to update"},
 	}
 
 	app.Run(os.Args)
