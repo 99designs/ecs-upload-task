@@ -2,7 +2,7 @@
 
 A very simple cli tool that will upload an ecs task and optionally update a service to reference it.
 
-Designed as a partner tool to https://github.com/buildkite/ecs-run-task and shares the same task definition parser with environment substitution. 
+Designed as a partner tool to https://github.com/buildkite/ecs-run-task and shares the same task definition parser with environment substitution.
 
 ##### example
 
@@ -10,7 +10,7 @@ install it
 ```bash
 go get -u github.com/99designs/ecs-upload-task
 
-or 
+or
 
 curl -L --fail -o /usr/bin/ecs-upload-task \
   <release from https://github.com/99designs/ecs-upload-task/releases>
@@ -32,7 +32,15 @@ containerDefinitions:
 
 ```
 
-then the initial task definition
+then take it for a dry-run to validate that the template is parsed successfully.
+
+```bash
+ecs-upload-task --file taskdefinition.yml --dry-run
+Template taskdefinition.yml is parsed successfully
+```
+
+then register the task definition
+
 ```bash
 ecs-upload-task --file taskdefinition.yml
 ```
@@ -40,9 +48,10 @@ ecs-upload-task --file taskdefinition.yml
 Create a new ECS service referencing the task definition. Service templates can use the family name without the version, simply `hello-world` is enough.
 
 
-later, in your automated CI pipeline you can deploy by simply:
+Later, in your automated CI pipeline you can deploy by simply:
+
 ```bash
-export IMAGE_NAME=99designs/hello-world:$FRESH_BUILD_NUMBER 
+export IMAGE_NAME=99designs/hello-world:$FRESH_BUILD_NUMBER
 ecs-upload-task --file taskdefinition.yml --service hello-world-2017-05-15-10-45
 
 2017/11/14 18:02:32 Registering a task for hello-world

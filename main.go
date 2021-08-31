@@ -27,6 +27,7 @@ func main() {
 		&cli.StringFlag{Name: "file", Value: "taskdefinition.json", Usage: "the task definition to upload"},
 		&cli.StringFlag{Name: "cluster", Value: "default", Usage: "The cluster to update the services on"},
 		&cli.StringFlag{Name: "service", Usage: "Optional service name to update"},
+		&cli.BoolFlag{Name: "dry-run", Value: false, Usage: "Parse the template without running upload"},
 	}
 
 	app.Run(os.Args)
@@ -36,8 +37,21 @@ func run(c *cli.Context) error {
 	sess := session.Must(session.NewSession())
 	svc := ecs.New(sess)
 	cluster := c.String("cluster")
+	filename := c.String("file")
+	dryrun := c.Bool("dry-run")
 
-	taskDefinition := uploadTask(svc, c.String("file"))
+	if dryrun {
+		_, err := parser.Parse(filename, os.Environ())
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Unable to parse task definition: %s\n", err)
+			os.Exit(1)
+		}
+
+		fmt.Fprintf(os.Stdout, "Template %s is parsed successfully\n", filename)
+		os.Exit(0)
+	}
+
+	taskDefinition := uploadTask(svc, filename)
 
 	if serviceName := c.String("service"); serviceName != "" {
 		updateService(svc, serviceName, cluster, taskDefinition)
