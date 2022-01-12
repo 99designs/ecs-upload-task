@@ -8,7 +8,7 @@ Designed as a partner tool to https://github.com/buildkite/ecs-run-task and shar
 
 install it
 ```bash
-go get -u github.com/99designs/ecs-upload-task
+go install -u github.com/99designs/ecs-upload-task
 
 or
 
@@ -63,3 +63,35 @@ ecs-upload-task --file taskdefinition.yml --service hello-world-2017-05-15-10-45
 2017/11/14 18:03:48 (service hello-world-2017-05-15-10-45) has stopped 1 running tasks: (task a3e3a91b-be05-4092-bcf6-47f2075933af).
 
 ```
+
+## Creating a new multi-arch release
+
+With the uptake of M1 Macs amongst devs, we need to create builds for multiple CPU architectures to ensure compatability across all devices. This uses [`gox`](https://github.com/mitchellh/gox) to do the multi-arch builds. This can be installed by
+
+```
+go install github.com/mitchellh/gox
+```
+
+Following this:
+
+1. Check out the the commit you want to create a release for, and tag it with appropriate semver convention:
+
+```
+$ git tag vx.x.x
+$ git push --tags
+```
+
+2. Create the binaries:
+
+```
+$ make clean
+$ make release-multi-arch
+```
+Note: If you don't want to make a multi-arch build you can skip the `gox` install and run `make all` instead.
+
+3. Go to https://github.com/99designs/ecs-upload-task/releases/new
+
+4. Select the tag version you just created
+
+5. Attach the binaries from `./bin/*`
+
