@@ -8,7 +8,7 @@ Designed as a partner tool to https://github.com/buildkite/ecs-run-task and shar
 
 install it
 ```bash
-go install -u github.com/99designs/ecs-upload-task
+go install github.com/99designs/ecs-upload-task@latest
 
 or
 
@@ -69,7 +69,7 @@ ecs-upload-task --file taskdefinition.yml --service hello-world-2017-05-15-10-45
 With the uptake of M1 Macs amongst devs, we need to create builds for multiple CPU architectures to ensure compatability across all devices. This uses [`gox`](https://github.com/mitchellh/gox) to do the multi-arch builds. This can be installed by
 
 ```
-go install github.com/mitchellh/gox
+go install github.com/mitchellh/gox@latest
 ```
 
 Following this:
@@ -83,11 +83,10 @@ $ git push --tags
 
 2. Create the binaries:
 
+
 ```
-$ make clean
-$ make release-multi-arch
+$ make
 ```
-Note: If you don't want to make a multi-arch build you can skip the `gox` install and run `make all` instead.
 
 3. Go to https://github.com/99designs/ecs-upload-task/releases/new
 
